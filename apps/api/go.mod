@@ -121,7 +121,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.45.0 // indirect
 	github.com/aws/smithy-go v1.27.3 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
-	github.com/beevik/etree v1.6.0 // indirect
+	github.com/beevik/etree v1.7.0 // indirect
 	github.com/bytedance/sonic v1.14.0 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
@@ -224,7 +224,7 @@ require (
 	// CVE-2026-33487: XML Digital Signature validation could be bypassed. On the
 	// SAML assertion path that is an authentication bypass, and crewjam/saml
 	// v0.5.1 is its newest release and still asks for the vulnerable version.
-	github.com/russellhaering/goxmldsig v1.6.0 // CVE-2026-33487
+	github.com/russellhaering/goxmldsig v1.6.1 // CVE-2026-33487
 	golang.org/x/image v0.45.0 // indirect; GO-2026-5066, -5062, -5032, -5031, -4815, CVE-2026-46603
 	// HTTP/2 again, and reached from the API's own server: GO-2026-6617 is the
 	// HPACK encoder race that go1.26.10 fixes in the standard library's copy,
