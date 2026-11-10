@@ -1,5 +1,5 @@
 # Build stage
-FROM node:22.23-alpine AS base
+FROM node:26.13-alpine AS base
 
 # The pnpm that package.json names in packageManager, which CI installs too.
 # The image ran pnpm 9, which does not read onlyBuiltDependencies, so every
@@ -51,7 +51,7 @@ RUN pnpm --filter admin build
 # managers Node ships: the server is node and the standalone output, so pnpm,
 # corepack, npm and yarn in the image that serves traffic are only something
 # more to patch.
-FROM node:22.23-alpine AS runner
+FROM node:26.13-alpine AS runner
 RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
     /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
     /usr/local/bin/yarn /usr/local/bin/yarnpkg /opt/yarn-*
