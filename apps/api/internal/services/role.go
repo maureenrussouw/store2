@@ -1,0 +1,313 @@
+package services
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"gorm.io/gorm"
+
+	"store2/apps/api/internal/authz"
+	"store2/apps/api/internal/models"
+)
+
+// RoleService owns every read and write behind the roles and permissions API.
+//
+// The handler decides who may ask: a built-in role is an ADMIN's to change, a
+// role hands out no more than its author holds, an unknown permission key is a
+// 400. Those are decisions about the request. What a role is, how its holders
+// are counted, and which writes have to happen together are decisions about the
+// data, and they are here, where a job or a console command reaches them too.
+//
+// Every write drops the grant cache, because the moment a role's permissions
+// change is the moment that cache is wrong, and a caller that forgets leaves a
+// revoked permission working until the entry expires.
+type RoleService struct {
+	DB *gorm.DB
+}
+
+func (s *RoleService) db(ctx context.Context) *gorm.DB {
+	return s.DB.WithContext(ctx)
+}
+
+// All returns every PLATFORM role, built-in ones first and then
+// alphabetically, which is the order the admin's roles page shows them in.
+//
+// Not every role in the table. An organization's own roles belong to that
+// organization and are read through ForOrg: without the narrowing, the
+// operator's roles page listed every customer's roles alongside its own, with
+// nothing on screen to tell them apart, and the delete button next to each.
+// See grit#130.
+func (s *RoleService) All(ctx context.Context) ([]models.Role, error) {
+	var roles []models.Role
+	if err := models.PlatformRoles(s.db(ctx)).
+		Order("is_system DESC, name ASC").Find(&roles).Error; err != nil {
+		return nil, err
+	}
+	return roles, nil
+}
+
+// ForOrg returns the roles one organization defines for itself.
+func (s *RoleService) ForOrg(ctx context.Context, orgID string) ([]models.Role, error) {
+	var roles []models.Role
+	if orgID == "" {
+		return roles, nil
+	}
+	if err := models.OrgRoles(s.db(ctx), orgID).
+		Order("name ASC").Find(&roles).Error; err != nil {
+		return nil, err
+	}
+	return roles, nil
+}
+
+// OwnedBy reads one role and confirms the owner, so a handler cannot be made
+// to read, edit or delete another organization's role by passing its id.
+//
+// gorm.ErrRecordNotFound for a role that exists and belongs to somebody else,
+// deliberately: a different answer tells the caller the id is real.
+func (s *RoleService) OwnedBy(ctx context.Context, ownerOrgID, id string) (*models.Role, error) {
+	var role models.Role
+	if err := s.db(ctx).
+		Where("id = ? AND owner_org_id = ?", id, ownerOrgID).
+		First(&role).Error; err != nil {
+		return nil, err
+	}
+	return &role, nil
+}
+
+// HolderCounts returns how many users hold each role, keyed by role id.
+//
+// One grouped count rather than a query per role: the list page draws every
+// role, and this was a query each before v3.31.
+func (s *RoleService) HolderCounts(ctx context.Context) (map[string]int64, error) {
+	type countRow struct {
+		RoleID string
+		N      int64
+	}
+	var rows []countRow
+	if err := s.db(ctx).Model(&models.UserRole{}).
+		Select("role_id, count(*) as n").
+		Group("role_id").
+		Scan(&rows).Error; err != nil {
+		return nil, err
+	}
+	counts := make(map[string]int64, len(rows))
+	for _, r := range rows {
+		counts[r.RoleID] = r.N
+	}
+	return counts, nil
+}
+
+// ByID reads one role.
+func (s *RoleService) ByID(ctx context.Context, id string) (*models.Role, error) {
+	var role models.Role
+	if err := s.db(ctx).Where("id = ?", id).First(&role).Error; err != nil {
+		return nil, err
+	}
+	return &role, nil
+}
+
+// ByIDs reads several, for a caller checking what they are about to assign.
+func (s *RoleService) ByIDs(ctx context.Context, ids []string) ([]models.Role, error) {
+	var roles []models.Role
+	if len(ids) == 0 {
+		return roles, nil
+	}
+	if err := s.db(ctx).Where("id IN ?", ids).Find(&roles).Error; err != nil {
+		return nil, err
+	}
+	return roles, nil
+}
+
+// OrgRoleForbiddenPrefixes are the permission families an organization's own
+// role may never hold.
+//
+// Everything here is about the PLATFORM rather than about a customer's data:
+// the people who can sign in, what roles exist, what the API keys are, the
+// settings every organization shares. A membership role's grants are merged
+// into the request by the multitenant middleware, and the routes that serve
+// these check the key and not who owns the role, so one of them in a
+// customer's role is that customer reading everybody's. See grit#130 and
+// GHSA-4j45-98gm-mv9v.
+//
+// A list of what is forbidden rather than what is allowed, deliberately: a
+// new resource permission should work in an organization role the day it is
+// generated, and a new piece of platform administration should not.
+var OrgRoleForbiddenPrefixes = []string{
+	"users.",
+	"roles.",
+	"permissions.",
+	"apikeys.",
+	"settings.",
+	"organizations.",
+	"system.",
+	"audit.",
+	"sso.",
+	"flags.",
+}
+
+// CheckOrgRoleGrants refuses an organization role that holds more than an
+// organization may.
+//
+// A platform role (empty OwnerOrgID) is not checked: that is the operator
+// authoring their own system, and the grant ceiling in internal/authz already
+// stops them handing out more than they hold.
+//
+// Checked where the role is WRITTEN, not where it is granted. The ceiling at
+// grant time sees the role somebody chose; it cannot see that they wrote it
+// themselves a moment earlier.
+func CheckOrgRoleGrants(role *models.Role) error {
+	if role == nil || role.OwnerOrgID == "" {
+		return nil
+	}
+	for _, grant := range role.GrantsList() {
+		key := strings.ToLower(strings.TrimSpace(grant))
+		if key == "" {
+			continue
+		}
+		if key == "*" {
+			return fmt.Errorf("an organization role cannot hold %q: that is every permission on the platform", grant)
+		}
+		for _, prefix := range OrgRoleForbiddenPrefixes {
+			if strings.HasPrefix(key, prefix) {
+				return fmt.Errorf("an organization role cannot hold %q: %s permissions are the platform's, and a role holding one reads every organization's", grant, strings.TrimSuffix(prefix, "."))
+			}
+		}
+	}
+	return nil
+}
+
+// NameTaken reports whether a role of this name already exists.
+//
+// Among the PLATFORM's roles. A name is unique per owner, so two
+// organizations may each have an "Accountant" and neither collides with the
+// other or with a platform role of the same name. An organization's own
+// roles are checked against that organization. See grit#130.
+func (s *RoleService) NameTaken(ctx context.Context, name string) (bool, error) {
+	return s.NameTakenFor(ctx, "", name)
+}
+
+// NameTakenFor reports whether ownerOrgID already has a role of this name.
+// An empty ownerOrgID asks about the platform's roles.
+func (s *RoleService) NameTakenFor(ctx context.Context, ownerOrgID, name string) (bool, error) {
+	var n int64
+	if err := s.db(ctx).Model(&models.Role{}).
+		Where("owner_org_id = ? AND name = ?", ownerOrgID, name).
+		Count(&n).Error; err != nil {
+		return false, err
+	}
+	return n > 0, nil
+}
+
+// Holders counts the users holding one role through the join table.
+func (s *RoleService) Holders(ctx context.Context, roleID string) (int64, error) {
+	var n int64
+	if err := s.db(ctx).Model(&models.UserRole{}).Where("role_id = ?", roleID).Count(&n).Error; err != nil {
+		return 0, err
+	}
+	return n, nil
+}
+
+// Assignments counts the users holding a role, either way it can be held: the
+// user_roles join table, which is the real model, and the legacy users.role
+// string, which is what the admin's user form still writes.
+//
+// Both, because counting only the join table let a role be deleted out from
+// under the users assigned to it by name.
+//
+// Users, not rows: somebody holding the role both ways was counted twice, and
+// this number goes into "Role is assigned to N user(s)", which is the operator's
+// instruction for how many people to reassign before they can delete it. A
+// deleted account does not count, because it is not somebody to reassign.
+func (s *RoleService) Assignments(ctx context.Context, role *models.Role) (int64, error) {
+	assigned := s.db(ctx).Model(&models.UserRole{}).Select("user_id").Where("role_id = ?", role.ID)
+	var n int64
+	if err := s.db(ctx).Model(&models.User{}).
+		Where("role = ? OR id IN (?)", role.Name, assigned).Count(&n).Error; err != nil {
+		return 0, err
+	}
+	return n, nil
+}
+
+// Create saves a new role.
+func (s *RoleService) Create(ctx context.Context, role *models.Role) error {
+	if err := CheckOrgRoleGrants(role); err != nil {
+		return err
+	}
+	if err := s.db(ctx).Create(role).Error; err != nil {
+		return err
+	}
+	authz.Invalidate()
+	return nil
+}
+
+// Save writes a role the caller has already changed.
+func (s *RoleService) Save(ctx context.Context, role *models.Role) error {
+	if err := CheckOrgRoleGrants(role); err != nil {
+		return err
+	}
+	if err := s.db(ctx).Save(role).Error; err != nil {
+		return err
+	}
+	authz.Invalidate()
+	return nil
+}
+
+// Delete removes a role outright.
+//
+// Unscoped, which is deliberate: roles.name has a unique index, and a soft
+// delete leaves a tombstone that makes a role of that name impossible to create
+// ever again ("duplicate key idx_roles_name"). A role with no holders has no
+// audit value, and the caller has already checked that it has none.
+func (s *RoleService) Delete(ctx context.Context, role *models.Role) error {
+	if err := s.db(ctx).Unscoped().Delete(role).Error; err != nil {
+		return err
+	}
+	authz.Invalidate()
+	return nil
+}
+
+// ReplaceUserRoles makes a user's assignments exactly roleIDs.
+//
+// One transaction, because a half-applied set of roles is a user with
+// permissions nobody chose. The legacy users.role column is written in the same
+// transaction for the same reason: grant resolution prefers the join table, but
+// a route guarded by a role name reads that column, and leaving it stale is how
+// a user with the right roles got a 403 anyway.
+func (s *RoleService) ReplaceUserRoles(ctx context.Context, userID string, roleIDs []string) error {
+	if err := s.db(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("user_id = ?", userID).Delete(&models.UserRole{}).Error; err != nil {
+			return err
+		}
+		for _, rid := range roleIDs {
+			if err := tx.Create(&models.UserRole{UserID: userID, RoleID: rid}).Error; err != nil {
+				return err
+			}
+		}
+		legacy := ""
+		if len(roleIDs) > 0 {
+			var first models.Role
+			if err := tx.Where("id = ?", roleIDs[0]).First(&first).Error; err == nil {
+				legacy = strings.ToUpper(first.Name)
+			}
+		}
+		return tx.Model(&models.User{}).Where("id = ?", userID).Update("role", legacy).Error
+	}); err != nil {
+		return err
+	}
+	authz.Invalidate()
+	return nil
+}
+
+// ByNames reads the roles these names belong to, for a caller holding names
+// rather than ids: the SSO group mapping, which gets names from a directory.
+func (s *RoleService) ByNames(ctx context.Context, names []string) ([]models.Role, error) {
+	var roles []models.Role
+	if len(names) == 0 {
+		return roles, nil
+	}
+	if err := s.db(ctx).Where("name IN ?", names).Find(&roles).Error; err != nil {
+		return nil, err
+	}
+	return roles, nil
+}

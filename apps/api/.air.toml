@@ -1,0 +1,33 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -o ./tmp/server.exe ./cmd/server"
+  entrypoint = "./tmp/server.exe"
+  delay = 1000
+  exclude_dir = ["tmp", "vendor", "node_modules"]
+  exclude_regex = ["_test.go"]
+  include_ext = ["go", "toml", "yaml"]
+  # Stop the old server before starting the new one, and let it shut down
+  # rather than being shot.
+  #
+  # These two are a Unix-only pair, which is worth knowing before reaching for
+  # them: air reads kill_delay in its Unix kill path, and only when
+  # send_interrupt is on. On Windows it logs "send_interrupt is not supported"
+  # and runs TASKKILL /F /T, and kill_delay is not consulted at all. So this
+  # buys a graceful shutdown on macOS and Linux, where the old server now gets
+  # a SIGINT, drains, and closes its listener properly, and buys nothing on
+  # Windows. The Windows half of this problem is handled in the server itself:
+  # see internal/devserver (grit#110).
+  kill_delay = "1s"
+  send_interrupt = true
+  stop_on_error = true
+
+[log]
+  time = false
+
+[color]
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"

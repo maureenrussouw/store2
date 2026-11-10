@@ -1,0 +1,47 @@
+/* brand.css: your app's colours. Grit never writes this file again.
+ *
+ * globals.css carries Grit's token palette and is replaced on every upgrade.
+ * This file is imported after it and is yours, so anything set here survives
+ * `grit upgrade` and still lets globals.css keep arriving with fixes.
+ *
+ * Everything below is commented out, and the values shown are the ones this
+ * app renders today, read from its own globals.css. Uncommenting a block
+ * changes nothing until you edit a value, which is the point: it is a
+ * starting position, not a repaint.
+ *
+ * The selectors look heavier than they need to be, and they do need to be:
+ * they have to out-specify the [data-theme] blocks in globals.css. Change the
+ * values, not the selectors.
+ *
+ *   store2
+ */
+
+/* ── Light ──────────────────────────────────────────────────────────── */
+/*
+html[data-theme] {
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-fg: #ffffff;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+*/
+
+
+/* ── Dark ───────────────────────────────────────────────────────────── */
+/* Both selectors, because the two frontends mark dark mode differently:
+ * the admin writes data-theme-mode on <html>, Tailwind writes .dark. */
+/* This app's stylesheet sets none of these tokens here, so there is
+ * nothing to copy. Write the ones you want, on html[data-theme][data-theme-mode="dark"],
+html[data-theme].dark. */
+
+
+/* ── Anything else ──────────────────────────────────────────────────── */
+/* Ordinary CSS from here down. It loads after Tailwind's layers, so a plain
+ * selector here beats a utility class without !important. */

@@ -1,0 +1,103 @@
+package config
+
+import (
+	"os"
+	"testing"
+)
+
+// Load validates unrelated required settings; satisfy them so these tests
+// exercise the module flags and nothing else.
+func init() {
+	os.Setenv("JWT_SECRET", "test-secret-key-for-module-flag-tests-only")
+	// Load refuses to start in production without real secrets, and production
+	// is the default.
+	os.Setenv("APP_ENV", "development")
+}
+
+// defaultOff names the modules that ship disabled.
+//
+// SSO is the only one, and it is here rather than absent so that adding
+// another is a deliberate edit to this list. Its cost is four public
+// endpoints, one of which parses a SAML assertion through a package with a
+// called advisory and no fixed version, and most projects never configure an
+// identity provider.
+var defaultOff = map[string]bool{"sso": true}
+
+// Default ON: an existing app upgrading must behave exactly as before.
+func TestModules_DefaultOn(t *testing.T) {
+	for _, k := range []string{"MODULE_AI", "MODULE_JOBS", "MODULE_BACKUP", "MODULE_SSO"} {
+		os.Unsetenv(k)
+	}
+	cfg, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, on := range cfg.Modules.Map() {
+		if defaultOff[name] {
+			if on {
+				t.Errorf("module %q defaulted to ON and is meant to ship disabled", name)
+			}
+			continue
+		}
+		if !on {
+			t.Errorf("module %q defaulted to OFF; upgrading an app must not disable features", name)
+		}
+	}
+}
+
+// Setting a flag false turns exactly that module off.
+func TestModules_DisableOne(t *testing.T) {
+	os.Setenv("MODULE_AI", "false")
+	defer os.Unsetenv("MODULE_AI")
+
+	cfg, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Modules.AI {
+		t.Error("MODULE_AI=false did not disable the AI module")
+	}
+	if !cfg.Modules.Jobs {
+		t.Error("disabling AI must not affect other modules")
+	}
+	if cfg.Modules.Enabled("ai") {
+		t.Error("Enabled(\"ai\") disagrees with the struct field")
+	}
+	if !cfg.Modules.Enabled("jobs") {
+		t.Error("Enabled(\"jobs\") disagrees with the struct field")
+	}
+}
+
+// An unknown name must report false — a typo should hide a feature, never
+// silently expose one.
+func TestModules_UnknownNameIsOff(t *testing.T) {
+	cfg, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Modules.Enabled("not-a-module") {
+		t.Error("unknown module name reported enabled")
+	}
+}
+
+// Map must cover every field, or the admin can't hide a nav entry it should.
+func TestModules_MapCoversAllFields(t *testing.T) {
+	cfg, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := cfg.Modules.Map()
+	if len(m) != 12 {
+		t.Errorf("Map has %d entries; keep it in step with the ModuleFlags fields", len(m))
+	}
+	// Enabled must agree with Map, rather than be true: a module that ships
+	// disabled is false in both, and the thing that would break the admin is
+	// the two disagreeing.
+	for name, on := range m {
+		if cfg.Modules.Enabled(name) != on {
+			t.Errorf("Map says %q is %v and Enabled() says %v; the admin hides nav "+
+				"from Map and the API gates on Enabled, so the two disagreeing shows "+
+				"a screen whose routes are not mounted", name, on, cfg.Modules.Enabled(name))
+		}
+	}
+}

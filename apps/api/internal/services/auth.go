@@ -1,0 +1,531 @@
+package services
+
+import (
+	"context"
+	"crypto/rand"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+	"gorm.io/gorm"
+
+	"store2/apps/api/internal/ids"
+	"store2/apps/api/internal/models"
+)
+
+// AuthService handles JWT token operations.
+type AuthService struct {
+	Secret        string
+	AccessExpiry  time.Duration
+	RefreshExpiry time.Duration
+
+	// Keys decides how tokens are signed and verified. Nil falls back to
+	// Secret as an HS256 key, which is what a project that has never
+	// configured anything else gets, and what the test helpers construct.
+	Keys *SigningKeys
+
+	// DB is where sessions live. When it is set, an access token is refused as
+	// soon as its session is revoked, rather than when the token expires.
+	DB *gorm.DB
+
+	// RefreshCookiePath scopes the refresh cookie to the auth routes. routes.Setup
+	// builds it from APIVersion.
+	//
+	// A field rather than only the package variable, so two API instances in one
+	// process can mount their auth routes at different versions, and a test can
+	// set it without restoring it for the test beside it. Empty falls back to
+	// the package-level RefreshCookiePath.
+	RefreshCookiePath string
+
+	// OnSessionsRevoked runs after this service revokes a user's sessions, with
+	// that user's id. routes.Setup registers the realtime hub's DisconnectUser
+	// against the database handle instead; this field is for code holding an
+	// AuthService and nothing else. Nil falls back to what is registered for
+	// DB, then to the package-level OnSessionsRevoked.
+	OnSessionsRevoked func(userID string)
+}
+
+// sessions is this service's view of the session store: its own database handle
+// and its own revocation hook.
+func (s *AuthService) sessions() Sessions {
+	return Sessions{DB: s.DB, OnRevoked: s.OnSessionsRevoked}
+}
+
+// RevokeSession, RevokeAllSessions and RevokeSessionByToken are the session
+// package functions bound to this service, so a caller that holds an
+// AuthService does not have to pass a database handle and does not share the
+// process-wide revocation hook.
+func (s *AuthService) RevokeSession(userID, sessionID string) error {
+	return s.sessions().Revoke(userID, sessionID)
+}
+
+func (s *AuthService) RevokeAllSessions(userID, exceptToken string) error {
+	return s.sessions().RevokeAll(userID, exceptToken)
+}
+
+func (s *AuthService) RevokeSessionByToken(refreshToken string) error {
+	return s.sessions().RevokeByToken(refreshToken)
+}
+
+// TokenPair holds access and refresh tokens.
+//
+// RefreshToken is omitempty because a browser does not receive it. See
+// ForClient.
+type TokenPair struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token,omitempty"`
+	ExpiresAt    int64  `json:"expires_at"`
+}
+
+// ForClient is the pair as this particular client should receive it.
+//
+// Review 2.10: the refresh token went into the JSON body for everybody, next
+// to the HttpOnly cookie carrying the same value, while the documentation said
+// scripts never see it. For a browser those two statements cannot both be
+// true, and the cookie is the one worth keeping: the point of HttpOnly is that
+// a script cannot lift the long-lived credential, and handing the same string
+// back in a readable body gives it away.
+//
+// A native client is the reason the field exists, and it is not optional for
+// them. The Expo app puts the token in SecureStore and the desktop app in the
+// OS keychain, both of which are better than a cookie, and neither has a
+// cookie jar worth depending on. The desktop app is the case that rules out
+// sniffing headers alone: it runs in a webview, so it looks exactly like a
+// browser.
+//
+// So a native client says so, with X-Grit-Client: native. A browser does not
+// send it, and the generated Expo and desktop clients do.
+//
+// The heuristic underneath is for clients that predate the header: a request
+// with no browser signal at all (no Sec-Fetch-Site, no Origin) still gets the
+// token, so a CLI, a script or somebody's own native client keeps working
+// across the upgrade. A browser always sends at least one of those, so it
+// always loses the token unless it claims to be native, and a script that can
+// set that header on a login request already has the password.
+func (t TokenPair) ForClient(c *gin.Context) TokenPair {
+	if WantsTokenInBody(c) {
+		return t
+	}
+	t.RefreshToken = ""
+	return t
+}
+
+// NativeClientHeader is how a client without a usable cookie jar says so.
+const NativeClientHeader = "X-Grit-Client"
+
+// WantsTokenInBody is whether this client should be handed the refresh token
+// in the response body rather than relying on the cookie. See ForClient.
+func WantsTokenInBody(c *gin.Context) bool {
+	if strings.EqualFold(c.GetHeader(NativeClientHeader), "native") {
+		return true
+	}
+	return !RequestIsBrowser(c)
+}
+
+// RequestIsBrowser is whether this request carries a header only a browser
+// sends. Every current browser sends Sec-Fetch-Site on fetch and XHR, and a
+// cross-origin or CORS request carries Origin.
+func RequestIsBrowser(c *gin.Context) bool {
+	for _, h := range []string{"Sec-Fetch-Site", "Sec-Fetch-Mode", "Sec-Fetch-Dest", "Origin"} {
+		if c.GetHeader(h) != "" {
+			return true
+		}
+	}
+	return false
+}
+
+// Token types. An access token lives for minutes and is what every route
+// accepts; a refresh token lives for days and is only exchanged at /auth/refresh.
+const (
+	TokenTypeAccess  = "access"
+	TokenTypeRefresh = "refresh"
+)
+
+// ErrWrongTokenType is returned when a token is presented where the other kind
+// belongs.
+var ErrWrongTokenType = errors.New("wrong token type")
+
+// Claims represents JWT claims.
+type Claims struct {
+	UserID string `json:"user_id"`
+	Email  string `json:"email"`
+	Role   string `json:"role"`
+	// TokenType is "access" or "refresh". The two used to be the same shape, so
+	// a seven-day refresh token was accepted as a bearer token everywhere.
+	TokenType string `json:"typ,omitempty"`
+	// SessionID is the sessions row both tokens of a pair belong to, so an access
+	// token can be refused the moment that session is revoked.
+	SessionID string `json:"sid,omitempty"`
+	jwt.RegisteredClaims
+}
+
+// GenerateTokenPair creates a new access + refresh token pair for a new session.
+// Record it with CreateSession: an access token whose session does not exist is
+// refused.
+func (s *AuthService) GenerateTokenPair(userID string, email, role string) (*TokenPair, error) {
+	return s.GenerateSessionTokenPair(userID, email, role, ids.New())
+}
+
+// GenerateSessionTokenPair creates a token pair for an existing session. Refresh
+// uses it, so the rotated tokens still name the session row they belong to.
+func (s *AuthService) GenerateSessionTokenPair(userID, email, role, sessionID string) (*TokenPair, error) {
+	accessToken, expiresAt, err := s.generateToken(userID, email, role, TokenTypeAccess, sessionID, s.AccessExpiry)
+	if err != nil {
+		return nil, fmt.Errorf("generating access token: %w", err)
+	}
+
+	refreshToken, _, err := s.generateToken(userID, email, role, TokenTypeRefresh, sessionID, s.RefreshExpiry)
+	if err != nil {
+		return nil, fmt.Errorf("generating refresh token: %w", err)
+	}
+
+	return &TokenPair{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+		ExpiresAt:    expiresAt,
+	}, nil
+}
+
+// ValidateAccessToken accepts an access token whose session is still live. It is
+// what the auth middleware and the WebSocket handshake call.
+func (s *AuthService) ValidateAccessToken(tokenString string) (*Claims, error) {
+	claims, err := s.ValidateToken(tokenString)
+	if err != nil {
+		return nil, err
+	}
+	if claims.TokenType != TokenTypeAccess {
+		return nil, ErrWrongTokenType
+	}
+	if s.DB != nil && (claims.SessionID == "" || !SessionLive(s.DB, claims.SessionID)) {
+		return nil, ErrSessionInvalid
+	}
+	return claims, nil
+}
+
+// ValidateRefreshToken accepts a refresh token. One minted before token types has
+// none, and is accepted: the session row still has to exist and rotate, which is
+// the check that matters, and it is how existing sessions survive the upgrade.
+func (s *AuthService) ValidateRefreshToken(tokenString string) (*Claims, error) {
+	claims, err := s.ValidateToken(tokenString)
+	if err != nil {
+		return nil, err
+	}
+	if claims.TokenType != TokenTypeRefresh && claims.TokenType != "" {
+		return nil, ErrWrongTokenType
+	}
+	return claims, nil
+}
+
+// ValidateToken checks a token's signature and expiry, and nothing about what
+// kind of token it is. Prefer ValidateAccessToken or ValidateRefreshToken.
+func (s *AuthService) ValidateToken(tokenString string) (*Claims, error) {
+	keys := s.keys()
+
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		// The method is pinned by WithValidMethods below, which is what closes
+		// algorithm confusion: without it, an attacker signs a token with the
+		// published public key as an HMAC secret and a parser that trusts the
+		// header's alg accepts it.
+		if token.Method.Alg() != keys.Method().Alg() {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		kid, _ := token.Header["kid"].(string)
+		return keys.VerifyKey(kid)
+	}, jwt.WithValidMethods(keys.ValidMethods()), jwt.WithExpirationRequired())
+
+	if err != nil {
+		return nil, fmt.Errorf("parsing token: %w", err)
+	}
+
+	claims, ok := token.Claims.(*Claims)
+	if !ok || !token.Valid {
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	// Issuer and audience, checked only when this deployment declares them and
+	// only when the token carries them.
+	//
+	// Tolerating a missing claim is what lets these be switched on without
+	// signing everybody out: tokens minted before the change have neither, and
+	// they age out within one refresh lifetime. A token that does carry one
+	// must match, which is the case that matters, because it is how a token
+	// minted for staging is refused by production.
+	if keys.Issuer != "" && claims.Issuer != "" && claims.Issuer != keys.Issuer {
+		return nil, fmt.Errorf("token issued by %q, not %q", claims.Issuer, keys.Issuer)
+	}
+	if keys.Audience != "" && len(claims.Audience) > 0 && !hasAudience(claims.Audience, keys.Audience) {
+		return nil, fmt.Errorf("token is not addressed to %q", keys.Audience)
+	}
+
+	return claims, nil
+}
+
+// hasAudience reports whether want is among the token's audiences. The claim is
+// a list because a token may legitimately address several services at once.
+func hasAudience(audiences jwt.ClaimStrings, want string) bool {
+	for _, a := range audiences {
+		if a == want {
+			return true
+		}
+	}
+	return false
+}
+
+// keys is the signing configuration, falling back to Secret as an HS256 key.
+//
+// The fallback is what keeps a zero-value AuthService working: the test
+// helpers build one with a Secret and nothing else, and so does any project
+// that has never configured signing.
+func (s *AuthService) keys() *SigningKeys {
+	if s.Keys != nil {
+		return s.Keys
+	}
+	return &SigningKeys{Algorithm: "HS256", secret: []byte(s.Secret)}
+}
+
+// GenerateResetToken creates a random hex token for password resets.
+func GenerateResetToken() (string, error) {
+	bytes := make([]byte, 32)
+	if _, err := rand.Read(bytes); err != nil {
+		return "", fmt.Errorf("generating reset token: %w", err)
+	}
+	return hex.EncodeToString(bytes), nil
+}
+
+func (s *AuthService) generateToken(userID, email, role, tokenType, sessionID string, expiry time.Duration) (string, int64, error) {
+	expiresAt := time.Now().Add(expiry)
+
+	// Every token gets a unique jti. Without it, two tokens minted for the same
+	// user in the same second are byte-identical — same claims, same
+	// second-resolution exp, same key — so two different devices would share one
+	// refresh token and could not be told apart or revoked independently.
+	jti, err := GenerateResetToken()
+	if err != nil {
+		return "", 0, fmt.Errorf("generating token id: %w", err)
+	}
+
+	keys := s.keys()
+
+	registered := jwt.RegisteredClaims{
+		ID:        jti,
+		ExpiresAt: jwt.NewNumericDate(expiresAt),
+		IssuedAt:  jwt.NewNumericDate(time.Now()),
+	}
+	// Who minted this and who it is for. Written only when configured, because
+	// a claim nobody checks is noise, and checked only when written, so turning
+	// them on does not invalidate tokens already in circulation.
+	if keys.Issuer != "" {
+		registered.Issuer = keys.Issuer
+	}
+	if keys.Audience != "" {
+		registered.Audience = jwt.ClaimStrings{keys.Audience}
+	}
+
+	claims := &Claims{
+		UserID:           userID,
+		Email:            email,
+		Role:             role,
+		TokenType:        tokenType,
+		SessionID:        sessionID,
+		RegisteredClaims: registered,
+	}
+
+	token := jwt.NewWithClaims(keys.Method(), claims)
+	// The key id, so a verifier holding several published keys knows which one
+	// to check against. Without it, rotation means trying every key in turn and
+	// a failure is indistinguishable from a forged token.
+	if kid := keys.CurrentKID(); kid != "" {
+		token.Header["kid"] = kid
+	}
+	tokenString, err := token.SignedString(keys.SignKey())
+	if err != nil {
+		return "", 0, err
+	}
+
+	return tokenString, expiresAt.Unix(), nil
+}
+
+// RefreshCookiePath scopes the refresh cookie to the auth routes, so it is not
+// sent on every request. It has to match where refresh and logout are mounted:
+// written as /api/auth while they lived under /api/v1/auth, the browser never
+// sent it to either, so refreshing from a cookie always failed and logout never
+// revoked the session.
+//
+// This is the fallback. AuthService.RefreshCookiePath is what routes.Setup
+// fills in and it wins; this variable is what a service built without one uses,
+// which is how a project written before v3.479.0 worked.
+var RefreshCookiePath = "/api/v1/auth"
+
+// refreshCookiePath is where this service writes the refresh cookie.
+func (s *AuthService) refreshCookiePath() string {
+	if s.RefreshCookiePath != "" {
+		return s.RefreshCookiePath
+	}
+	return RefreshCookiePath
+}
+
+// legacyRefreshCookiePath is where projects before v3.244.0 set the cookie.
+const legacyRefreshCookiePath = "/api/auth"
+
+// SetAuthCookies writes the token pair as HttpOnly cookies so the browser
+// holds the credentials out of JavaScript's reach. The native mobile and
+// desktop clients keep using the Authorization: Bearer header, which is
+// why the JSON body still includes the tokens — both paths work.
+//
+// Cookie names: grit_access (sent on every request) and grit_refresh
+// (scoped to RefreshCookiePath so it isn't sent everywhere). Both are HttpOnly,
+// Secure when on HTTPS, and SameSite=Lax so CSRF surface is limited to
+// top-level navigations. The CSRF middleware adds defence in depth.
+//
+// Reference: docs/backend/authentication §"Token Storage on the Frontend".
+func (s *AuthService) SetAuthCookies(c *gin.Context, pair *TokenPair) {
+	secure := isRequestHTTPS(c)
+	accessSeconds := int(s.AccessExpiry / time.Second)
+	refreshSeconds := int(s.RefreshExpiry / time.Second)
+
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("grit_access", pair.AccessToken, accessSeconds, "/", "", secure, true)
+	c.SetCookie("grit_refresh", pair.RefreshToken, refreshSeconds, s.refreshCookiePath(), "", secure, true)
+	// grit_signed_in carries no secret. It lives as long as the session so the
+	// web app's middleware can tell a signed-in browser from a stranger on the
+	// same host: grit_access expires with its token and grit_refresh is scoped
+	// to the auth routes, so neither can be seen on an admin page.
+	c.SetCookie("grit_signed_in", "1", refreshSeconds, "/", "", secure, true)
+	// A cookie at the old path is never sent anywhere useful; clear it.
+	c.SetCookie("grit_refresh", "", -1, legacyRefreshCookiePath, "", secure, true)
+}
+
+// ClearAuthCookies expires both auth cookies. Call this from the Logout
+// handler so a stolen browser session is cut off as soon as the user
+// signs out.
+func (s *AuthService) ClearAuthCookies(c *gin.Context) {
+	secure := isRequestHTTPS(c)
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("grit_access", "", -1, "/", "", secure, true)
+	c.SetCookie("grit_signed_in", "", -1, "/", "", secure, true)
+	c.SetCookie("grit_refresh", "", -1, s.refreshCookiePath(), "", secure, true)
+	c.SetCookie("grit_refresh", "", -1, legacyRefreshCookiePath, "", secure, true)
+}
+
+// The reads and writes behind signing in, so the handler runs none of its own.
+//
+// They live here rather than in internal/handlers/auth.go because each is a
+// decision about data rather than about HTTP: which columns of a two-factor row
+// are safe to load, what an unknown address answers, when a failure count is
+// cleared. Generated resources were moved onto their services in v3.224 and the
+// framework's own handlers were not, which left the first file a developer
+// opens breaking the rule the generator enforces.
+
+// EnabledTwoFactor returns the account's second factor, or an error when it has
+// none to ask for.
+//
+// Only the id and the method are read. The secret is encrypted when
+// FIELD_ENCRYPTION_KEY is set, and loading it here would let a secret that
+// cannot be decrypted read as "this account has no second factor", which turns
+// a key problem into a silently disabled second factor.
+func (s *AuthService) EnabledTwoFactor(ctx context.Context, userID string) (*models.TwoFactorConfig, error) {
+	var cfg models.TwoFactorConfig
+	if err := s.DB.WithContext(ctx).Select("id", "method").
+		Where("user_id = ? AND enabled = ?", userID, true).First(&cfg).Error; err != nil {
+		return nil, err
+	}
+	return &cfg, nil
+}
+
+// StartPendingTOTP records a half-completed sign-in: the password is right and
+// the second factor is still outstanding.
+func (s *AuthService) StartPendingTOTP(ctx context.Context, pending *models.TOTPPendingToken) error {
+	return s.DB.WithContext(ctx).Create(pending).Error
+}
+
+// UserByEmail is the sign-in lookup.
+//
+// The caller spends a bcrypt comparison whether or not this finds anything, so
+// an address with no account takes the same time as one with a wrong password.
+// Returning the error rather than a nil user keeps that decision at the call
+// site, where the timing is managed.
+func (s *AuthService) UserByEmail(ctx context.Context, email string) (*models.User, error) {
+	var user models.User
+	if err := s.DB.WithContext(ctx).Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+// UserByID reloads the account behind a refresh token.
+//
+// A refresh token is otherwise valid for its whole lifetime even after the
+// account is deleted or deactivated. Re-reading the row closes that window and
+// lets a role change take effect on the next refresh, which is partial
+// revocation without a server-side token store.
+func (s *AuthService) UserByID(ctx context.Context, id string) (*models.User, error) {
+	var user models.User
+	if err := s.DB.WithContext(ctx).First(&user, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+// ClearLoginFailures resets the lockout counters.
+//
+// Called when a sign-in finishes, never when the password alone is accepted:
+// clearing it at the password with a second factor still ahead handed a fresh
+// set of guesses at the code to anybody who knew the password and simply signed
+// in again.
+func (s *AuthService) ClearLoginFailures(ctx context.Context, userID string) error {
+	return s.DB.WithContext(ctx).Model(&models.User{}).Where("id = ?", userID).
+		Updates(map[string]interface{}{"failed_login_count": 0, "locked_until": nil}).Error
+}
+
+// CountLoginFailure counts one wrong credential against an account and returns
+// the count as the database now holds it.
+//
+// The increment is in SQL, so parallel attempts cannot each read the same number
+// and overwrite one another, and the count is read back for the same reason: the
+// one the caller arrived with is already stale, and it is what a lockout decision
+// is made from. Both the password step and the second factor had their own copy
+// of this, written months apart.
+func (s *AuthService) CountLoginFailure(ctx context.Context, userID string) (int, error) {
+	if err := s.DB.WithContext(ctx).Model(&models.User{}).Where("id = ?", userID).
+		UpdateColumn("failed_login_count", gorm.Expr("failed_login_count + 1")).Error; err != nil {
+		return 0, err
+	}
+	var fresh models.User
+	if err := s.DB.WithContext(ctx).Select("id", "failed_login_count").
+		First(&fresh, "id = ?", userID).Error; err != nil {
+		return 0, err
+	}
+	return fresh.FailedLoginCount, nil
+}
+
+// LockAccount locks an account until until, and clears the counter and the
+// pending two-factor tokens that are now useless to it.
+//
+// The pending tokens go because each one is a set of guesses at a code: leaving
+// them is the difference between locking an account and pausing it.
+func (s *AuthService) LockAccount(ctx context.Context, userID string, until time.Time) error {
+	if err := s.DB.WithContext(ctx).Model(&models.User{}).Where("id = ?", userID).
+		Updates(map[string]interface{}{"locked_until": until, "failed_login_count": 0}).Error; err != nil {
+		return err
+	}
+	return s.DB.WithContext(ctx).Where("user_id = ?", userID).Delete(&models.TOTPPendingToken{}).Error
+}
+
+// isRequestHTTPS returns true when the request is on HTTPS (directly or
+// via a trusted proxy that set X-Forwarded-Proto=https). We use it to flip
+// the Secure cookie flag so the browser refuses to send these cookies
+// over an unencrypted hop.
+func isRequestHTTPS(c *gin.Context) bool {
+	if c.Request.TLS != nil {
+		return true
+	}
+	if strings.EqualFold(c.GetHeader("X-Forwarded-Proto"), "https") {
+		return true
+	}
+	return false
+}

@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════
+   Grit Desktop — theme tokens (GRIT_STYLE_GUIDE §17)
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Light mode — rarely used on desktop but supported */
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F4F4F5;
+  --bg-elevated: #FFFFFF;
+  --bg-hover: #F4F4F5;
+
+  --text-foreground: #18181B;
+  --text-secondary: #52525B;
+  --text-muted: #71717A;
+
+  --border: #E4E4E7;
+  --border-subtle: #F4F4F5;
+
+  --accent: #6C5CE7;
+  --accent-hover: #5B4BD6;
+  --accent-fg: #FFFFFF;
+}
+
+.dark {
+  /* Dark mode — default on desktop */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1a1a24;
+  --bg-elevated: #22222e;
+  --bg-hover: #2a2a38;
+
+  --text-foreground: #e8e8f0;
+  --text-secondary: #9090a8;
+  /* 4.9:1 on bg-primary. The previous #606078 measured 3.1:1 and failed AA. */
+  --text-muted: #7c7c96;
+
+  --border: #2a2a3a;
+  --border-subtle: #1a1a24;
+
+  --accent: #6c5ce7;
+  --accent-hover: #7c6cf7;
+  --accent-fg: #ffffff;
+}
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  /* Driven by the active theme (atlas: Inter, aurora: Geist, pulse: Onest).
+     Fonts are bundled via @fontsource — see src/lib/fonts.ts. */
+  font-family: var(--font-ui), system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* Desktop window is already fixed; no page scroll */
+}
+
+/* Drag region for Wails frameless window */
+.drag-region {
+  --wails-draggable: drag;
+}
+
+.no-drag {
+  --wails-draggable: no-drag;
+}
+
+/* Custom scrollbar — desktop users see scrollbars more */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Focus ring matches GRIT_STYLE_GUIDE */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

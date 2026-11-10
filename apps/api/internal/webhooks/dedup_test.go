@@ -1,0 +1,200 @@
+package webhooks
+
+import (
+	"testing"
+
+	"github.com/glebarez/sqlite"
+	"gorm.io/datatypes"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+
+	"store2/apps/api/internal/models"
+)
+
+func newDedupDB(t *testing.T) *gorm.DB {
+	t.Helper()
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	sqlDB, err := db.DB()
+	if err != nil {
+		t.Fatalf("db handle: %v", err)
+	}
+	sqlDB.SetMaxOpenConns(1)
+	if err := db.AutoMigrate(&models.WebhookEvent{}); err != nil {
+		t.Fatalf("migrate: %v", err)
+	}
+	return db
+}
+
+func ref(s string) *string { return &s }
+
+func event(provider, external string) models.WebhookEvent {
+	e := models.WebhookEvent{
+		Provider:  provider,
+		EventType: "invoice.paid",
+		Payload:   datatypes.JSON(`{"ok":true}`),
+		Status:    "pending",
+	}
+	if external != "" {
+		e.ExternalID = ref(external)
+	}
+	return e
+}
+
+// The whole point: a provider retrying the same event must not produce a
+// second row, because a second row means the handler runs a second time and
+// the payment is recorded twice.
+func TestDuplicateExternalIDIsRejected(t *testing.T) {
+	db := newDedupDB(t)
+
+	first := event("stripe", "evt_123")
+	if err := db.Create(&first).Error; err != nil {
+		t.Fatalf("first delivery: %v", err)
+	}
+
+	second := event("stripe", "evt_123")
+	err := db.Create(&second).Error
+	if err == nil {
+		t.Fatal("a repeated delivery of evt_123 was accepted; the handler would run twice")
+	}
+	if !IsDuplicateError(err) {
+		t.Errorf("error = %v; IsDuplicateError did not recognise it, so the handler "+
+			"would answer 500 instead of skipping the duplicate", err)
+	}
+
+	var n int64
+	db.Model(&models.WebhookEvent{}).Count(&n)
+	if n != 1 {
+		t.Errorf("rows = %d, want 1", n)
+	}
+}
+
+// The same event id from a different provider is a different event. Deduping
+// on the id alone would drop it.
+func TestSameIDFromDifferentProvidersBothStored(t *testing.T) {
+	db := newDedupDB(t)
+
+	for _, p := range []string{"stripe", "paystack"} {
+		e := event(p, "evt_123")
+		if err := db.Create(&e).Error; err != nil {
+			t.Fatalf("%s: %v", p, err)
+		}
+	}
+
+	var n int64
+	db.Model(&models.WebhookEvent{}).Count(&n)
+	if n != 2 {
+		t.Errorf("rows = %d, want 2: two providers sharing an event id collided", n)
+	}
+}
+
+// A provider that supplies no event id cannot be deduplicated, so each
+// delivery is its own row. Storing "" instead of NULL would make the second
+// one look like a duplicate of the first and silently discard it.
+func TestEventsWithoutAnExternalIDAreAllKept(t *testing.T) {
+	db := newDedupDB(t)
+
+	for i := 0; i < 3; i++ {
+		e := event("partner", "")
+		if err := db.Create(&e).Error; err != nil {
+			t.Fatalf("delivery %d: %v", i, err)
+		}
+	}
+
+	var n int64
+	db.Model(&models.WebhookEvent{}).Count(&n)
+	if n != 3 {
+		t.Errorf("rows = %d, want 3: anonymous events collided on the unique index", n)
+	}
+}
+
+// The constraint has to be in the database, not in a check the handler does
+// first. Two deliveries arriving at once both pass a SELECT and only the
+// index stops the second INSERT.
+func TestTheConstraintIsInTheDatabase(t *testing.T) {
+	db := newDedupDB(t)
+
+	indexes, err := db.Migrator().GetIndexes(&models.WebhookEvent{})
+	if err != nil {
+		t.Fatalf("GetIndexes: %v", err)
+	}
+	for _, idx := range indexes {
+		unique, ok := idx.Unique()
+		if !ok || !unique {
+			continue
+		}
+		cols := idx.Columns()
+		if len(cols) == 3 && cols[0] == "provider" && cols[1] == "tenant" && cols[2] == "external_id" {
+			return
+		}
+	}
+	t.Error("no unique index on (provider, tenant, external_id); deduplication is " +
+		"decoration, and without the tenant two organizations on one gateway " +
+		"cannot both receive the same reference (grit#138)")
+}
+
+// Two organizations on the same gateway can each receive a delivery with the
+// reference "INV-001", because their accounts are their own. The key used to
+// be (provider, external_id), so the second was refused as a duplicate it is
+// not, and a payment went unrecorded. See grit#138.
+func TestTwoTenantsCanReceiveTheSameReference(t *testing.T) {
+	db := newDedupDB(t)
+
+	ref := "INV-001"
+	for _, tenant := range []string{"org-a", "org-b"} {
+		event := models.WebhookEvent{
+			Provider:   "dgateway",
+			Tenant:     tenant,
+			EventType:  "payment.completed",
+			ExternalID: &ref,
+			Payload:    datatypes.JSON("{}"),
+			Status:     "pending",
+		}
+		if err := db.Create(&event).Error; err != nil {
+			t.Fatalf("%s receiving %s: %v, so one organization's delivery blocks "+
+				"another's (grit#138)", tenant, ref, err)
+		}
+	}
+
+	// And the same organization still cannot receive it twice.
+	again := models.WebhookEvent{
+		Provider:   "dgateway",
+		Tenant:     "org-a",
+		EventType:  "payment.completed",
+		ExternalID: &ref,
+		Payload:    datatypes.JSON("{}"),
+		Status:     "pending",
+	}
+	if err := db.Create(&again).Error; err == nil {
+		t.Error("one organization received the same event twice, so a provider's " +
+			"retry runs the handler again")
+	}
+}
+
+// A provider with no tenant segment is unaffected: Tenant is "" for every
+// delivery, so the key behaves as it always did.
+func TestAProviderWithNoTenantStillDeduplicates(t *testing.T) {
+	db := newDedupDB(t)
+
+	ref := "evt_123"
+	first := models.WebhookEvent{
+		Provider:   "stripe",
+		EventType:  "invoice.paid",
+		ExternalID: &ref,
+		Payload:    datatypes.JSON("{}"),
+		Status:     "pending",
+	}
+	if err := db.Create(&first).Error; err != nil {
+		t.Fatalf("first delivery: %v", err)
+	}
+	second := first
+	second.ID = ""
+	if err := db.Create(&second).Error; err == nil {
+		t.Error("a Stripe retry was stored twice; adding the tenant to the key " +
+			"must not weaken a provider that has no tenant")
+	}
+}

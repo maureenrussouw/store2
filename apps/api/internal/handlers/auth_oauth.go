@@ -1,0 +1,385 @@
+package handlers
+
+import (
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"net/url"
+	"store2/apps/api/internal/models"
+	"store2/apps/api/internal/respond"
+	"store2/apps/api/internal/services"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/markbates/goth/gothic"
+	"gorm.io/gorm"
+)
+
+// Social login. The provider registry lives in services; this is the two
+// endpoints the browser actually visits.
+
+// users is the service the account writes below go through. Built per request,
+// like every other accessor in this package, so routes.go did not have to change.
+//
+// The reads go through AuthService instead, which is where signing in already gets
+// them: UserByEmail answers an unknown address the same way whatever the caller,
+// which is the property this endpoint shares with the password step.
+func (h *AuthHandler) users() *services.UserService {
+	return &services.UserService{DB: h.DB}
+}
+
+// nativeRedirectKey is where the app's deep link is kept for the length of the
+// handshake. The provider sends the browser to OUR callback, so the only way
+// the callback knows a native client started this is to have been told.
+const nativeRedirectKey = "grit_native_redirect"
+
+// OAuthBegin redirects the user to the OAuth provider's consent screen.
+//
+// redirect_uri is for a native client: a mobile app that cannot use the
+// HttpOnly cookies the web callback sets. It is checked against an allowlist
+// here, at the start, because a callback that redirects wherever the query
+// string says is an open redirect, and one carrying a sign-in code is an
+// account takeover (grit#174).
+//
+// Refused rather than ignored. Ignoring it is what this used to do, and the
+// result was an app whose Google button opened a web page and never came back,
+// with nothing anywhere saying why.
+func (h *AuthHandler) OAuthBegin(c *gin.Context) {
+	provider := c.Param("provider")
+
+	if redirectURI := c.Query("redirect_uri"); redirectURI != "" {
+		if !services.NativeRedirectAllowed(redirectURI) {
+			log.Printf("oauth: refused redirect_uri %q, which is not in OAUTH_NATIVE_REDIRECTS", redirectURI)
+			respond.Fail(c, respond.CodeValidationError,
+				"That redirect_uri is not allowed. Add it to OAUTH_NATIVE_REDIRECTS.")
+			return
+		}
+		if err := gothic.StoreInSession(nativeRedirectKey, redirectURI, c.Request, c.Writer); err != nil {
+			log.Printf("oauth: storing the native redirect: %v", err)
+			respond.WriteError(c, err, "Could not start sign-in.")
+			return
+		}
+	}
+
+	// Gothic reads provider from query string, not URL params
+	q := c.Request.URL.Query()
+	q.Set("provider", provider)
+	c.Request.URL.RawQuery = q.Encode()
+
+	gothic.BeginAuthHandler(c.Writer, c.Request)
+}
+
+// nativeRedirect is the deep link this handshake started from, or "" for an
+// ordinary browser sign-in.
+//
+// An error from the session is "no native client", not a failure: the common
+// case is a web login, where nothing was ever stored.
+func (h *AuthHandler) nativeRedirect(c *gin.Context) string {
+	uri, err := gothic.GetFromSession(nativeRedirectKey, c.Request)
+	if err != nil || uri == "" {
+		return ""
+	}
+	// Checked again on the way out. The value came back through a cookie, and
+	// a check at the start is not a check on what returns.
+	if !services.NativeRedirectAllowed(uri) {
+		log.Printf("oauth: the session's redirect_uri %q is no longer allowed", uri)
+		return ""
+	}
+	return uri
+}
+
+// failNative sends a native client back to its app with a message, because it
+// cannot read an HTML error page or follow a redirect to the web login.
+func (h *AuthHandler) failNative(c *gin.Context, redirectURI, message string) {
+	target, err := services.NativeRedirectWithError(redirectURI, message)
+	if err != nil {
+		respond.Fail(c, respond.CodeValidationError, message)
+		return
+	}
+	c.Redirect(http.StatusTemporaryRedirect, target)
+}
+
+// providerVerifiedTheEmail is whether the provider says it owns this address.
+//
+// An address a provider has not verified is an address anybody can claim, and
+// claiming one is enough to be matched to somebody else's account by email.
+// goth puts the provider's own userinfo response in RawData, which is where
+// the answer is, and review 2.9 found nothing reading it.
+//
+// Per provider, because they do not agree on how to say it:
+//
+//   - Google returns email_verified, and older responses verified_email. Both
+//     arrive as a bool through encoding/json, but a provider that hands back
+//     "true" as a string is one string compare away, so both are handled.
+//   - GitHub does not say, because it does not need to: the public profile
+//     email must be a verified address, and when that is empty goth falls back
+//     to /user/emails and takes the one that is primary AND verified. There is
+//     no path through goth's github provider that yields an unverified
+//     address.
+//   - Anything else: not asserted. A provider added here without a rule is
+//     treated as unverified rather than trusted by default, so adding one
+//     cannot quietly open the hole this closed.
+func providerVerifiedTheEmail(provider string, raw map[string]interface{}) bool {
+	if provider == "github" {
+		return true
+	}
+	for _, key := range []string{"email_verified", "verified_email"} {
+		switch v := raw[key].(type) {
+		case bool:
+			return v
+		case string:
+			return v == "true"
+		}
+	}
+	return false
+}
+
+// OAuthCallback completes the OAuth flow, finds or creates the user, and
+// redirects: a browser with HttpOnly cookies set, a native client with a
+// one-time code it exchanges over POST.
+func (h *AuthHandler) OAuthCallback(c *gin.Context) {
+	provider := c.Param("provider")
+
+	// Read before anything can fail, because every failure path below needs to
+	// know whether to redirect to the web login or back into the app.
+	nativeTo := h.nativeRedirect(c)
+
+	q := c.Request.URL.Query()
+	q.Set("provider", provider)
+	c.Request.URL.RawQuery = q.Encode()
+
+	gothUser, err := gothic.CompleteUserAuth(c.Writer, c.Request)
+	if err != nil {
+		log.Printf("OAuth callback error: %v", err)
+		redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Authentication failed. Please try again."))
+		c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+		return
+	}
+
+	// A provider that shares no address cannot be matched to an account.
+	if gothUser.Email == "" {
+		redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Your provider did not share an email address."))
+		c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+		return
+	}
+
+	// Whether the provider will stand behind the address, which decides what
+	// this callback is allowed to do with it. See providerVerifiedTheEmail.
+	emailVerified := providerVerifiedTheEmail(provider, gothUser.RawData)
+
+	// Find or create user by email
+	var user models.User
+	existing, lookupErr := h.AuthService.UserByEmail(c.Request.Context(), gothUser.Email)
+	if existing != nil {
+		user = *existing
+	}
+
+	if lookupErr != nil {
+		if errors.Is(lookupErr, gorm.ErrRecordNotFound) {
+			// Create new user from OAuth data
+			now := time.Now()
+			user = models.User{
+				FirstName: gothUser.FirstName,
+				LastName:  gothUser.LastName,
+				Email:     gothUser.Email,
+				Avatar:    gothUser.AvatarURL,
+				Provider:  provider,
+				Active:    true,
+				IPAddress: c.ClientIP(),
+			}
+
+			// Only if the provider verified it. Setting this from an
+			// unverified claim turns "somebody typed this address into a
+			// provider" into "this address is confirmed", and the address is
+			// what every later match is made on. Left nil, the account goes
+			// through the same verification email a local sign-up does.
+			if emailVerified {
+				user.EmailVerifiedAt = &now
+			}
+
+			if provider == "google" {
+				user.GoogleID = gothUser.UserID
+			} else if provider == "github" {
+				user.GithubID = gothUser.UserID
+			}
+
+			// If name is empty, try to use NickName
+			if user.FirstName == "" && gothUser.NickName != "" {
+				user.FirstName = gothUser.NickName
+			}
+			if user.FirstName == "" {
+				user.FirstName = "User"
+			}
+			if user.LastName == "" {
+				user.LastName = ""
+			}
+
+			// Through CreateUser, so two provider sign-ins for one new address in the
+			// same instant are settled by the unique index rather than by which read
+			// finished first.
+			if err := services.CreateUser(c.Request.Context(), h.DB, &user); err != nil {
+				log.Printf("OAuth: failed to create user: %v", err)
+				redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Failed to create account."))
+				c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+				return
+			}
+		} else {
+			log.Printf("OAuth: database error: %v", lookupErr)
+			redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Something went wrong."))
+			c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+			return
+		}
+	} else {
+		// This provider account has signed in to this user before, so the link
+		// was established deliberately and is not being claimed now. Checked
+		// first: a returning user whose provider does not assert verification
+		// must not be locked out by the refusal below.
+		alreadyLinked := (provider == "google" && user.GoogleID != "" && user.GoogleID == gothUser.UserID) ||
+			(provider == "github" && user.GithubID != "" && user.GithubID == gothUser.UserID)
+
+		// An unverified claim does not reach an account that already exists.
+		// Anybody can put somebody else's address into a provider that does
+		// not check it, and everything below this line treats the address as
+		// proof of who is signing in: it links the provider to the account, and
+		// for an unconfirmed account it removes the password outright.
+		//
+		// Refused with the way forward rather than silently creating a second
+		// account, because a second account with the same address is its own
+		// kind of mess.
+		if !emailVerified && !alreadyLinked {
+			log.Printf("oauth: %s did not verify %s, and an account with that address exists", provider, gothUser.Email)
+			redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Your provider has not confirmed that email address. Sign in with your password, then connect "+provider+" from your profile."))
+			c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+			return
+		}
+
+		// An account whose address was never confirmed may have been registered by
+		// someone else, waiting for the owner to sign in with the provider. The
+		// provider has now shown who owns the address, so the unconfirmed password
+		// stops working and its sessions end before the provider is linked.
+		if user.EmailVerifiedAt == nil {
+			verifiedAt := time.Now()
+			if err := h.users().Update(c.Request.Context(), &user, map[string]interface{}{"password": "", "email_verified_at": verifiedAt}, ""); err != nil {
+				log.Printf("oauth: securing unverified account %s: %v", user.ID, err)
+				redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Something went wrong."))
+				c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+				return
+			}
+			if err := services.RevokeAllUserSessions(h.DB, user.ID, ""); err != nil {
+				log.Printf("oauth: revoking sessions of unverified account %s: %v", user.ID, err)
+			}
+			user.Password = ""
+			user.EmailVerifiedAt = &verifiedAt
+
+			// And say so. In the case this exists for, the person who had the
+			// password was not the owner and should hear nothing useful; in the
+			// benign case somebody registered, never confirmed, and later used
+			// the provider, and their password silently stopped working. The
+			// second case is far more common, and the mail is how they find out
+			// why their password no longer works.
+			//
+			// SendRaw rather than a template: this is one paragraph, and a
+			// project that has not configured a mailer gets a log line instead
+			// of a failed sign-in.
+			if h.Mailer != nil {
+				body := fmt.Sprintf(
+					"<p>You signed in to %s with %s.</p>"+
+						"<p>This account's email address had never been confirmed, so the "+
+						"password on it has been removed and any existing sessions were "+
+						"signed out. Sign in with %s from now on, or set a new password "+
+						"from your profile.</p>"+
+						"<p>If this was not you, reset your password immediately.</p>",
+					h.Config.AppName, provider, provider)
+				if err := h.Mailer.SendRaw(c.Request.Context(), user.Email,
+					"Your password was removed", body); err != nil {
+					log.Printf("oauth: telling %s their password was removed: %v", user.ID, err)
+				}
+			} else {
+				log.Printf("oauth: password removed for %s and no mailer is configured to say so", user.ID)
+			}
+		}
+		// Link OAuth provider to existing account
+		updates := map[string]interface{}{}
+		if provider == "google" && user.GoogleID == "" {
+			updates["google_id"] = gothUser.UserID
+		} else if provider == "github" && user.GithubID == "" {
+			updates["github_id"] = gothUser.UserID
+		}
+		if user.Avatar == "" && gothUser.AvatarURL != "" {
+			updates["avatar"] = gothUser.AvatarURL
+		}
+		if user.Provider == "local" {
+			updates["provider"] = provider
+		}
+
+		if len(updates) > 0 {
+			if err := h.users().Update(c.Request.Context(), &user, updates, ""); err != nil {
+				log.Printf("oauth: linking %s to user %s: %v", provider, user.ID, err)
+			}
+		}
+	}
+
+	if !user.Active {
+		redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Your account has been disabled."))
+		c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+		return
+	}
+
+	// What the provider knew, handed to whatever this app wants to do with it:
+	// the GitHub login, the avatar, the locale. See services.OnOAuthLogin.
+	services.RunOAuthLoginHooks(c.Request.Context(), &user, gothUser)
+
+	// Generate JWT tokens
+	tokens, err := h.AuthService.GenerateTokenPair(user.ID, user.Email, user.Role)
+	if err != nil {
+		log.Printf("OAuth: failed to generate tokens: %v", err)
+		redirectURL := fmt.Sprintf("%s/login?error=%s", h.Config.OAuthFrontendURL, url.QueryEscape("Failed to sign in."))
+		c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+		return
+	}
+
+	// Record the refresh token as a server-side session, so an OAuth login is
+	// listed and revocable exactly like a password login.
+	if _, err := services.CreateSession(h.DB, c, user.ID, tokens.RefreshToken); err != nil {
+		log.Printf("OAuth: failed to record session for %s: %v", user.ID, err)
+	}
+
+	// A native client gets a one-time code, not the tokens.
+	//
+	// Not the tokens, however convenient that would be: a URL lands in browser
+	// history, in the Referer of the next request, and in any proxy log on the
+	// way, and a refresh token in any of those is a standing key to the
+	// account. The code is single-use, lives for a minute, and is stored as a
+	// hash. See services.IssueOAuthCode.
+	//
+	// No cookies either. They would be set on the in-app browser's jar, which
+	// the app cannot read, so they would be a credential left behind in a
+	// browser the user is about to close.
+	if nativeTo != "" {
+		code, codeErr := services.IssueOAuthCode(c.Request.Context(), h.DB, user.ID, nativeTo, c.ClientIP())
+		if codeErr != nil {
+			log.Printf("oauth: issuing an exchange code for %s: %v", user.ID, codeErr)
+			h.failNative(c, nativeTo, "Could not finish signing in. Please try again.")
+			return
+		}
+		target, buildErr := services.NativeRedirectWithCode(nativeTo, code)
+		if buildErr != nil {
+			log.Printf("oauth: building the native redirect: %v", buildErr)
+			h.failNative(c, nativeTo, "Could not finish signing in. Please try again.")
+			return
+		}
+		c.Redirect(http.StatusTemporaryRedirect, target)
+		return
+	}
+
+	// Set HttpOnly auth cookies BEFORE redirecting so the browser stores
+	// them as part of this same response. The callback page then just
+	// navigates — no tokens in URL, no tokens in JS, no XSS exposure.
+	h.AuthService.SetAuthCookies(c, tokens)
+
+	// Redirect to frontend callback. No query params — tokens travel as
+	// HttpOnly Set-Cookie headers on this 307 response.
+	redirectURL := fmt.Sprintf("%s/auth/callback", h.Config.OAuthFrontendURL)
+	c.Redirect(http.StatusTemporaryRedirect, redirectURL)
+}

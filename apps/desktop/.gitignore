@@ -1,0 +1,26 @@
+# Build output
+build/bin/
+frontend/dist/
+# ...except this one file. //go:embed all:frontend/dist needs something to
+# match, and without it go build and go vet fail in this module on a fresh
+# clone, before anybody has run wails build.
+!frontend/dist/.gitkeep
+frontend/node_modules/
+frontend/wailsjs/
+
+# Go
+*.exe
+*.test
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local

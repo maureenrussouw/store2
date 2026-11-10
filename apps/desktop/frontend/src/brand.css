@@ -1,0 +1,52 @@
+/* brand.css: your app's colours. Grit never writes this file again.
+ *
+ * globals.css carries Grit's token palette and is replaced on every upgrade.
+ * This file is imported after it and is yours, so anything set here survives
+ * `grit upgrade` and still lets globals.css keep arriving with fixes.
+ *
+ * Everything below is commented out, and the values shown are the ones this
+ * app renders today, read from its own globals.css. Uncommenting a block
+ * changes nothing until you edit a value, which is the point: it is a
+ * starting position, not a repaint.
+ *
+ * The selectors look heavier than they need to be, and they do need to be:
+ * they have to out-specify the [data-theme] blocks in globals.css. Change the
+ * values, not the selectors.
+ *
+ *   store2
+ */
+
+/* ── Light ──────────────────────────────────────────────────────────── */
+/*
+html[data-theme] {
+  --accent: #6C5CE7;
+  --accent-hover: #5B4BD6;
+  --accent-fg: #FFFFFF;
+
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F4F4F5;
+}
+*/
+
+
+/* ── Dark ───────────────────────────────────────────────────────────── */
+/* Both selectors, because the two frontends mark dark mode differently:
+ * the admin writes data-theme-mode on <html>, Tailwind writes .dark. */
+/*
+html[data-theme][data-theme-mode="dark"],
+html[data-theme].dark {
+  --accent: #6c5ce7;
+  --accent-hover: #7c6cf7;
+  --accent-fg: #ffffff;
+
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1a1a24;
+}
+*/
+
+
+/* ── Anything else ──────────────────────────────────────────────────── */
+/* Ordinary CSS from here down. It loads after Tailwind's layers, so a plain
+ * selector here beats a utility class without !important. */

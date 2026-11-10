@@ -1,0 +1,152 @@
+package handlers
+
+import (
+	"context"
+	"log"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"store2/apps/api/internal/mail"
+	"store2/apps/api/internal/models"
+	"store2/apps/api/internal/respond"
+	"store2/apps/api/internal/services"
+)
+
+// Failed-login counting and the admin unlock that clears it.
+//
+// Unlock hangs off UserHandler rather than AuthHandler because it is an
+// administrative action on a user, not something a signed-out person does.
+
+// Unlock clears a lockout early. Waiting out the window is the normal path;
+// this exists for the support call that follows a user locking themselves out
+// five minutes before a demo.
+func (h *UserHandler) Unlock(c *gin.Context) {
+	id := c.Param("id")
+
+	unlocked, err := h.users().ClearLockout(c.Request.Context(), id)
+	if err != nil {
+		respond.Fail(c, respond.CodeInternalError, "Failed to unlock the account")
+		return
+	}
+	if !unlocked {
+		respond.Fail(c, respond.CodeNotFound, "User not found")
+		return
+	}
+
+	services.LogActivity(h.DB, c, services.ActivityArgs{
+		Action:       "user.unlock",
+		Severity:     "warn",
+		Summary:      "Account lockout cleared by an administrator",
+		ResourceType: "user",
+		ResourceID:   id,
+	})
+
+	c.JSON(http.StatusOK, gin.H{"message": "Account unlocked"})
+}
+
+// registerFailedLogin counts a wrong password against the account and locks it
+// once the threshold is reached.
+//
+// Only wrong-password-on-a-real-account is counted. Counting unknown emails
+// would let anyone lock an address they can guess, which turns a defence into
+// a denial-of-service tool.
+//
+// The threshold and the window are this project's configuration, so the decision
+// is here; the counting and the locking are AuthService's, which is also what the
+// second factor calls. There were two copies of those writes before, one per
+// factor.
+func (h *AuthHandler) registerFailedLogin(user *models.User) {
+	max := h.Config.LoginMaxAttempts
+	if max <= 0 {
+		return // lockout disabled
+	}
+	ctx := context.Background()
+
+	count, err := h.AuthService.CountLoginFailure(ctx, user.ID)
+	if err != nil {
+		log.Printf("lockout: counting a failure for %s: %v", user.ID, err)
+		return
+	}
+	if count < max {
+		return
+	}
+
+	until := time.Now().Add(h.Config.LoginLockoutWindow)
+	if err := h.AuthService.LockAccount(ctx, user.ID, until); err != nil {
+		log.Printf("lockout: locking %s: %v", user.ID, err)
+		return
+	}
+	log.Printf("lockout: %s locked until %s after %d failed attempts", user.Email, until.Format(time.RFC3339), max)
+
+	// Tell the owner, and give them the way out.
+	//
+	// The lock is keyed on an email address, which anybody can guess, so any
+	// account can be locked on purpose by failing against it. Over HTTP there
+	// is nothing to say about that: the response stays "invalid email or
+	// password" for everyone, because saying "this account is locked" would
+	// confirm the address exists.
+	//
+	// The mailbox is the one channel where saying it leaks nothing, since only
+	// the owner can read it. So they learn someone has been trying, and they
+	// get a reset link, which clears the lock as soon as they use it. Without
+	// this the victim is refused with no explanation and has no recovery except
+	// waiting or an administrator.
+	//
+	// Off the request path, so a mail provider cannot add latency to a failed
+	// sign-in and make one measurable from another.
+	detachedUser := *user
+	detach(func(ctx context.Context) { h.deliverLockoutNotice(ctx, detachedUser, until) })
+}
+
+// deliverLockoutNotice emails the account owner that their account has just
+// been locked, with a reset link that clears it.
+//
+// Failures are logged and nothing else: there is no caller to tell, and the
+// sign-in that triggered this has already been answered.
+func (h *AuthHandler) deliverLockoutNotice(ctx context.Context, user models.User, until time.Time) {
+	if h.Jobs == nil && h.Mailer == nil {
+		return
+	}
+
+	token, err := services.GenerateResetToken()
+	if err != nil {
+		log.Printf("lockout: generating a recovery token for %s: %v", user.Email, err)
+		return
+	}
+	if _, err := services.CreatePasswordResetToken(h.DB, user.ID, token, ""); err != nil {
+		log.Printf("lockout: storing a recovery token for %s: %v", user.Email, err)
+		return
+	}
+
+	resetURL := strings.TrimSuffix(h.Config.OAuthFrontendURL, "/") + "/reset-password?token=" + url.QueryEscape(token)
+
+	// Keyed on the lock, not on the token, so a run of failures that relocks
+	// the account repeatedly does not send a run of emails.
+	key := "lockout:" + user.ID + ":" + until.UTC().Format(time.RFC3339)
+	if err := dispatchMail(ctx, h.Mailer, h.Jobs, key, mail.SendOptions{
+		To:       user.Email,
+		Subject:  "Too many sign-in attempts on your account",
+		Template: "password-reset",
+		Data: map[string]interface{}{
+			"AppName": h.Config.AppName,
+			"Title":   "Too many sign-in attempts",
+			"Message": "Someone has tried to sign in to your account too many times, so we have locked it for " +
+				strconv.Itoa(int(h.Config.LoginLockoutWindow.Minutes())) + " minutes. " +
+				"If that was you, you can wait, or set a new password with the link below to get back in now. " +
+				"If it was not you, set a new password: somebody is guessing at it.",
+			"ResetURL": resetURL,
+			"Year":     time.Now().Year(),
+		},
+	}); err != nil {
+		log.Printf("lockout: emailing %s: %v", user.Email, err)
+	}
+}
+
+// SendVerificationEmail issues a fresh verification link for the signed-in
+// user. Authenticated on purpose: an unauthenticated "send a link to this
+// address" endpoint is a spam cannon aimed at whoever you name.

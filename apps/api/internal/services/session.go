@@ -1,0 +1,412 @@
+package services
+
+import (
+	"context"
+	"errors"
+	"sync"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+	"gorm.io/gorm"
+
+	"store2/apps/api/internal/models"
+)
+
+// Session lifetimes. Overridable per deployment; the defaults are deliberately
+// conservative — an unused login dies in a week, and any login dies in 30 days
+// no matter how active it is.
+var (
+	SessionIdleTimeout     = 7 * 24 * time.Hour
+	SessionAbsoluteTimeout = 30 * 24 * time.Hour
+
+	// SessionRotationGrace is how long the just-rotated token keeps working.
+	//
+	// It exists for the honest collision: two tabs whose access tokens expire
+	// together, or a retry of a request whose response was lost. Both present
+	// the token they hold, which rotation has already replaced, and without
+	// this the second one is read as a replay and the session dies.
+	//
+	// Ten seconds, because the real window is one request in flight. Long
+	// enough for a slow phone, short enough that a captured token is still
+	// caught: a thief who waits is caught, and a thief already racing the
+	// victim gets one refresh, which rotation alone never prevented either.
+	SessionRotationGrace = 10 * time.Second
+)
+
+// ErrSessionInvalid is returned when a refresh token has no live session:
+// unknown, revoked, idle-expired, absolutely expired, or replayed.
+var ErrSessionInvalid = errors.New("session is not valid")
+
+// CreateSession records a newly issued refresh token as a logged-in device.
+//
+// The gin-shaped front door to CreateSessionCtx, kept because handlers call it
+// with the request in hand. Everything it needs from that request is the three
+// fields in RequestMeta.
+func CreateSession(db *gorm.DB, c *gin.Context, userID, refreshToken string) (*models.Session, error) {
+	return CreateSessionCtx(ContextOf(c), db, MetaOf(c), userID, refreshToken)
+}
+
+// CreateSessionCtx records a newly issued refresh token as a logged-in device.
+//
+// Contact-app review M29: this took a *gin.Context, so signing somebody in from
+// a job, a CLI command or a test meant building a fake HTTP request first.
+func CreateSessionCtx(ctx context.Context, db *gorm.DB, meta RequestMeta, userID, refreshToken string) (*models.Session, error) {
+	now := time.Now()
+	s := &models.Session{
+		ID:         sessionIDFromToken(refreshToken),
+		UserID:     userID,
+		TokenHash:  models.HashSessionToken(refreshToken),
+		UserAgent:  truncateStr(meta.UserAgent, 512),
+		IP:         meta.IP,
+		LastSeenAt: now,
+		ExpiresAt:  now.Add(SessionAbsoluteTimeout),
+	}
+	if err := db.WithContext(ctx).Create(s).Error; err != nil {
+		return nil, err
+	}
+	return s, nil
+}
+
+// RotateSession validates a presented refresh token and swaps it for a new one.
+//
+// Rotation is what makes a stolen refresh token survivable: the thief and the
+// victim cannot both use it, and whoever refreshes second presents an already-
+// rotated token — which lands in the PrevTokenHash branch and kills the session
+// for both, surfacing the theft instead of silently sharing the account.
+func RotateSession(db *gorm.DB, c *gin.Context, oldToken, newToken string) (*models.Session, error) {
+	return RotateSessionCtx(ContextOf(c), db, MetaOf(c), oldToken, newToken)
+}
+
+// RotateSessionCtx is RotateSession without the gin context. See M29 on
+// CreateSessionCtx for why both exist.
+func RotateSessionCtx(ctx context.Context, db *gorm.DB, meta RequestMeta, oldToken, newToken string) (*models.Session, error) {
+	db = db.WithContext(ctx)
+	oldHash := models.HashSessionToken(oldToken)
+
+	var s models.Session
+	err := db.Where("token_hash = ?", oldHash).First(&s).Error
+	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, err
+		}
+		// Not the current token. If it's the PREVIOUS one, this is either a
+		// replay of a captured token or an honest collision, and RotatedAt is
+		// what tells the two apart.
+		var replayed models.Session
+		if db.Where("prev_token_hash = ?", oldHash).First(&replayed).Error == nil {
+			now := time.Now()
+
+			// Inside the grace window: two refreshes raced, which is ordinary.
+			// Rotate as though the current token had been presented, and leave
+			// prev_token_hash and rotated_at where they are, so the window stays
+			// anchored to the first rotation and presenting the same old token
+			// repeatedly cannot keep it alive (grit#153).
+			if replayed.RotatedAt != nil &&
+				now.Sub(*replayed.RotatedAt) <= SessionRotationGrace &&
+				replayed.Active(now, SessionIdleTimeout) {
+				if err := db.Model(&replayed).Updates(map[string]interface{}{
+					"token_hash":   models.HashSessionToken(newToken),
+					"last_seen_at": now,
+					"ip":           meta.IP,
+					"user_agent":   truncateStr(meta.UserAgent, 512),
+				}).Error; err != nil {
+					return nil, err
+				}
+				return &replayed, nil
+			}
+
+			// A replay is the one time revocation must not quietly fail: the
+			// token was captured, and the session it belongs to stays live.
+			if err := db.Model(&replayed).Update("revoked_at", &now).Error; err != nil {
+				return nil, err
+			}
+			forgetSession(replayed.ID)
+		}
+		return nil, ErrSessionInvalid
+	}
+
+	if !s.Active(time.Now(), SessionIdleTimeout) {
+		return nil, ErrSessionInvalid
+	}
+
+	now := time.Now()
+	if err := db.Model(&s).Updates(map[string]interface{}{
+		"token_hash":      models.HashSessionToken(newToken),
+		"prev_token_hash": oldHash,
+		// The grace window is measured from here.
+		"rotated_at":   &now,
+		"last_seen_at": now,
+		"ip":           meta.IP,
+		"user_agent":   truncateStr(meta.UserAgent, 512),
+	}).Error; err != nil {
+		return nil, err
+	}
+	return &s, nil
+}
+
+// OnSessionsRevoked runs after a user's sessions are revoked, with that user's
+// id.
+//
+// Revoking a session marks a database row. It does not reach an already-open
+// WebSocket, whose token was checked once at the handshake and is never
+// consulted again, so without this hook "sign out of all devices" leaves the
+// signed-out device receiving live events until its token expires. Closing the
+// socket is the half of revocation that the row cannot do on its own.
+//
+// This is the last fallback. routes.Setup calls OnSessionsRevokedFor, which
+// registers the hook for one database handle; this variable is consulted only
+// when nothing is registered for the handle being revoked against. Setting it
+// still works, and is what a project written before v3.479.0 did.
+//
+// Nil by default so the services package stays free of a realtime dependency.
+var OnSessionsRevoked func(userID string)
+
+// sessionHooks holds one revocation hook per database handle.
+//
+// The hook has to reach the realtime hub of the instance that owns the session,
+// and the only thing the revoke functions are given is a *gorm.DB, so that is
+// what it is keyed by. With one hook for the process, a second API instance in
+// the same process overwrote the first instance's at startup, and "sign out of
+// all devices" then closed the wrong instance's sockets and left the right
+// instance's open. The same applies to two tests running in parallel, each with
+// its own in-memory database.
+var sessionHooks sync.Map // *gorm.DB -> func(userID string)
+
+// OnSessionsRevokedFor registers the revocation hook for one database handle.
+// A nil hook removes the registration, which is what a test should do when it
+// is finished with its database.
+//
+// Register the handle you hand to your handlers, not a clone: a *gorm.DB from
+// WithContext or Session is a different pointer and falls back to
+// OnSessionsRevoked.
+func OnSessionsRevokedFor(db *gorm.DB, hook func(userID string)) {
+	if db == nil {
+		return
+	}
+	if hook == nil {
+		sessionHooks.Delete(db)
+		return
+	}
+	sessionHooks.Store(db, hook)
+}
+
+// Sessions is the session store with its dependencies named: the database
+// handle and the revocation hook.
+//
+// The package functions below are this type with the registered hook, and are
+// what the generated handlers call. Build one yourself when you want a hook
+// that belongs to neither the process nor the handle, which is mostly tests.
+type Sessions struct {
+	DB *gorm.DB
+	// OnRevoked is called with the user id after a revocation. Nil falls back
+	// to what OnSessionsRevokedFor registered for DB, then to the package-level
+	// OnSessionsRevoked.
+	OnRevoked func(userID string)
+}
+
+// sessionsFor is the package functions' Sessions: this handle, whatever hook is
+// registered for it.
+func sessionsFor(db *gorm.DB) Sessions { return Sessions{DB: db} }
+
+// revoked runs the hook that applies to this store, if there is one.
+func (s Sessions) revoked(userID string) {
+	hook := s.OnRevoked
+	if hook == nil && s.DB != nil {
+		if registered, ok := sessionHooks.Load(s.DB); ok {
+			hook, _ = registered.(func(userID string))
+		}
+	}
+	if hook == nil {
+		hook = OnSessionsRevoked
+	}
+	if hook != nil {
+		hook(userID)
+	}
+}
+
+// RevokeByToken kills the session a refresh token belongs to (logout).
+func (s Sessions) RevokeByToken(refreshToken string) error {
+	now := time.Now()
+	hash := models.HashSessionToken(refreshToken)
+	var sessionIDs []string
+	if err := s.DB.Model(&models.Session{}).Where("token_hash = ?", hash).Pluck("id", &sessionIDs).Error; err != nil {
+		return err
+	}
+	if err := s.DB.Model(&models.Session{}).
+		Where("token_hash = ? AND revoked_at IS NULL", hash).
+		Update("revoked_at", &now).Error; err != nil {
+		return err
+	}
+	for _, id := range sessionIDs {
+		forgetSession(id)
+	}
+	return nil
+}
+
+// Revoke kills one session by id, scoped to its owner so a user can never
+// revoke someone else's device.
+func (s Sessions) Revoke(userID, sessionID string) error {
+	now := time.Now()
+	res := s.DB.Model(&models.Session{}).
+		Where("id = ? AND user_id = ? AND revoked_at IS NULL", sessionID, userID).
+		Update("revoked_at", &now)
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected == 0 {
+		return ErrSessionInvalid
+	}
+	forgetSession(sessionID)
+	// Sockets are bound to a user, not to a session row, so the revoked
+	// device cannot be singled out. Every connection this user holds is
+	// closed and the ones still entitled reconnect.
+	s.revoked(userID)
+	return nil
+}
+
+// RevokeAll kills every session for a user. Call it on password change, on MFA
+// change, and from "log out everywhere". exceptToken, when non-empty, spares
+// the caller's own session.
+//
+// Note that exceptToken spares a session row but cannot spare a socket: every
+// connection the user holds is closed and the surviving session simply
+// reconnects. Dropping one live connection is a great deal better than leaving
+// a revoked one open.
+func (s Sessions) RevokeAll(userID, exceptToken string) error {
+	now := time.Now()
+	q := s.DB.Model(&models.Session{}).Where("user_id = ? AND revoked_at IS NULL", userID)
+	if exceptToken != "" {
+		q = q.Where("token_hash <> ?", models.HashSessionToken(exceptToken))
+	}
+	if err := q.Update("revoked_at", &now).Error; err != nil {
+		return err
+	}
+	forgetUserSessions(userID)
+	s.revoked(userID)
+	return nil
+}
+
+// RevokeSessionByToken kills the session a refresh token belongs to (logout).
+func RevokeSessionByToken(db *gorm.DB, refreshToken string) error {
+	return sessionsFor(db).RevokeByToken(refreshToken)
+}
+
+// RevokeSession kills one session by id, scoped to its owner so a user can
+// never revoke someone else's device.
+func RevokeSession(db *gorm.DB, userID, sessionID string) error {
+	return sessionsFor(db).Revoke(userID, sessionID)
+}
+
+// RevokeAllUserSessions kills every session for a user. Call it on password
+// change, on MFA change, and from "log out everywhere". exceptToken, when
+// non-empty, spares the caller's own session.
+func RevokeAllUserSessions(db *gorm.DB, userID, exceptToken string) error {
+	return sessionsFor(db).RevokeAll(userID, exceptToken)
+}
+
+// ListUserSessions returns a user's live sessions, newest activity first.
+func ListUserSessions(db *gorm.DB, userID string) ([]models.Session, error) {
+	var out []models.Session
+	err := db.Where("user_id = ? AND revoked_at IS NULL AND expires_at > ?", userID, time.Now()).
+		Order("last_seen_at desc").Find(&out).Error
+	return out, err
+}
+
+// sessionIDFromToken is the session id a refresh token carries, so the row's id
+// is the one its access tokens name. A token without one gets a fresh id.
+func sessionIDFromToken(token string) string {
+	claims := &Claims{}
+	if _, _, err := jwt.NewParser().ParseUnverified(token, claims); err != nil {
+		return ""
+	}
+	if len(claims.SessionID) > 36 {
+		return ""
+	}
+	return claims.SessionID
+}
+
+// SessionIDForToken finds the session a refresh token belongs to, for a token
+// minted before sessions were named in the token itself.
+func SessionIDForToken(db *gorm.DB, refreshToken string) string {
+	var s models.Session
+	if err := db.Select("id").Where("token_hash = ?", models.HashSessionToken(refreshToken)).First(&s).Error; err != nil {
+		return ""
+	}
+	return s.ID
+}
+
+// SessionCheckTTL is how long a session's state is trusted between database
+// reads. A session revoked through this process is refused at once; one revoked
+// through another replica, within this long.
+var SessionCheckTTL = 30 * time.Second
+
+type sessionState struct {
+	userID  string
+	live    bool
+	checked time.Time
+}
+
+var sessionStates = struct {
+	sync.Mutex
+	m map[string]sessionState
+}{m: map[string]sessionState{}}
+
+// SessionLive reports whether the session an access token names may still be
+// used: it exists, is not revoked, and has not passed either timeout.
+func SessionLive(db *gorm.DB, sessionID string) bool {
+	now := time.Now()
+	sessionStates.Lock()
+	st, ok := sessionStates.m[sessionID]
+	sessionStates.Unlock()
+	if ok && now.Sub(st.checked) < SessionCheckTTL {
+		return st.live
+	}
+
+	var s models.Session
+	if err := db.Where("id = ?", sessionID).First(&s).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			rememberSession(sessionID, "", false, now)
+		}
+		return false
+	}
+	live := s.Active(now, SessionIdleTimeout)
+	rememberSession(sessionID, s.UserID, live, now)
+	return live
+}
+
+func rememberSession(sessionID, userID string, live bool, now time.Time) {
+	sessionStates.Lock()
+	defer sessionStates.Unlock()
+	if len(sessionStates.m) > 10000 {
+		for id, st := range sessionStates.m {
+			if now.Sub(st.checked) >= SessionCheckTTL {
+				delete(sessionStates.m, id)
+			}
+		}
+	}
+	sessionStates.m[sessionID] = sessionState{userID: userID, live: live, checked: now}
+}
+
+func forgetSession(sessionID string) {
+	sessionStates.Lock()
+	delete(sessionStates.m, sessionID)
+	sessionStates.Unlock()
+}
+
+func forgetUserSessions(userID string) {
+	sessionStates.Lock()
+	for id, st := range sessionStates.m {
+		if st.userID == userID {
+			delete(sessionStates.m, id)
+		}
+	}
+	sessionStates.Unlock()
+}
+
+func truncateStr(s string, n int) string {
+	if len(s) <= n {
+		return s
+	}
+	return s[:n]
+}
