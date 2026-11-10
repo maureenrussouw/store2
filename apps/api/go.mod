@@ -35,7 +35,7 @@ require (
 	// The QR code on the 2FA setup screen. Replaced skip2/go-qrcode, last
 	// released in 2020.
 	github.com/boombuler/barcode v1.1.0
-	github.com/brianvoe/gofakeit/v7 v7.15.0
+	github.com/brianvoe/gofakeit/v7 v7.18.1
 	// SAML 2.0 service provider for enterprise SSO. OIDC covers every modern
 	// IdP and needs no library, but SAML is still what a lot of enterprise
 	// procurement asks for, and it cannot be hand-rolled safely — assertion
