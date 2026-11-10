@@ -11,7 +11,7 @@ require (
 	github.com/HugoSmits86/nativewebp v1.3.0
 	github.com/MUKE-coder/gin-docs v0.0.0-20260222113017-4d647cb4e7aa
 	github.com/MUKE-coder/gorm-studio v1.1.1
-	github.com/MUKE-coder/pulse v1.5.1
+	github.com/MUKE-coder/pulse v1.6.0
 	// Sentinel now ships a proper /v2 module path, so we track real tags.
 	// v2.1.1 is the minimum safe release for WAF.Mode = ModeBlock: v2.1.0
 	// fixed the SSRF rule matching "0.0.0.0" inside a Chrome User-Agent
