@@ -22,6 +22,14 @@ func Seed(db *gorm.DB) error {
 		return fmt.Errorf("seeding blogs: %w", err)
 	}
 
+	if err := SeedCategories(db); err != nil {
+		return fmt.Errorf("seeding categories: %w", err)
+	}
+
+	if err := SeedProducts(db); err != nil {
+		return fmt.Errorf("seeding products: %w", err)
+	}
+
 	// grit:seeders
 
 	return nil

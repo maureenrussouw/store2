@@ -1,7 +1,7 @@
 {
   "format": 1,
   "grit": "3.498.0",
-  "updatedAt": "2026-11-10T11:18:02Z",
+  "updatedAt": "2026-11-10T17:36:34Z",
   "files": {
     ".claude/skills/grit/SKILL.md": {
       "generator": "scaffold",
@@ -217,6 +217,136 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:b2f8ceaf049152fed80a5e64aa816eb497ae3508d827116b6ad85598e89056bd"
+    },
+    "apps/admin/app/(dashboard)/resources/categories/[id]/page.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:9a7cf3ab1ffa47695c96e4f1f87824aabff825e63002f3cc9c9a1f5d6356f164"
+    },
+    "apps/admin/app/(dashboard)/resources/categories/page.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:b5ef1b2acb7ec93fe53afd8345eaa18c26b4d830379b46ea36756c7a3dbbc757"
+    },
+    "apps/admin/app/(dashboard)/resources/customers/[id]/page.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:14b0848c49289151a300b84d08b36e558b98e3d88ea86b861cea3f3498ebdba4"
+    },
+    "apps/admin/app/(dashboard)/resources/customers/page.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:5d1e58a290db5e98426b51ab41ce1f009fc27da7f3436239b8dbca8d868fe249"
+    },
+    "apps/admin/app/(dashboard)/resources/invoice-items/[id]/page.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:7d6249881cf0ee79451d572f8263d408c08f4c99cecb083dc317a77022c3c5bb"
+    },
+    "apps/admin/app/(dashboard)/resources/invoice-items/page.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:e8b33cf39cb8e9ce72959c55c8ecae730d7117a6fe25ccba1be1c719f37e0b59"
+    },
+    "apps/admin/app/(dashboard)/resources/invoices/[id]/page.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:f2809fd83602c45b6299fddf08b61ebe00134e99382d37bf28f0b4d0936ab1b2"
+    },
+    "apps/admin/app/(dashboard)/resources/invoices/page.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:060732f6e42d789ccbbdffe8ca579ce0e29bb8b54ad62337fef7736d009974b0"
+    },
+    "apps/admin/app/(dashboard)/resources/line-charges/[id]/page.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:1a962f97b902fae6a673f52e06585c6ee40c4a3f2f085287145711e133343003"
+    },
+    "apps/admin/app/(dashboard)/resources/line-charges/page.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:c52e0c33122199a4101f89c25192b03dbf860bdfeda808b423eb87c621574c86"
+    },
+    "apps/admin/app/(dashboard)/resources/loans/[id]/page.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:2f40766fa2a276d1cf68b0b29d202f1b0fdf5b29e43db79a1eb16d75e8364317"
+    },
+    "apps/admin/app/(dashboard)/resources/loans/page.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:318c6a4bf0aa74c4871b68f6a49a302376f3d9b0858de2fd678b25e77d4fe4ae"
+    },
+    "apps/admin/app/(dashboard)/resources/medications/[id]/page.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:29869f2f88034470ae2dedae36233e2c5832079f610aa1ff975cb113d1923610"
+    },
+    "apps/admin/app/(dashboard)/resources/medications/page.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:5659f7fc181c1819b6ded2e25ce8d108c5cd1d5a7b6fa6f8aa1a4b64b6a74876"
+    },
+    "apps/admin/app/(dashboard)/resources/order-lines/[id]/page.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:4b76450d242f762dd3fde0028c76f719129fb4d7ce58e0a9cd42e59647e80892"
+    },
+    "apps/admin/app/(dashboard)/resources/order-lines/page.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:c0578fb347f67e28e9e5af4f91c5e37919d2d282b81ecda8c460e5e0d5dff78d"
+    },
+    "apps/admin/app/(dashboard)/resources/orders/[id]/page.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:0904f49b9d31812cd401788d7a4d0d4b55405380fac32456ceb2b0ce5f94bbeb"
+    },
+    "apps/admin/app/(dashboard)/resources/orders/page.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:a179fedb2c410b62e39d779763bff434fbb685a2f9f54a0339aaebac74aefe3c"
+    },
+    "apps/admin/app/(dashboard)/resources/prescriptions/[id]/page.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:29ba4f3eef63a76caa437255138cfc76281be3b360288666f2fc6b99f687b5e9"
+    },
+    "apps/admin/app/(dashboard)/resources/prescriptions/page.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:cc6b0194ff6754000168c9323a352ee07cb434c8fc9f2e74f0b1f880af3b499b"
+    },
+    "apps/admin/app/(dashboard)/resources/products/[id]/page.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:a9f25b2d51f2136baf2c7a148524fb71ec2ecc2b16bf834d7edf493e8d725917"
+    },
+    "apps/admin/app/(dashboard)/resources/products/page.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:02ca61bfd9360ef79aaefa75dde9e3106580a449cee4003adb9c43c8d77bea5d"
+    },
+    "apps/admin/app/(dashboard)/resources/repayments/[id]/page.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:db7c338a301dcdb52f53c7d3d636d89185b0c1a67541fe20acca1e588becad33"
+    },
+    "apps/admin/app/(dashboard)/resources/repayments/page.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:7ec92f6b9c699ef644ef005e7116558cd069649066f8f4d33c249e0e40c96637"
+    },
+    "apps/admin/app/(dashboard)/resources/subscriptions/[id]/page.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:495ebd38a0b02a654143514cf8368ffaeaa3f81b84f882497fb3d7eda5cb8512"
+    },
+    "apps/admin/app/(dashboard)/resources/subscriptions/page.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:678427c4161eef41510c6585f1e8b82acbdb1e10f3bd7bb179b5c4d7c3cd08ad"
     },
     "apps/admin/app/(dashboard)/resources/users/[id]/page.tsx": {
       "generator": "scaffold",
@@ -1228,10 +1358,140 @@
       "grit": "3.498.0",
       "hash": "sha256:5bbd2eed17cb18ce377c807d876aaacdece4cc270919c92c9f1a88de6ee2ae59"
     },
+    "apps/admin/resources/categories/categories.custom.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:13487958c840e162365875a0fbf0c2da1ebb5c55e927c642cfe2022327ded18b"
+    },
+    "apps/admin/resources/categories/categories.ts": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:9f962ea104e4cd8d56db99c52f5fd81a457feef947d71f01f571fd21f1cbfc22"
+    },
+    "apps/admin/resources/customers/customers.custom.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:deb71868b17849301d7b833da4721ecd1a9a7e9f0a0d84746f6176ac7bcdde12"
+    },
+    "apps/admin/resources/customers/customers.ts": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:e55c100801c3ab75c783890be26ac2573e19c2d23f10957579f6f9e92cb5237a"
+    },
     "apps/admin/resources/index.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:7679457087f3da63999b15de159be82b08c5b3254ab81fc9f2378e367deea179"
+      "hash": "sha256:ca7265da6c72b5ea211b97f90fdcd6b73b03816ca2ab9656c5433ff2937c19b5"
+    },
+    "apps/admin/resources/invoice-items/invoice-items.custom.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:379efb58fd5883932d74effae264855cdfd617653581828512260fe07460eb95"
+    },
+    "apps/admin/resources/invoice-items/invoice-items.ts": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:4e271ff1b62145b23e8450271f776b5442d586d539d2b449de1e26d0a11de640"
+    },
+    "apps/admin/resources/invoices/invoices.custom.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:1b2886c2ee3befd1bfad87d193df30307dc9c01387088a6378e08f9f5e83c38a"
+    },
+    "apps/admin/resources/invoices/invoices.ts": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:5260c3785ab0bbf5e723d69a9e0be12069737304a18b21434d65b4d4ddb23b3c"
+    },
+    "apps/admin/resources/line-charges/line-charges.custom.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:ef8c5c3fb6927056f204c4c1470100ad7e69c7a0513ebd0b438b3727683402ed"
+    },
+    "apps/admin/resources/line-charges/line-charges.ts": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:59583778df7e4ffe2fec8058e6196f140bab67d1385f3c3195d8059d0973cd56"
+    },
+    "apps/admin/resources/loans/loans.custom.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:aad604e4d1f760e519c01120bcbf43979e55e126a4bbf14fd653d48018378cc7"
+    },
+    "apps/admin/resources/loans/loans.ts": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:1de7da66702ffd4b78be21cee1afd76aa9f1c4d02018a0e681d60d7d543e9272"
+    },
+    "apps/admin/resources/medications/medications.custom.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:b90d443128bd5dabcbb0d63f0b5e329fc1484d80eab003205e1032dbac389650"
+    },
+    "apps/admin/resources/medications/medications.ts": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:b51594703030416d5bc931c783bfbe03cc05e4c86556966faab880e8477c50b3"
+    },
+    "apps/admin/resources/order-lines/order-lines.custom.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:5215fe6fa5ebf7afea8d0dd207177474ab0c76c03811997783b656e5caeb519d"
+    },
+    "apps/admin/resources/order-lines/order-lines.ts": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:44cc74fbcd9833ef084b7c402c0e10ced1eacd91be759ff951ebed345b27bd07"
+    },
+    "apps/admin/resources/orders/orders.custom.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:e52195294dcdc292bfa8a9ca1f27c0ae2ff6c53c4b8ad69c591fa2b38b892ff5"
+    },
+    "apps/admin/resources/orders/orders.ts": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:5f95034d0f69aa6422ed440c3805e1357a357a4f2897a6a39de75d7a8fc286be"
+    },
+    "apps/admin/resources/prescriptions/prescriptions.custom.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:da9171161ae55acc7ff1a10639d4f64467f8e67ed176c5daae8009fcd65dc579"
+    },
+    "apps/admin/resources/prescriptions/prescriptions.ts": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:7921ff7c303a4b69472299664c659e3b0aa1c968a71abdfd6131808ed6566aaa"
+    },
+    "apps/admin/resources/products/products.custom.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:7aae35e97bef43be87968e6656458d424e93e882e47cec81840acb91f412537f"
+    },
+    "apps/admin/resources/products/products.ts": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:21211149fdf3fedbd06ffcd5339791b2bcfec8a710edf67fe8f8e1cfb1803742"
+    },
+    "apps/admin/resources/repayments/repayments.custom.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:0cb72a4c80d3a91c378c179dc17799a7812fb024513f1aba7dd90eac563b12f5"
+    },
+    "apps/admin/resources/repayments/repayments.ts": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:fe0b7e2eef6088351f5c8763afa1ca93238229aa156cb6e43a7a18ddaeb65c27"
+    },
+    "apps/admin/resources/subscriptions/subscriptions.custom.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:ba247670bf1a2e9b943ebe3e996b4e69098907cd0d619a6cdc8ff4b9a45cfd71"
+    },
+    "apps/admin/resources/subscriptions/subscriptions.ts": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:935e3e7de406b65fd9410629f47ad0613eae646062814f9a4e966dad96a41f13"
     },
     "apps/admin/resources/users/users.custom.tsx": {
       "generator": "scaffold",
@@ -1306,7 +1566,7 @@
     "apps/api/cmd/server/main.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:94fa26b84657937a7b9a8f51b0962c9df8ecb6afc14ee44b744bd6cd2281edc4"
+      "hash": "sha256:5263d462ab3bd9a59de5a76a2547d4a4a160b65654e5807a6e0fda296bfc8201"
     },
     "apps/api/go.mod": {
       "generator": "scaffold",
@@ -1396,7 +1656,7 @@
     "apps/api/internal/authz/permissions.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:392c996ffb194d11824044e0d111a6560cbdc30613ea4bc55b45bd87922ee306"
+      "hash": "sha256:77ece291c048e6c72ff0320d8e8f862ebf643fdb3f77d98c468dcd6056322879"
     },
     "apps/api/internal/authz/permissions_test.go": {
       "generator": "scaffold",
@@ -1573,10 +1833,75 @@
       "grit": "3.498.0",
       "hash": "sha256:4bff5b57f58f644ab3032e7f01f4b31201c9fc413dfb16c2fbab8cd41436627a"
     },
+    "apps/api/internal/factory/category.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:4abfc98b2cf8cf9a518217ff1882ea4e4741a84508677699522f381b9dd92b0f"
+    },
+    "apps/api/internal/factory/customer.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:2531e2208bd19f0c6dffade1d3ae72b2786f09eafea0f8de0ae83fa9efa5cde0"
+    },
     "apps/api/internal/factory/factory.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:fbef63d42287c4d0ce66b86f299e910ec9992268924073e4b8ed8077a08a41e3"
+    },
+    "apps/api/internal/factory/invoice.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:d193f9fb47217f9c10db9008439a702eb5ab532a4b298bb327db2d918ac29e40"
+    },
+    "apps/api/internal/factory/invoice_item.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:26765c8624df78331ce29b925d2106dc91134ec22200cda297688abd21f6878f"
+    },
+    "apps/api/internal/factory/line_charge.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:cbccdf2fa110f8c683a2b50b3dd9512870b748ec24c7b1ba615fe82197afb8e6"
+    },
+    "apps/api/internal/factory/loan.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:11293fc2c553743c7ab858aa6c38f1dcb08fbd9866b346389ba1e99ec16b80ad"
+    },
+    "apps/api/internal/factory/medication.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:5e8e06b8de81a64cebd78807d5fcdbbe6d88334a84d97a80d04c1dfc21686514"
+    },
+    "apps/api/internal/factory/order.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:9f090d3cb7395d4b8408e782889ce4c910a9a0f269cf545999fd7856ef5aca4e"
+    },
+    "apps/api/internal/factory/order_line.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:0de6b93cc92f619be558f76004b385709c8c325c4afa2f6544d66fd0d1534171"
+    },
+    "apps/api/internal/factory/prescription.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:61195691b7032eed5d09f2e8414724d729264c2a3e089b3533d692963a224ba8"
+    },
+    "apps/api/internal/factory/product.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:7547beaa83ef3cd3a709c3fae3a0ac37381671a0057297d157159500dc37c5f7"
+    },
+    "apps/api/internal/factory/repayment.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:719cd12333681ab819b970ca7da3e5fdf9f041838971c90169bf8fa230eabd1b"
+    },
+    "apps/api/internal/factory/subscription.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:a6477aee71bf5161262038e86bea2a43af7042c060fb7e001a250eddf17998a4"
     },
     "apps/api/internal/factory/upload.go": {
       "generator": "scaffold",
@@ -1713,6 +2038,31 @@
       "grit": "3.498.0",
       "hash": "sha256:8bb28b536ece4053327c9009fd5e893cb403e66d4676f8ba6432286b5315398f"
     },
+    "apps/api/internal/handlers/category.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:bf0e6e1a98af835a47c3d1f0fe50e49b282cab078d611de32f574704c88a9444"
+    },
+    "apps/api/internal/handlers/category_import.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:abf747010eb51186dd9f2d234ea85e4cd500c2a79190a7802c76263cb3e79960"
+    },
+    "apps/api/internal/handlers/category_public.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:d640af8efd16e202461f20b2caaf6819367a339bdfe2d61da7930dfbd9fac4aa"
+    },
+    "apps/api/internal/handlers/category_test.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:d06ad31ebb8fe73d14402b0f0924cf4b58688217abd2ae04a73d4a1c823fd1db"
+    },
+    "apps/api/internal/handlers/category_tree.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:8dbe0585bf419e94f607689506f8296c92367fae70e522fa5d2ff18349b2914e"
+    },
     "apps/api/internal/handlers/chart.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -1722,6 +2072,21 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:27207d99d535550facc2514fbb9e4a6b8d1ee4c6958c5739c7f395f1142ef8d4"
+    },
+    "apps/api/internal/handlers/customer.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:9f74cf3534f4fb757a55dd28cac6cf16e19a6f4605467d766acb0fd18281615a"
+    },
+    "apps/api/internal/handlers/customer_import.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:44bb71e45b116d4f47d3329b0968b2c8d7297242fd231c973ae63831564a97cd"
+    },
+    "apps/api/internal/handlers/customer_test.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:5026e99e1ea36dd7031b2dfbf8666b50384f550eaae53f3d7e0ec4c18373b861"
     },
     "apps/api/internal/handlers/dashboard_layout.go": {
       "generator": "scaffold",
@@ -1748,6 +2113,36 @@
       "grit": "3.498.0",
       "hash": "sha256:557539c7c6820cd36c6fd0b3169d1e154c449d9528d920578a6b80ac65957551"
     },
+    "apps/api/internal/handlers/invoice.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:0d9bb6a4627085c3b20c96ed606a2994cdca6bee3d191eba7691c8745e83fbce"
+    },
+    "apps/api/internal/handlers/invoice_import.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:27f56e12d6028b80558f2dcdb98b4591437c96cfee20049637d3ac2adaff3f6e"
+    },
+    "apps/api/internal/handlers/invoice_item.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:ef1190834f6f5380fd84b10f2fbd78e8b3332a31a1b9ecb951a5b4627ff3e3b2"
+    },
+    "apps/api/internal/handlers/invoice_item_import.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:a8714e0cbb154d6efa337d64574854ddcc5d28d9fbf14921c6595e8eda8aca63"
+    },
+    "apps/api/internal/handlers/invoice_item_test.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:bdc41565f10514b78e2cb39870f569b3296efb64a5dc5c1c8cec02dc1c0d0790"
+    },
+    "apps/api/internal/handlers/invoice_test.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:687c789ef681a752d35da42b5da3a8d4f982e557f4c4e36f88eb061e78c6de00"
+    },
     "apps/api/internal/handlers/jobs.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -1763,6 +2158,36 @@
       "grit": "3.498.0",
       "hash": "sha256:4af9f82538f03fce2f9432e09e2d73fec263689eea6dc5a986b7f75bfaa0794f"
     },
+    "apps/api/internal/handlers/line_charge.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:e752ee5d3803b55c946ef7b12d159059aae64afef2c8f2bc0f9ce08b1d4ad9f1"
+    },
+    "apps/api/internal/handlers/line_charge_import.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:cc5de51fd95c7fec59b7de4749952bc3167721824f1de9affa26a9d962142c96"
+    },
+    "apps/api/internal/handlers/line_charge_test.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:19b69f34f64afb465d7a414705464431d5577bcb3519e9144dd769184f0d8171"
+    },
+    "apps/api/internal/handlers/loan.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:30a2ff0afbc53d9032f305b627cf5a23426c51a2d2441c4600cbefc93aa2bb77"
+    },
+    "apps/api/internal/handlers/loan_import.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:ef232c0fc01c2711b997007dc29bc2ced350e51c046953f26e660f06516cf4d6"
+    },
+    "apps/api/internal/handlers/loan_test.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:afa51d5dfcfa2cfaea64c3a4ff447ac9e2523f3d1356087c27abee65849fa30f"
+    },
     "apps/api/internal/handlers/magic_link.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -1777,6 +2202,21 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:69683063adc5a0a3492bc68b45e078df2bbb96b3345df22bbae788250a9cd3e9"
+    },
+    "apps/api/internal/handlers/medication.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:416aca5eb85a42bbb4bc555f3d999827a96369835731e62349314ae74d5a62d8"
+    },
+    "apps/api/internal/handlers/medication_import.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:80eb57790cdff12a1781c353db0a9f5f4432b10eacfad4788868be3abc5b866a"
+    },
+    "apps/api/internal/handlers/medication_test.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:98ee08c37dc9389b43acab62db742d2b864f0cf1e1b1a02f1b445fc1c89effb6"
     },
     "apps/api/internal/handlers/notification.go": {
       "generator": "scaffold",
@@ -1798,6 +2238,36 @@
       "grit": "3.498.0",
       "hash": "sha256:092914747d6d6bb1d2f56b58617c3614e6f46ed1dbfa8bb107bb5bdcf3c60acb"
     },
+    "apps/api/internal/handlers/order.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:526cf6654a655c9b217402162e583c5fc21967456f87c6fe56060f7a7d2bcfbc"
+    },
+    "apps/api/internal/handlers/order_import.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:d54f5f1889a249fa40dde35579e45b7c210081867682b92fa95cbd56ec1bf446"
+    },
+    "apps/api/internal/handlers/order_line.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:4ea4e65ee91f7703425c4aa6fa029f44137d6d6279dd722ef362da6018dcbc2b"
+    },
+    "apps/api/internal/handlers/order_line_import.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:af7d39cd3a1ca02784b2b74237eb84844129450bb85a0a43e96f509cbefdef85"
+    },
+    "apps/api/internal/handlers/order_line_test.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:67d15a1ec4838ac36d6efc800c67c7438dcaa9ecdb18c70666d35fae12d45db9"
+    },
+    "apps/api/internal/handlers/order_test.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:99b39fa81dc5df60d782f4e85cf6e2407b17700d36cdf70498ccc0591797e866"
+    },
     "apps/api/internal/handlers/passkey.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -1807,6 +2277,46 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:05e6b0384342197b80001a60021fa053b73214274efe23913756ef4dd09ad353"
+    },
+    "apps/api/internal/handlers/prescription.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:163fc0b42dde5df09339ca6d3b5c0f01ded1fbcb79ed352683b5af105318510b"
+    },
+    "apps/api/internal/handlers/prescription_import.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:52655e1c3b3b432c8dbc92c33966627919a890781152980373c955ed1571170a"
+    },
+    "apps/api/internal/handlers/prescription_test.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:a6e02f49342791b9eb97e183e908ca556f0c325082f7fc1875b0c02407098a1f"
+    },
+    "apps/api/internal/handlers/product.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:ac58663bd5b0775ea390180ca190608d97047904ab81d452df3dc36980baac15"
+    },
+    "apps/api/internal/handlers/product_import.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:6a6174264dc2a41109dc8c9192f64425cfc02c247b950777b43bc265018f50a4"
+    },
+    "apps/api/internal/handlers/product_public.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:042959e492e130a511b1bbb92e0767f35dbc46cfcb89e3fa9a49a1358974e411"
+    },
+    "apps/api/internal/handlers/product_test.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:23b0c2ba79657a00bca92db1e36171f98deb7c691a9981b3ef3547808c95d3a9"
+    },
+    "apps/api/internal/handlers/product_tree.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:df6eb9a96ca9591d22fcb96bac0c924e8ea3e87fb479b34ea13efec1a066eb96"
     },
     "apps/api/internal/handlers/realtime.go": {
       "generator": "scaffold",
@@ -1837,6 +2347,21 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:6272cd7ad036b0ff4d12534decb98055b6d88b668ae9bf3b3e24616143eef2cb"
+    },
+    "apps/api/internal/handlers/repayment.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:6970a6c3dc02689212ff20834499af6d4bc5b2bbeaab4b6f568c971ae246913b"
+    },
+    "apps/api/internal/handlers/repayment_import.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:85e9aaae7f0bcb74fc8b9eb0fcd9779132f14d0d8801cd5204ad19e603cb4f63"
+    },
+    "apps/api/internal/handlers/repayment_test.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:2be7ec7de32275062a22a723eec2dfbf373176cd7b02578eee724cf5d4cfb5b6"
     },
     "apps/api/internal/handlers/resource_stats.go": {
       "generator": "scaffold",
@@ -1902,6 +2427,21 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:50e6390e1059c83bb27e01f25883f353184f7987f6a631d31ccc17fc458a12b1"
+    },
+    "apps/api/internal/handlers/subscription.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:5adcf08ac9e81fac1b9ec5501c81336a6993d668d48a1ed08a6679cfaa3181b5"
+    },
+    "apps/api/internal/handlers/subscription_import.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:ba45a2fe43dc9c787e8fcb37b71ff219f401ebac06e335caecfa50b54d125fe0"
+    },
+    "apps/api/internal/handlers/subscription_test.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:81ee9d3ac110da576d851565fa62bce5e1a165de4140e8447d78fd6d9558daaa"
     },
     "apps/api/internal/handlers/sync.go": {
       "generator": "scaffold",
@@ -2368,6 +2908,16 @@
       "grit": "3.498.0",
       "hash": "sha256:6514cb95d874cfb46f00edca0e2d7964e957dd93e6f2ad7da95ed215358d0949"
     },
+    "apps/api/internal/models/category.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:42c46e1d8b84c021884aa8c413562b7206b4e0298e457c1e051200f56944ca31"
+    },
+    "apps/api/internal/models/customer.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:67649345c546a5a92223e0f317b74fca787b3f111c7373176936aae25556b001"
+    },
     "apps/api/internal/models/dashboard_layout.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2413,10 +2963,35 @@
       "grit": "3.498.0",
       "hash": "sha256:175e6fae5f8a17edff3dc91f689553d5fe95def7b0902187d15e1c5eb176057c"
     },
+    "apps/api/internal/models/invoice.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:13fdcd86724e5552e3c08711b482a302a435f1427a7ed1daf3c6a5d80f61a57e"
+    },
+    "apps/api/internal/models/invoice_item.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:8099818bbb4cdf4d6a90f8cbae4acfbcb648178bca086da58a8247677e2bbc8e"
+    },
+    "apps/api/internal/models/line_charge.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:b40722dd4f0e91c08a732befee6a082d0bb5cc73d73709eaa6e37a5afb75c198"
+    },
+    "apps/api/internal/models/loan.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:37ac58cb8da911bb98880ef08e9c219e93564139e59c0cbb449c4ec84bd1fb63"
+    },
     "apps/api/internal/models/magic_link.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:c75f627253019ddc62c51794d3dafee1756223ddc3cc0c38c191f0934a7e54bf"
+    },
+    "apps/api/internal/models/medication.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:107d2f133a0c27bd88ea8758fe50b84c33a231a3664c85b16a97043be284ed9c"
     },
     "apps/api/internal/models/notification.go": {
       "generator": "scaffold",
@@ -2427,6 +3002,16 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:07e8ee565fa4cde6a8a47188ed6cf6566bea3de30c395f143c4f87629bda7ac9"
+    },
+    "apps/api/internal/models/order.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:1e8f63c4fa9f0579b79f4dfaad99e3b2f50874c978fd035ffda2b859e967bd96"
+    },
+    "apps/api/internal/models/order_line.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:c7ee58a8161536b407730b8aa7976490ab26fb17a8803b1dd38452daa83734c6"
     },
     "apps/api/internal/models/outbox_message.go": {
       "generator": "scaffold",
@@ -2443,10 +3028,25 @@
       "grit": "3.498.0",
       "hash": "sha256:5b079dd6eeec4a2babf8f984e2bbc72841fcb5ba829b0eab9f36ca3791a69ed1"
     },
+    "apps/api/internal/models/prescription.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:dce256c753c65f00fb0bc26faf7e10a7cf5bb7f54453ad448cca63256fd5ee05"
+    },
+    "apps/api/internal/models/product.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:cf05e03c2494a0df7c75c2c414c99bfe7f073d996b71e42d0e45ee1e742449c5"
+    },
     "apps/api/internal/models/recovery_contact.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:37118852f16508e22e32ce1dad6c3d67ba4e7d96d9ad0ee242baad811caedf69"
+    },
+    "apps/api/internal/models/repayment.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:a5a86096b858fcce79707d9d1a24bea42cdcb0055904247ee73a265a039fd783"
     },
     "apps/api/internal/models/role.go": {
       "generator": "scaffold",
@@ -2478,6 +3078,11 @@
       "grit": "3.498.0",
       "hash": "sha256:4601cc9d63b60154476e288a469bbf7b616d08aa2e4b344155ded6c94c7edbf5"
     },
+    "apps/api/internal/models/subscription.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:d0b91252aeab0d71840f7c92d0ca2619061eb150060e80618af8307035d8c288"
+    },
     "apps/api/internal/models/ticket.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2496,7 +3101,7 @@
     "apps/api/internal/models/user.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:68e87f5ed1c3af7ee4dd8567bf2f9c1466b62398d0a3c3da54ead989df756be3"
+      "hash": "sha256:d128d6bbbf42ad5d4a0f6dde07ab284e2f1b9deb2ce7804f102d689a6cebcd10"
     },
     "apps/api/internal/models/user_activity.go": {
       "generator": "scaffold",
@@ -2613,6 +3218,76 @@
       "grit": "3.498.0",
       "hash": "sha256:c01b760c104c01dba5fe3c99e59247ec861857fec14fddff93914681549174f6"
     },
+    "apps/api/internal/policies/category.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:78f756cda852d356fe272fd2670da40b5cd9a37c53d6d76d1fdc50fb3dd83661"
+    },
+    "apps/api/internal/policies/customer.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:75b8347483e200386a9cee62661c686c3606301e7a9eae437e28e7820ba1b284"
+    },
+    "apps/api/internal/policies/invoice.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:b4687712da859c346886d240697c68d37787a4cfa987b2d23d572a341ff67871"
+    },
+    "apps/api/internal/policies/invoice_item.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:c7e67b165eae0673aba8c8e4589715ba37372f099e709437a1995fd0075e92e6"
+    },
+    "apps/api/internal/policies/line_charge.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:b5d2fd346646d8cff7e98c17b211374c61bdce3a4910b9e04254fdc6eaadd6a7"
+    },
+    "apps/api/internal/policies/loan.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:a8acbd4cdeb724296e36108cb7d1312cc4b3ce7b901d464f38332d58edcd2b3c"
+    },
+    "apps/api/internal/policies/medication.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:1bbd3a31df44a59b95e8869a537bc185a33ad431085276bec834153b513dd857"
+    },
+    "apps/api/internal/policies/order.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:5df20006dce2be564f7827d10bff88d957f27f83c3b49d34c70fcdbe16db7999"
+    },
+    "apps/api/internal/policies/order_line.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:ee48d9f06d47a04b9b4f9e7f8b01d567b85997be33eac77d0bcaa9e888bba9c7"
+    },
+    "apps/api/internal/policies/policies.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:70ccca56fe10a460ee651e6581774dea06a348ff82ff0f28d36163f3d70c7b43"
+    },
+    "apps/api/internal/policies/prescription.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:1e43d4a67d80daba0781be3768d469406eff83576f3bcde50afda313229707c0"
+    },
+    "apps/api/internal/policies/product.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:f5616c5d3bee2e258d8420ac4f4c41ebda0b6717b064f51ea2e87e15b25f1d2b"
+    },
+    "apps/api/internal/policies/repayment.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:dfc595c46411857b83f00a6d9ceab9b4d2e70f7d54d452d04119b21e2be8dce1"
+    },
+    "apps/api/internal/policies/subscription.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:1ae491d8928567d0534c1065f550add850778f495ea045788130c85b1446a763"
+    },
     "apps/api/internal/realtime/backplane.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2706,7 +3381,67 @@
     "apps/api/internal/routes/apidocs.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:b1f1706571f44b32e348f879fd62956ea1f1a83fb01c7fa21cd8337c4edf4b28"
+      "hash": "sha256:ef0643fbcdf527ac225ccc4fa66c204157eb8b36bc9e41cd716cac4797ed4ce6"
+    },
+    "apps/api/internal/routes/category_routes.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:74ca912d50aa3290eb4b77af5c52dfe4b47b9a61466ac64dd0a49889deda4105"
+    },
+    "apps/api/internal/routes/customer_routes.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:98e6d1c9142d2d2e092cf1c0470e49430a83dd7f091355839dd3f8c33e58201f"
+    },
+    "apps/api/internal/routes/invoice_item_routes.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:31e7826d67c7863e5f07b8f695be789e9d1359699931da2255e6453aad23a2ea"
+    },
+    "apps/api/internal/routes/invoice_routes.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:7edd5f598cca288caa6b934c2533725ce0f36ede0dc775dc6c87a62c6f478632"
+    },
+    "apps/api/internal/routes/line_charge_routes.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:1ef798b26fc4f4c5169907e21369b8805762db3ac5874269391c3e0f8ddef75c"
+    },
+    "apps/api/internal/routes/loan_routes.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:2640cbb944a8676141bf375fcc1c115c0a5cbf72b6b30f7098210fb1d935762f"
+    },
+    "apps/api/internal/routes/medication_routes.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:5ae1efe86e0a884fcd8f5b8504428f22d5c315a3c34350bbcb363b4d7e37b99d"
+    },
+    "apps/api/internal/routes/order_line_routes.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:cf468162c95f60a0575fee952fe6d8ee0bfebc8ed90e364c7da7ee19b14b1ff4"
+    },
+    "apps/api/internal/routes/order_routes.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:9a1ee918e2f93f22ff4ab5495b03648ef8fd5994fbf27268be6987a55b90c78b"
+    },
+    "apps/api/internal/routes/prescription_routes.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:f2dbd4434bb548ed23706df164c1e87f53fd0bb0a1a73f41869b38416c714ac4"
+    },
+    "apps/api/internal/routes/product_routes.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:79bf74312c625d27430ca97074bc6ba43f72f835bb2076b492562cd34bf76ca6"
+    },
+    "apps/api/internal/routes/repayment_routes.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:102084c088a9da2f8e2f93be62fc2c1579a85f605b4ea6cfedf2a83b8a16a6c0"
     },
     "apps/api/internal/routes/resources.go": {
       "generator": "scaffold",
@@ -2716,7 +3451,12 @@
     "apps/api/internal/routes/routes.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:fc06ba2e4880841e518c6ce27cb553ba4c97ebfe3709dfa8753d850453251f98"
+      "hash": "sha256:6a2ed9f31d55ade13f6a587aec92a3d8beee949332f2a737320e7c278142439b"
+    },
+    "apps/api/internal/routes/subscription_routes.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:284d18b5f68735d76fd34eb10aa0bc669e0389663bf8db8c454e5b964fe3ea33"
     },
     "apps/api/internal/safefetch/safefetch.go": {
       "generator": "scaffold",
@@ -2752,6 +3492,11 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:f36fd405d343d0f47711c41774d2cc583600ebbef95952c8409b2b66c7210348"
+    },
+    "apps/api/internal/sequence/sequence.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:798e1bb06380c555ae1282e79ea8f6350e9891bb7e1389c532e22e6e320adc63"
     },
     "apps/api/internal/services/access_review.go": {
       "generator": "scaffold",
@@ -2798,6 +3543,26 @@
       "grit": "3.498.0",
       "hash": "sha256:0cd3cf5d50d8d819c553fb7cf310b67794b86eb37624802451f8b17f83ca5051"
     },
+    "apps/api/internal/services/category.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:e664dc039d03f87f46c5e9ed5b1e3f2041c4c47c11c5dadb34a6c6ba45c18760"
+    },
+    "apps/api/internal/services/category_import.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:0c1bea8a95a1e7e4454fc249ee49d03a7543ab4a7ae6631752bce13a9a8fe60e"
+    },
+    "apps/api/internal/services/category_tree.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:87304ed6d8523d8cfe6619ca90192234d06ddc11312200ebf43c78837c8ad801"
+    },
+    "apps/api/internal/services/category_tree_test.go": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:1e4d8743eda1cd417828859df4eb488b184b491837cf0bc2a9ea24539ca4b280"
+    },
     "apps/api/internal/services/chart_dispatch.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2807,6 +3572,16 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:be1938b8571590fa09576f9f25039bf69992afceb111e5b8501b2f7d6d7ff9c8"
+    },
+    "apps/api/internal/services/customer.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:6827109013d6df90ad8cc1acac8bf0959a0f3e2755ba3b2bd6de47f6a307b095"
+    },
+    "apps/api/internal/services/customer_import.go": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:62a39c051105d4d4a49428f3bbfc07a0f67d46eb037ec3d480aef4038a2dc3b8"
     },
     "apps/api/internal/services/day_bucket.go": {
       "generator": "scaffold",
@@ -2846,7 +3621,7 @@
     "apps/api/internal/services/form_share_dispatch.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:0f77f24b3bd7c17ae6fc2e6228b5088c46a99b9bb902f66a6431bf68d8ded666"
+      "hash": "sha256:cb3481592125e7e4e6da3370d209496c2f7bed991bef87e8cd2795cb3ff1ca9d"
     },
     "apps/api/internal/services/gdpr.go": {
       "generator": "scaffold",
@@ -2858,6 +3633,31 @@
       "grit": "3.498.0",
       "hash": "sha256:77454c2f5475830a85a568da620b3d1f70210550673d6c8f0ce33ff2bf1db7d2"
     },
+    "apps/api/internal/services/invoice.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:2bb2628b044010decbf71d7e47f326b2c70bdee2593b0a834c33f3ed500d0415"
+    },
+    "apps/api/internal/services/invoice_import.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:5a30815809b57b190e3005a7a47f2f75ee5986829fb7a200027bc977f80132fd"
+    },
+    "apps/api/internal/services/invoice_item.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:c5856e14844efd93bdcb53b91cb423f162bdb8dea2ac053dee12b7378d1a7c97"
+    },
+    "apps/api/internal/services/invoice_item_import.go": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:b7346205ca4a7698c30547dbaacd2bbc39e91564396aa66aa837e016d7fa7c9f"
+    },
+    "apps/api/internal/services/invoice_sequence.go": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:69c45707e19e9fae6053c68dab37bbd65d2d18cd0bc15afead143402f5ba258d"
+    },
     "apps/api/internal/services/jwtkeys.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2868,6 +3668,26 @@
       "grit": "3.498.0",
       "hash": "sha256:04f519a24faa2aceae3e7fc409c8295525706b7272f74d2de4d1af85751a932d"
     },
+    "apps/api/internal/services/line_charge.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:2490257d2f157dd5301c6922e7939cc4e87fdf9f3a9dced162d5e0dc0c240773"
+    },
+    "apps/api/internal/services/line_charge_import.go": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:6c1edc9932e190ad02cb1cc0d692e45203f4f4a3767e585d6973d7b75466e27f"
+    },
+    "apps/api/internal/services/loan.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:31dc55421ddf58d1bb8f18d85f1ded60d6c873f53ee02eddad9e340ded35bb31"
+    },
+    "apps/api/internal/services/loan_import.go": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:d4f51da254c0864cdf1fb357c6b124350efa900d94d32933141b161cdd4164f5"
+    },
     "apps/api/internal/services/magic_link.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2877,6 +3697,16 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:61e30a0436c8c1a7634084d4b134bd22e7d178d0f25220ff062d472d9ae55764"
+    },
+    "apps/api/internal/services/medication.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:0049b22ed424c3d056c9a1930565ac460e10d49fcaa65c8293df5ff5780ada0f"
+    },
+    "apps/api/internal/services/medication_import.go": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:eaaab3e7120af8778f7307551e3371fe17d0641c1dcb40b2d0f07c0e3818d0f7"
     },
     "apps/api/internal/services/oauth_exchange.go": {
       "generator": "scaffold",
@@ -2918,6 +3748,26 @@
       "grit": "3.498.0",
       "hash": "sha256:371010d7a5e5c75920f7191a861afc941a7ba9ed939150380f234533ee432cd9"
     },
+    "apps/api/internal/services/order.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:a032ea05662ef93f62aae221681dd566c39ef87b32fcc68169f9c93f4a52408d"
+    },
+    "apps/api/internal/services/order_import.go": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:0db9eb183d5acc42e0b3b284d6e3a3542286985471bea2082618c379a60219b9"
+    },
+    "apps/api/internal/services/order_line.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:831f05621a49036856fa12b78a8ac0d900cc705c29dd438a32bffba00a0e8ef0"
+    },
+    "apps/api/internal/services/order_line_import.go": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:d993d0757fd821c80b6fea34fae30b1f0de238ec402c94655b1819f6948b8097"
+    },
     "apps/api/internal/services/passkey.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2938,6 +3788,36 @@
       "grit": "3.498.0",
       "hash": "sha256:308cf065d9c6799658e14538d13e14e2750a9515a582ceb94d38c254f0961ab7"
     },
+    "apps/api/internal/services/prescription.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:0cdd2719a714fb8ee7e6b65c273984968b50a5a9f6f9d82bf4f26dc18ff26444"
+    },
+    "apps/api/internal/services/prescription_import.go": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:91b1fabd1c3d78f4cd1b7bd6e9cf5f838d1761adf5dd48b9223815e14591077c"
+    },
+    "apps/api/internal/services/product.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:69ca30b530bcbe68925d5a0f9063347fcbd5c7a13627f7769f183b46b3df77bf"
+    },
+    "apps/api/internal/services/product_import.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:1181fec85e556c40c205baeb9b7ebb501a1c5b34d80e3b7ee3dfe373daa7b0e1"
+    },
+    "apps/api/internal/services/product_tree.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:8522a89c8080cc879996db674ac37a03ad36137f9d6237589e80a2faa9aa7555"
+    },
+    "apps/api/internal/services/product_tree_test.go": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:368b275e58a07a7005c73aec3fbe006ed303d5c9eceecb89ee13cfbf1e317bb7"
+    },
     "apps/api/internal/services/recovery.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2948,6 +3828,16 @@
       "grit": "3.498.0",
       "hash": "sha256:21d7f56912396e7e7e05d67b951d412c5c6e4e1cfce0a25e8741809820e4bbef"
     },
+    "apps/api/internal/services/repayment.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:e7311b784fb1b36517212a320cdfdbbed235d994c88965a7df1b90e093f6a406"
+    },
+    "apps/api/internal/services/repayment_import.go": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:16a9fed568c9e4f79dbee1703f125ba14a3af9e4255c1e89ec360021d7577526"
+    },
     "apps/api/internal/services/request_meta.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -2956,7 +3846,7 @@
     "apps/api/internal/services/resource_stats_dispatch.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:d547f55c104dc2941a524441ee2d50622d153f795c094714181082c478007e80"
+      "hash": "sha256:7f6aa0b7995f60a34f049868ea888cf690d37ae4e26511511098990af9b4c740"
     },
     "apps/api/internal/services/role.go": {
       "generator": "scaffold",
@@ -3027,6 +3917,16 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:f1637c67dbce64133254e671dc7c6e8bbfff699dcb7acf29e80413d4da07146c"
+    },
+    "apps/api/internal/services/subscription.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:0d92d7dc9eaf777574323e873ad9d57d38b922a6574b279056ca717b6b866519"
+    },
+    "apps/api/internal/services/subscription_import.go": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:bf4a11328c9d3aedf55db9e88c2c1b40f9f20e3f3f23a29289600d932b168b23"
     },
     "apps/api/internal/services/sync.go": {
       "generator": "scaffold",
@@ -3286,7 +4186,7 @@
     "apps/desktop/app.go": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:24757b73b1bcbbc479b8b1e6414a7e43160e9044240f8ff9efea3efadc992496"
+      "hash": "sha256:9cbfd77b78f6ba11fbb6980923c0f4aa828a90ff2b151fdd7457c840539720a6"
     },
     "apps/desktop/build/README.md": {
       "generator": "scaffold",
@@ -3448,6 +4348,71 @@
       "grit": "3.498.0",
       "hash": "sha256:702ff7c6b2845c74d767a75822cae1477f8e8cb67f706b49d577878a870f9f13"
     },
+    "apps/desktop/frontend/src/components/resource-forms/categories-form.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:37c5ef121b02ddfa55d99a545f74f33aa287aa3772e09721aa7c586add54b43b"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/customers-form.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:0de9451e81b3eafde917affa96e1c769105a49c83840a3da98828b9a54bcba03"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/invoice-items-form.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:06b52abf73e8e211d23ae186ac109df71f5546de7a7b596715100025e4b7acf2"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/invoices-form.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:20df5337be8f6505c50c8b92f753b838c9db478d78bfabe65cf619d80168af7c"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/line-charges-form.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:02d4b5306ff4e2ff7fcea0cbc9c6ba432914da30c356c9c2df00c6816367d935"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/loans-form.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:f970f72d0579fc7be769d5a7adc36dfcec9df05bcfa178fac8fcfc9f0a395788"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/medications-form.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:89ff3044552c826aa779d9bbfed5516de5f0894db78bf4d978b4e97068528d6a"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/order-lines-form.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:72197526f810fe35ca4b933eff318e397a5ea05c0257f2e7998e4969f248676e"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/orders-form.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:bf962fc578d5b0555b57a3c1a9b00e0765c610fef333b1a4a49dbc21520060e7"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/prescriptions-form.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:bc436ee982969c65271b45e6805e3c2f2a82fce9fd4bae45ff516c3f79bdede9"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/products-form.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:e6cde0bd842bcee078ec316c7e4c4638b550b709b0af4f7f3fcdce86b5213c8f"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/repayments-form.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:6d34300ac7dba45c3617b40327ec6e7890888be6cbb92621e101abb3c02a3c93"
+    },
+    "apps/desktop/frontend/src/components/resource-forms/subscriptions-form.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:25ced96d865c59c0cbd4fe77f9467f15c513c9f4083dc9f01db3d73f88611164"
+    },
     "apps/desktop/frontend/src/components/searchable-select.tsx": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -3528,10 +4493,55 @@
       "grit": "3.498.0",
       "hash": "sha256:44f305c87099774a4d716f73c2a49a9c88dd6fcca9b29c75fc9aeca9dca1b032"
     },
+    "apps/desktop/frontend/src/hooks/use-categories.ts": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:dc3e80aba61d5ae08b1b5076d5192644c14415faf3048938b5bccdb574b3640c"
+    },
+    "apps/desktop/frontend/src/hooks/use-customers.ts": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:4a3738a1631ce634e31b2540311f60c66c06ac0743d510dc37de2b1e904cd203"
+    },
+    "apps/desktop/frontend/src/hooks/use-invoice-items.ts": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:07eb70ca3a8616cc17092454ba31c597b67e64eb1bda49759b0ab83a853e1a9f"
+    },
+    "apps/desktop/frontend/src/hooks/use-invoices.ts": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:b5686f1449673351991b5ea828beec237405d79a651c9bdf73b66c74047715c6"
+    },
+    "apps/desktop/frontend/src/hooks/use-line-charges.ts": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:6904d36d6acd095bae2adb96dfa9a09fcf0e0793da2aff8440efd875db13920d"
+    },
+    "apps/desktop/frontend/src/hooks/use-loans.ts": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:36d67efc5eaf23e55b55147a935d4b2719f185f5d3ed97cc1982d33db75548fa"
+    },
+    "apps/desktop/frontend/src/hooks/use-medications.ts": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:b9a283ef6a39017bdf24ff71546070d48b9fad4357d6d560b0b5e0fc8795757d"
+    },
     "apps/desktop/frontend/src/hooks/use-online-status.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:25a033c27cc2f4d2159313e6788ebcc8ca1181b55e4f3f3d0138e3c4ffe3b3b2"
+    },
+    "apps/desktop/frontend/src/hooks/use-order-lines.ts": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:b11b97cb43bdba5420007ef6c7e2c243fc76e05035ed04b598bc3c39002d182e"
+    },
+    "apps/desktop/frontend/src/hooks/use-orders.ts": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:157c3fc76a4b3da772ef64cddb4d36137da30993e914417efe20e2d4d394e347"
     },
     "apps/desktop/frontend/src/hooks/use-pending-uploads.ts": {
       "generator": "scaffold",
@@ -3543,10 +4553,30 @@
       "grit": "3.498.0",
       "hash": "sha256:32f79dc1c30c410f3fb56161be3ff863b838ccbab96c3c90378f28a161a71142"
     },
+    "apps/desktop/frontend/src/hooks/use-prescriptions.ts": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:90ea625b206e1b3dbf28cd0bb536e19d2624058dfdea51d6d4e1f5668ec2cd18"
+    },
+    "apps/desktop/frontend/src/hooks/use-products.ts": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:1a4e34fed385244c0f363f44e6c8e600f2587313ffe4c81b00caad3e5f75aa93"
+    },
     "apps/desktop/frontend/src/hooks/use-realtime.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:5a997988e78d0c5408118350e85713d56a122bd21187b2ad675559934313a329"
+    },
+    "apps/desktop/frontend/src/hooks/use-repayments.ts": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:f0a76ebaffd11d47483c3b01fce67a4899843d712655debdba175a41e52a9e2c"
+    },
+    "apps/desktop/frontend/src/hooks/use-subscriptions.ts": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:4ca9b15906083a5f485b751016e078293960bf656d361423f835bb75d49da7c2"
     },
     "apps/desktop/frontend/src/hooks/use-sync-status.ts": {
       "generator": "scaffold",
@@ -3581,7 +4611,7 @@
     "apps/desktop/frontend/src/lib/nav-config.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:1679c3f3e19a2954a1796daa06319f2413ae267dd50e43efc48a79326f8a981e"
+      "hash": "sha256:a851ca06336de681c591ce8846e77fc5e26b5c386854672f05557eaf061e955c"
     },
     "apps/desktop/frontend/src/lib/password-rules.ts": {
       "generator": "scaffold",
@@ -3643,6 +4673,36 @@
       "grit": "3.498.0",
       "hash": "sha256:15f5e6d6d5afac10cc57c1e145def35fb4c5af3fb8073222be12af7a86a847cd"
     },
+    "apps/desktop/frontend/src/routes/app/categories.$id.edit.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:78ab5447b0944d2626382d28fa5c1ce6a070b243a6b0a74941b8ae04e1bfd9dd"
+    },
+    "apps/desktop/frontend/src/routes/app/categories.index.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:7b2716f918db637f6a7c17010e2e13378475e04d5fcbffb9b9191c6c33840df1"
+    },
+    "apps/desktop/frontend/src/routes/app/categories.new.tsx": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:0338e9c8f712373fdd5e8bc54bde033742d7eda1d5369ebc69ba8b3df270e55a"
+    },
+    "apps/desktop/frontend/src/routes/app/customers.$id.edit.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:ee4e21a9a8bbb7900ba4b3920610b5595f5a47c01f46d327862241eeebdb985c"
+    },
+    "apps/desktop/frontend/src/routes/app/customers.index.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:5fdf74e0611c8d618392ad53f68aa6ca65185fdf3e80319970e13f8f47f95e56"
+    },
+    "apps/desktop/frontend/src/routes/app/customers.new.tsx": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:2f63dfa89179baa8b6cd8dd4e42e93dee7832fa246cc505230c7f70d01229ff0"
+    },
     "apps/desktop/frontend/src/routes/app/data-backup.tsx": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -3653,15 +4713,180 @@
       "grit": "3.498.0",
       "hash": "sha256:bf3eee195b08740787b1fa893e3a4c09a6211f355dbaac8360c3ee7560bbbf78"
     },
+    "apps/desktop/frontend/src/routes/app/invoice_items.$id.edit.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:ce315871ee5615535d3f3bd7686c04c3d3ace38c0703a160261c0d9707660774"
+    },
+    "apps/desktop/frontend/src/routes/app/invoice_items.index.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:41060147f1729a30294c58b9f63e46ceed1ed696af5bb21b96f2f6f25406064a"
+    },
+    "apps/desktop/frontend/src/routes/app/invoice_items.new.tsx": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:f2af89c9d82c2799bebf903324525ffaad892ccbdcd6bce685a7498d5a641dad"
+    },
+    "apps/desktop/frontend/src/routes/app/invoices.$id.edit.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:5174bd448794eadf03f7c6c1b2d0d5a49ecc2de4822e0c7c1bfcc966edbe8449"
+    },
+    "apps/desktop/frontend/src/routes/app/invoices.index.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:b93c074791f124894f8e49f6d1e28bc09d7dc7f1ac938c9a1747a1117c36db0f"
+    },
+    "apps/desktop/frontend/src/routes/app/invoices.new.tsx": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:759b046c8a3dad5bc281965778bb618d0bc1829f70e49b20ddfe6d58479dfdbd"
+    },
+    "apps/desktop/frontend/src/routes/app/line_charges.$id.edit.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:01032fcdba9c48dc5bfbfa9efbfb111b32a0071244f58fa4164d9af876afc59d"
+    },
+    "apps/desktop/frontend/src/routes/app/line_charges.index.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:32de7ee074c2c5c7f7b1205ca143d5ea29bb34daa092f999cc77d4359398a00f"
+    },
+    "apps/desktop/frontend/src/routes/app/line_charges.new.tsx": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:73b1ef4b38615d88a68603e8d082ebac84c10aa2994aca297fa20d0410daf14a"
+    },
+    "apps/desktop/frontend/src/routes/app/loans.$id.edit.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:9547a0ad815de3cb77b99e07075cfd3165784a39c706438875904a5ce075804c"
+    },
+    "apps/desktop/frontend/src/routes/app/loans.index.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:2bb701346ff6c51193c7708163b9d560a78aa55ff04facabe326f2bfced984f5"
+    },
+    "apps/desktop/frontend/src/routes/app/loans.new.tsx": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:66b07fedef43d980526cff2b9afe7d81f762cd29d110c6fd545ad6e0bcfeb067"
+    },
+    "apps/desktop/frontend/src/routes/app/medications.$id.edit.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:720a1c8b734ff2616640035c034952629dacd61414bcefeefd24ac253e5333da"
+    },
+    "apps/desktop/frontend/src/routes/app/medications.index.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:6b9989b63999f7bcfa5976911d66a7a2d2ea871d1b09ba5d31349a6d5e1ff8c4"
+    },
+    "apps/desktop/frontend/src/routes/app/medications.new.tsx": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:17dfa659c1d2e02c98d1a8da495213a85b4b8ca60a1e5a0c8bc98fee591e1cf7"
+    },
+    "apps/desktop/frontend/src/routes/app/order_lines.$id.edit.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:7938d02649ed53cf2c0e96a0f6c890ac4747f65ffd7f0706e9eb1d06ae9a4583"
+    },
+    "apps/desktop/frontend/src/routes/app/order_lines.index.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:15de4e847bb1aadde30881dd6dbd9e8f66726ddebb4434e98e8cc01cf4c94af8"
+    },
+    "apps/desktop/frontend/src/routes/app/order_lines.new.tsx": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:3675d5c615e93a2bc9b8a59aec303f1b29627c4633df37ae685f41186fa38429"
+    },
+    "apps/desktop/frontend/src/routes/app/orders.$id.edit.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:9f367272c25bd9b08d6d8b736569c72a74f940cbd6d818ecdb77c55c49402676"
+    },
+    "apps/desktop/frontend/src/routes/app/orders.index.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:47dfae953d5eb5cd519391b9bbe14da67ea0b4b9f8c68cb3f1559c2efb02bd8a"
+    },
+    "apps/desktop/frontend/src/routes/app/orders.new.tsx": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:bd0ea44b9e81c9100be6a03668a83a5bb1a57b05e3e9458862ed27bdc270d121"
+    },
+    "apps/desktop/frontend/src/routes/app/prescriptions.$id.edit.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:a9f07272df574b16b7f9ae7d4ae8e105dd6fcd8e93c6b20aec5ea0fdfd3ed000"
+    },
+    "apps/desktop/frontend/src/routes/app/prescriptions.index.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:2e101fc2db7f0ec9059702bc23b503ed3ca58903b288c94e92687391eacf332a"
+    },
+    "apps/desktop/frontend/src/routes/app/prescriptions.new.tsx": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:4c40e8d656ca02b130c921188006dfd76b251e2ce81203804a746a617e9348c5"
+    },
+    "apps/desktop/frontend/src/routes/app/products.$id.edit.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:34539389f1cbbe59b67418edc8ae759e516841fb416844d47889f305aa32f1ce"
+    },
+    "apps/desktop/frontend/src/routes/app/products.index.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:6ffc5615c60b1bd9ff2ab7dc5579fa053f347bf83d66261a3124751f73820fdb"
+    },
+    "apps/desktop/frontend/src/routes/app/products.new.tsx": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:96442e4f81a68ad71c855ec9f5ade0ca8555f53cb6ec0781019b3e11f38f1cd8"
+    },
     "apps/desktop/frontend/src/routes/app/profile.tsx": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:035a0ec049fb7e474ea3a3a11c866c8b45fdd289192961b302df382e169ffb8a"
     },
+    "apps/desktop/frontend/src/routes/app/repayments.$id.edit.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:6287c44ef68987ff165eb8ff9563920a8f9ce7688b0f49ff74107eed1220d328"
+    },
+    "apps/desktop/frontend/src/routes/app/repayments.index.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:f6c7181d1ce2cc4ab0260b07d7d748c003babd18cb9f56b261bca422f4ceaa08"
+    },
+    "apps/desktop/frontend/src/routes/app/repayments.new.tsx": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:55d29849cceba069ffa1590a1253651bf755be0c0c7751034543a05dcc4382aa"
+    },
     "apps/desktop/frontend/src/routes/app/settings.tsx": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:9ba8b01b5e52439ec38181629a832624cae9ec545d0cbfc0b0b7e18a4d81cf29"
+    },
+    "apps/desktop/frontend/src/routes/app/subscriptions.$id.edit.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:67eb2f35ea8f61505f5086e1e514a7a71c948b58e334cca0a99784252c0da14c"
+    },
+    "apps/desktop/frontend/src/routes/app/subscriptions.index.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:7c444e3cab671e701f5cc46cacf83179436afe65219ba79fcf86a51732c72e15"
+    },
+    "apps/desktop/frontend/src/routes/app/subscriptions.new.tsx": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:e0ea64720c459122d196345e177e023b55665d2a3f2950f5da073c6d24816943"
     },
     "apps/desktop/frontend/src/routes/app/sync.tsx": {
       "generator": "scaffold",
@@ -3948,15 +5173,80 @@
       "grit": "3.498.0",
       "hash": "sha256:6b6e1d9eff61537a1b67a6bfee7f026cd8be0b634b7f79b88d118aaa168e1256"
     },
+    "apps/web/hooks/use-categories.ts": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:ddd8236d18d3f920911aa8cc165e889655b8f1447751df72ae056d666a9de352"
+    },
+    "apps/web/hooks/use-customers.ts": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:89e14cda2fa3c8635237603b78a1c8ea7ba21315565d695bb1c41b0a3830ead4"
+    },
+    "apps/web/hooks/use-invoice-items.ts": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:cdd06d7120238b5fa5a5203587ad1f2a89b61b8a72caeba9ee4b4c427db0ab81"
+    },
+    "apps/web/hooks/use-invoices.ts": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:b0b1e76dbf6ef04faa3841ec2164eb2b252ea14625f551d74fb59ad08504f78d"
+    },
+    "apps/web/hooks/use-line-charges.ts": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:8b959a783d90ed4e612e6778b564d80bf34b7b1402f86d994bdefaaae6df8b17"
+    },
+    "apps/web/hooks/use-loans.ts": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:d188dcd290779ac7e95b08163d66ceae840dd4ee797262256fc896c2d5edda61"
+    },
+    "apps/web/hooks/use-medications.ts": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:22e9524383d2c87a8f8154a13ac6afec1499e6ac09543ba3c6ef03c67246dcbd"
+    },
+    "apps/web/hooks/use-order-lines.ts": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:15ccf944d43795a3b5ada5cfdde6c54fe5af3f0c04a16dcfddd1507fefa99896"
+    },
+    "apps/web/hooks/use-orders.ts": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:b5fdc58677d3847edc7d942ca448e459c03eab71b9d13cb466bc4b76632c755a"
+    },
+    "apps/web/hooks/use-prescriptions.ts": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:f07a6f38b7ecdfea2e5e6e8985d64582c560807317d455f0391c00d18a80da21"
+    },
+    "apps/web/hooks/use-products.ts": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:f4ccfd0ba7d3b3494d0fe8f067c3f55618b37300915aabc5c9c7be6045e47837"
+    },
     "apps/web/hooks/use-realtime.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:dc5c98ef7ea352bdca1a53c19d1a4f636b2e450db709dc8d38d45ead6a65792d"
     },
+    "apps/web/hooks/use-repayments.ts": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:4daa443fb7d7940d1e82a095f496f9b70d9a3bcd289d79929395d3b4a6929ace"
+    },
     "apps/web/hooks/use-resource.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:752ffb4662a8de7fbdf8e301c96f90aa1feedf680f95e0af3fd94f0a8b448857"
+    },
+    "apps/web/hooks/use-subscriptions.ts": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:d2d70d201b2bde561d34b89be8f086c64d95b858800463d271cc4b2186078a94"
     },
     "apps/web/lib/active-org.ts": {
       "generator": "scaffold",
@@ -4086,7 +5376,7 @@
     "packages/shared/constants/index.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:82c32bd2a8f79e678b4ca4e62bb1700cab071174ab782f38af2e7a355eea0776"
+      "hash": "sha256:48e446774461751523f6765a1594e081665a1109c18a057163d8cca91bc4bf3d"
     },
     "packages/shared/package.json": {
       "generator": "scaffold",
@@ -4097,6 +5387,16 @@
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:d93fe101d80905a424bf2b691aa4f5fa7b77756151164db2ebb2d2d0a361a5f3"
+    },
+    "packages/shared/schemas/category.ts": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:69ccd6e74105d8b4944fbfa60127ae4eb2d8543751dbaaa28da989f070bd515c"
+    },
+    "packages/shared/schemas/customer.ts": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:f792b368a7c7121d7e1a061b73b1c5e42a99f643a98373590808a19851aaa5cd"
     },
     "packages/shared/schemas/field-formats.ts": {
       "generator": "scaffold",
@@ -4111,22 +5411,77 @@
     "packages/shared/schemas/index.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:e18a933ca2768cfce3ee5ce140a9a307d734a97cd8343c9fc6819dcd0c4d940c"
+      "hash": "sha256:17d8d895dbd86f3d1b6258817e2be7c68a61ab94bc1d5eeb5d9c80fe130e9cb9"
+    },
+    "packages/shared/schemas/invoice-item.ts": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:40c086b36a97c1269ac0498409bed0b50e3cef7965fa7c126f2ccd183454097f"
+    },
+    "packages/shared/schemas/invoice.ts": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:4c45c15ff6bff4e9a04f33f75101c92f77b4513eb831eff076ac5f7af40d9e6a"
+    },
+    "packages/shared/schemas/line-charge.ts": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:2bbed8e74428b936b9d6ca62723563a7dff7346d1c20f3355e1fc22d18bf6646"
+    },
+    "packages/shared/schemas/loan.ts": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:3639341bf766aaf032a6c68ea6d920c9d49a32039bbd15a0526642940be195fc"
+    },
+    "packages/shared/schemas/medication.ts": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:a22538677e45c451be61ea9d54d8f5f0243a4633ac64e67756dacb2b5b1f9057"
     },
     "packages/shared/schemas/money.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:90288efa52660e9e3115d8450f24f8c0566a5d404c6b3f6467393fbaa7a6805e"
     },
+    "packages/shared/schemas/order-line.ts": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:485a3ca727a95630ac53ba3a7962711bb8b58c8041ce7ce8050234e9af892bb8"
+    },
+    "packages/shared/schemas/order.ts": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:428bb0f23b1e76a0546a574ce5f81d2149b6431ff6d10655c11e5e5ba86a74d2"
+    },
     "packages/shared/schemas/phone.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:8eddac417136de45463234c03e908ded9670e8bcb2437b0e40ec1c39de65c565"
     },
+    "packages/shared/schemas/prescription.ts": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:be0dccd77fd9d69d1c967a70221f7281ae726716223699d16bd369bf925daf18"
+    },
+    "packages/shared/schemas/product.ts": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:a8baddaa71e461e727fbabc09f72f188b64c4f5cb13a9901f6ab2fbd2c907db8"
+    },
     "packages/shared/schemas/profile.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:e0a0649dea5c25b00d7d1f2d6747fc9f3a9bd88b34effe063ad5cfaf682d4bc9"
+    },
+    "packages/shared/schemas/repayment.ts": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:123dd14e7075ff6ba4d34fe5c8fa3ec149adce84198d612698e0d601c84855e4"
+    },
+    "packages/shared/schemas/subscription.ts": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:78de31cc2077108761b6faa44d4069efb878ac520f06b96bc9b6695fbb3505f1"
     },
     "packages/shared/schemas/user.ts": {
       "generator": "scaffold",
@@ -4158,6 +5513,16 @@
       "grit": "3.498.0",
       "hash": "sha256:64a01eb872af398a5c36e1a8a86cc37aed24a3e97da52f3b4b35d3546c77cee3"
     },
+    "packages/shared/types/category.ts": {
+      "generator": "resource:Category",
+      "grit": "3.498.0",
+      "hash": "sha256:c32fd8533556163890f41ba25a49adf45d5a0cb12b61deff66ca56696ee4049e"
+    },
+    "packages/shared/types/customer.ts": {
+      "generator": "resource:Customer",
+      "grit": "3.498.0",
+      "hash": "sha256:7ca5bbf309c230fe99406293ef20049c86880600c64b311c314a091623fb42bc"
+    },
     "packages/shared/types/errors.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
@@ -4181,7 +5546,32 @@
     "packages/shared/types/index.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
-      "hash": "sha256:b10b55cb97991ef932d8f02e5eaa6c74b014933329c6767f667dcd095e0bfaf1"
+      "hash": "sha256:b957aca7ae6cd3b4c3e208d27ef8a2b8b4402a2390767ceaaaea5ae39fcec90c"
+    },
+    "packages/shared/types/invoice-item.ts": {
+      "generator": "resource:InvoiceItem",
+      "grit": "3.498.0",
+      "hash": "sha256:212d7bf39e3b08b5add8853bf684b03861470b927d1b22d22b7e2e927b22c2bb"
+    },
+    "packages/shared/types/invoice.ts": {
+      "generator": "resource:Invoice",
+      "grit": "3.498.0",
+      "hash": "sha256:a723eef46e420daab9c9b09d1f7357dfc7e07fd2667cccf8dbe0fc26dd48a692"
+    },
+    "packages/shared/types/line-charge.ts": {
+      "generator": "resource:LineCharge",
+      "grit": "3.498.0",
+      "hash": "sha256:a47ee0e101c18c776aecb34d7e2a459d151f308c0b775c2a41cd32408f0830d9"
+    },
+    "packages/shared/types/loan.ts": {
+      "generator": "resource:Loan",
+      "grit": "3.498.0",
+      "hash": "sha256:5c86d5d0b80132859a882fe22e9cab7a74bd4339a97033f51d86b6e5ca370c2d"
+    },
+    "packages/shared/types/medication.ts": {
+      "generator": "resource:Medication",
+      "grit": "3.498.0",
+      "hash": "sha256:99ec115be006368cf9dfb5e376efaff28aeaa35b217e4d8275247318e282801e"
     },
     "packages/shared/types/money.ts": {
       "generator": "scaffold",
@@ -4193,10 +5583,40 @@
       "grit": "3.498.0",
       "hash": "sha256:8d460fc3972aeb8d9379bffb967f95f159af26f3d231fa0f839b71a24580c4f2"
     },
+    "packages/shared/types/order-line.ts": {
+      "generator": "resource:OrderLine",
+      "grit": "3.498.0",
+      "hash": "sha256:e9004cccac960ae6ed938dcfa53fd4a03808e3864919ad60ffa3a5124bf75363"
+    },
+    "packages/shared/types/order.ts": {
+      "generator": "resource:Order",
+      "grit": "3.498.0",
+      "hash": "sha256:9ee9264eaaca63d9558601cb8f8c190458d1439f5acedc75e3561a33e0fd23ce"
+    },
+    "packages/shared/types/prescription.ts": {
+      "generator": "resource:Prescription",
+      "grit": "3.498.0",
+      "hash": "sha256:70f55dd02c6e84d1cd3787cfae98a729149f0a811918d0ceae22b288f1ace82c"
+    },
+    "packages/shared/types/product.ts": {
+      "generator": "resource:Product",
+      "grit": "3.498.0",
+      "hash": "sha256:ca9c2733d42d400f8ed35bde3cd63b5557ab37d54987130181bc3ae216737044"
+    },
+    "packages/shared/types/repayment.ts": {
+      "generator": "resource:Repayment",
+      "grit": "3.498.0",
+      "hash": "sha256:6dc2a04ca529d42b280426d216c6d282e1fe0a4c17d9a8fb4ce972873db90781"
+    },
     "packages/shared/types/sso-connection.ts": {
       "generator": "scaffold",
       "grit": "3.498.0",
       "hash": "sha256:3600d5a2fcc79929fa976c9b4dd0291e66347bb6d2d2476a1df612e3dc08eaa9"
+    },
+    "packages/shared/types/subscription.ts": {
+      "generator": "resource:Subscription",
+      "grit": "3.498.0",
+      "hash": "sha256:2d03ac4f6191d00de4b633d2c12a09b81839d2755db037283927b8d94f259b3b"
     },
     "packages/shared/types/ticket-reply.ts": {
       "generator": "scaffold",

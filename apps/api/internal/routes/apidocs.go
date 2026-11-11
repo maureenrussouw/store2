@@ -37,7 +37,7 @@ func registerAPIDocs(r *gin.Engine, db *gorm.DB, cfg *config.Config) {
 		// inside this app. They are not your API, and 111 of their routes in
 		// the reference buries the ~140 that are yours.
 		ExcludePrefixes: []string{"/pulse", "/sentinel", "/studio", "/docs"},
-		Models:          []interface{}{&models.User{}, &models.Upload{}, &models.Blog{} /* grit:docs:models */},
+		Models:          []interface{}{&models.User{}, &models.Upload{}, &models.Blog{}, &models.Category{}, &models.Product{}, &models.Customer{}, &models.InvoiceItem{}, &models.Invoice{}, &models.OrderLine{}, &models.Order{}, &models.Repayment{}, &models.Loan{}, &models.LineCharge{}, &models.Subscription{}, &models.Medication{}, &models.Prescription{} /* grit:docs:models */},
 		Auth: gindocs.AuthConfig{
 			Type:         gindocs.AuthBearer,
 			BearerFormat: "JWT",
@@ -57,6 +57,370 @@ func registerAPIDocs(r *gin.Engine, db *gorm.DB, cfg *config.Config) {
 	docsRedirectAndStreamRoutes(docs)
 
 	// grit:docs:routes — "grit generate resource" registers each resource here.
+	docs.Route("GET /api/v1/categories").
+		Summary("List categories").
+		Response(200, []models.Category{}, "A page of categories").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/categories").
+		Summary("Create a category").
+		RequestBody(handlers.CreateCategoryRequest{}).
+		Response(201, models.Category{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/categories/:id").
+		Summary("Get one category").
+		Response(200, models.Category{}, "The category").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/categories/:id").
+		Summary("Update a category").
+		RequestBody(handlers.UpdateCategoryRequest{}).
+		Response(200, models.Category{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/categories/:id").
+		Summary("Delete a category").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/products").
+		Summary("List products").
+		Response(200, []models.Product{}, "A page of products").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/products").
+		Summary("Create a product").
+		RequestBody(handlers.CreateProductRequest{}).
+		Response(201, models.Product{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/products/:id").
+		Summary("Get one product").
+		Response(200, models.Product{}, "The product").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/products/:id").
+		Summary("Update a product").
+		RequestBody(handlers.UpdateProductRequest{}).
+		Response(200, models.Product{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/products/:id").
+		Summary("Delete a product").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/customers").
+		Summary("List customers").
+		Response(200, []models.Customer{}, "A page of customers").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/customers").
+		Summary("Create a customer").
+		RequestBody(handlers.CreateCustomerRequest{}).
+		Response(201, models.Customer{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/customers/:id").
+		Summary("Get one customer").
+		Response(200, models.Customer{}, "The customer").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/customers/:id").
+		Summary("Update a customer").
+		RequestBody(handlers.UpdateCustomerRequest{}).
+		Response(200, models.Customer{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/customers/:id").
+		Summary("Delete a customer").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/invoice_items").
+		Summary("List invoice_items").
+		Response(200, []models.InvoiceItem{}, "A page of invoice_items").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/invoice_items").
+		Summary("Create a invoiceitem").
+		RequestBody(handlers.CreateInvoiceItemRequest{}).
+		Response(201, models.InvoiceItem{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/invoice_items/:id").
+		Summary("Get one invoiceitem").
+		Response(200, models.InvoiceItem{}, "The invoiceitem").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/invoice_items/:id").
+		Summary("Update a invoiceitem").
+		RequestBody(handlers.UpdateInvoiceItemRequest{}).
+		Response(200, models.InvoiceItem{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/invoice_items/:id").
+		Summary("Delete a invoiceitem").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/invoices").
+		Summary("List invoices").
+		Response(200, []models.Invoice{}, "A page of invoices").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/invoices").
+		Summary("Create a invoice").
+		RequestBody(handlers.CreateInvoiceRequest{}).
+		Response(201, models.Invoice{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/invoices/:id").
+		Summary("Get one invoice").
+		Response(200, models.Invoice{}, "The invoice").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/invoices/:id").
+		Summary("Update a invoice").
+		RequestBody(handlers.UpdateInvoiceRequest{}).
+		Response(200, models.Invoice{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/invoices/:id").
+		Summary("Delete a invoice").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/order_lines").
+		Summary("List order_lines").
+		Response(200, []models.OrderLine{}, "A page of order_lines").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/order_lines").
+		Summary("Create a orderline").
+		RequestBody(handlers.CreateOrderLineRequest{}).
+		Response(201, models.OrderLine{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/order_lines/:id").
+		Summary("Get one orderline").
+		Response(200, models.OrderLine{}, "The orderline").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/order_lines/:id").
+		Summary("Update a orderline").
+		RequestBody(handlers.UpdateOrderLineRequest{}).
+		Response(200, models.OrderLine{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/order_lines/:id").
+		Summary("Delete a orderline").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/orders").
+		Summary("List orders").
+		Response(200, []models.Order{}, "A page of orders").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/orders").
+		Summary("Create a order").
+		RequestBody(handlers.CreateOrderRequest{}).
+		Response(201, models.Order{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/orders/:id").
+		Summary("Get one order").
+		Response(200, models.Order{}, "The order").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/orders/:id").
+		Summary("Update a order").
+		RequestBody(handlers.UpdateOrderRequest{}).
+		Response(200, models.Order{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/orders/:id").
+		Summary("Delete a order").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/repayments").
+		Summary("List repayments").
+		Response(200, []models.Repayment{}, "A page of repayments").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/repayments").
+		Summary("Create a repayment").
+		RequestBody(handlers.CreateRepaymentRequest{}).
+		Response(201, models.Repayment{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/repayments/:id").
+		Summary("Get one repayment").
+		Response(200, models.Repayment{}, "The repayment").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/repayments/:id").
+		Summary("Update a repayment").
+		RequestBody(handlers.UpdateRepaymentRequest{}).
+		Response(200, models.Repayment{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/repayments/:id").
+		Summary("Delete a repayment").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/loans").
+		Summary("List loans").
+		Response(200, []models.Loan{}, "A page of loans").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/loans").
+		Summary("Create a loan").
+		RequestBody(handlers.CreateLoanRequest{}).
+		Response(201, models.Loan{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/loans/:id").
+		Summary("Get one loan").
+		Response(200, models.Loan{}, "The loan").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/loans/:id").
+		Summary("Update a loan").
+		RequestBody(handlers.UpdateLoanRequest{}).
+		Response(200, models.Loan{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/loans/:id").
+		Summary("Delete a loan").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/line_charges").
+		Summary("List line_charges").
+		Response(200, []models.LineCharge{}, "A page of line_charges").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/line_charges").
+		Summary("Create a linecharge").
+		RequestBody(handlers.CreateLineChargeRequest{}).
+		Response(201, models.LineCharge{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/line_charges/:id").
+		Summary("Get one linecharge").
+		Response(200, models.LineCharge{}, "The linecharge").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/line_charges/:id").
+		Summary("Update a linecharge").
+		RequestBody(handlers.UpdateLineChargeRequest{}).
+		Response(200, models.LineCharge{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/line_charges/:id").
+		Summary("Delete a linecharge").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/subscriptions").
+		Summary("List subscriptions").
+		Response(200, []models.Subscription{}, "A page of subscriptions").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/subscriptions").
+		Summary("Create a subscription").
+		RequestBody(handlers.CreateSubscriptionRequest{}).
+		Response(201, models.Subscription{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/subscriptions/:id").
+		Summary("Get one subscription").
+		Response(200, models.Subscription{}, "The subscription").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/subscriptions/:id").
+		Summary("Update a subscription").
+		RequestBody(handlers.UpdateSubscriptionRequest{}).
+		Response(200, models.Subscription{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/subscriptions/:id").
+		Summary("Delete a subscription").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/medications").
+		Summary("List medications").
+		Response(200, []models.Medication{}, "A page of medications").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/medications").
+		Summary("Create a medication").
+		RequestBody(handlers.CreateMedicationRequest{}).
+		Response(201, models.Medication{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/medications/:id").
+		Summary("Get one medication").
+		Response(200, models.Medication{}, "The medication").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/medications/:id").
+		Summary("Update a medication").
+		RequestBody(handlers.UpdateMedicationRequest{}).
+		Response(200, models.Medication{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/medications/:id").
+		Summary("Delete a medication").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("GET /api/v1/prescriptions").
+		Summary("List prescriptions").
+		Response(200, []models.Prescription{}, "A page of prescriptions").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected")
+	docs.Route("POST /api/v1/prescriptions").
+		Summary("Create a prescription").
+		RequestBody(handlers.CreatePrescriptionRequest{}).
+		Response(201, models.Prescription{}, "Created").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why")
+	docs.Route("GET /api/v1/prescriptions/:id").
+		Summary("Get one prescription").
+		Response(200, models.Prescription{}, "The prescription").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
+	docs.Route("PUT /api/v1/prescriptions/:id").
+		Summary("Update a prescription").
+		RequestBody(handlers.UpdatePrescriptionRequest{}).
+		Response(200, models.Prescription{}, "Updated").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see").
+		Response(422, handlers.ErrorResponse{}, "VALIDATION_ERROR: a field is missing or not acceptable; error.details maps each field to why").
+		Response(409, handlers.ErrorResponse{}, "VERSION_CONFLICT: the row changed since the version in If-Match; the body carries the current one")
+	docs.Route("DELETE /api/v1/prescriptions/:id").
+		Summary("Delete a prescription").
+		Response(204, nil, "Deleted").
+		Response(401, handlers.ErrorResponse{}, "UNAUTHORIZED: the access token is missing, expired or rejected").
+		Response(404, handlers.ErrorResponse{}, "NOT_FOUND: no such row, or none this caller may see")
 	// grit:docs:routes:end
 	log.Println("API docs available at /docs")
 }

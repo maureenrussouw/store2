@@ -60,6 +60,45 @@ func ComputeResourceStats(db *gorm.DB, resourceName string, filter ResourceStats
 		return reflectiveResourceStats(db, resourceName, &models.User{}, filter)
 	case "blogs":
 		return reflectiveResourceStats(db, resourceName, &models.Blog{}, filter)
+	case "categories":
+		return reflectiveResourceStats(db, resourceName, &models.Category{}, filter)
+
+	case "products":
+		return reflectiveResourceStats(db, resourceName, &models.Product{}, filter)
+
+	case "customers":
+		return reflectiveResourceStats(db, resourceName, &models.Customer{}, filter)
+
+	case "invoice_items":
+		return reflectiveResourceStats(db, resourceName, &models.InvoiceItem{}, filter)
+
+	case "invoices":
+		return reflectiveResourceStats(db, resourceName, &models.Invoice{}, filter)
+
+	case "order_lines":
+		return reflectiveResourceStats(db, resourceName, &models.OrderLine{}, filter)
+
+	case "orders":
+		return reflectiveResourceStats(db, resourceName, &models.Order{}, filter)
+
+	case "repayments":
+		return reflectiveResourceStats(db, resourceName, &models.Repayment{}, filter)
+
+	case "loans":
+		return reflectiveResourceStats(db, resourceName, &models.Loan{}, filter)
+
+	case "line_charges":
+		return reflectiveResourceStats(db, resourceName, &models.LineCharge{}, filter)
+
+	case "subscriptions":
+		return reflectiveResourceStats(db, resourceName, &models.Subscription{}, filter)
+
+	case "medications":
+		return reflectiveResourceStats(db, resourceName, &models.Medication{}, filter)
+
+	case "prescriptions":
+		return reflectiveResourceStats(db, resourceName, &models.Prescription{}, filter)
+
 	// grit:resource-stats:dispatch
 	default:
 		return nil, fmt.Errorf("dashboard stats not registered for %q", resourceName)

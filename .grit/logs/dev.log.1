@@ -1,0 +1,697 @@
+[api] 
+[api]   __    _   ___  
+[api]  / /\  | | | |_) 
+[api] /_/--\ |_| |_| \_ 
+[api] v1.67.4, built with Go go1.26.8
+[api] 
+[api] watching .
+[api] watching cmd
+[api] watching cmd/backup
+[api] watching cmd/migrate
+[api] watching cmd/restore
+[api] watching cmd/seed
+[api] watching cmd/server
+[api] watching internal
+[api] watching internal/access
+[api] watching internal/ai
+[api] watching internal/appendonly
+[api] watching internal/audit
+[api] watching internal/authz
+[api] watching internal/backup
+[api] watching internal/cache
+[api] watching internal/cluster
+[api] watching internal/concurrency
+[api] watching internal/config
+[api] watching internal/cron
+[api] watching internal/crypto
+[api] watching internal/database
+[api] watching internal/devserver
+[api] watching internal/docs
+[api] watching internal/erasure
+[api] watching internal/events
+[api] watching internal/export
+[api] watching internal/factory
+[api] watching internal/fieldtypes
+[api] watching internal/files
+[api] watching internal/flags
+[api] watching internal/handlers
+[api] watching internal/health
+[api] watching internal/ids
+[api] watching internal/imports
+[api] watching internal/jobs
+[api] watching internal/jsontime
+[api] watching internal/llms
+[api] watching internal/mail
+[api] watching internal/mail/mailtest
+[api] watching internal/mail/templates
+[api] watching internal/media
+[api] watching internal/middleware
+[api] watching internal/migrate
+[api] watching internal/models
+[api] watching internal/money
+[api] watching internal/outbox
+[api] watching internal/paginate
+[api] watching internal/password
+[api] watching internal/pdf
+[api] watching internal/policies
+[api] watching internal/realtime
+[api] watching internal/respond
+[api] watching internal/routes
+[api] watching internal/safefetch
+[api] watching internal/saga
+[api] watching internal/sagas
+[api] watching internal/sanitize
+[api] watching internal/sequence
+[api] watching internal/services
+[api] watching internal/settings
+[api] watching internal/sms
+[api] watching internal/stock
+[api] watching internal/storage
+[api] watching internal/sync
+[api] watching internal/testkit
+[api] watching internal/totp
+[api] watching internal/tracing
+[api] watching internal/vectors
+[api] watching internal/webhooks
+[api] watching internal/workflow
+[api] watching migrations
+[api] !exclude tmp
+[api] building...
+[api] running...
+[api] 2026/11/10 19:40:35 Database pool: up to 25 connections from this process (DB_MAX_OPEN_CONNS)
+[api] 2026/11/10 19:40:35 Database connected successfully
+[api] 2026/11/10 19:40:35 Redis cache connected
+[api] [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+[api]  - using env:	export GIN_MODE=release
+[api]  - using code:	gin.SetMode(gin.ReleaseMode)
+[api] 
+[api] 2026/11/10 19:40:36 File storage: bucket "store2-uploads" at http://localhost:9002
+[api] 2026/11/10 19:40:36 Email: sending with failover(smtp,log)
+[api] 2026/11/10 19:40:36 AI service configured via AI Gateway (anthropic/claude-sonnet-5.5)
+[api] 2026/11/10 19:40:36 Job queue connected
+[api] [GIN-debug] POST   /sentinel/csp-report      --> github.com/MUKE-coder/sentinel/v2/api.(*Server).registerCSPReport.(*Server).handleCSPReport.func1 (20 handlers)
+[api] [GIN-debug] POST   /sentinel/api/auth/login  --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleLogin-fm (20 handlers)
+[api] [GIN-debug] POST   /sentinel/api/auth/logout --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleLogout-fm (20 handlers)
+[api] [GIN-debug] GET    /sentinel/api/auth/verify --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleVerify-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/threats     --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleListThreats-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/threats/:id --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetThreat-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/threats/:id/resolve --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleResolveThreat-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/threats/:id/false-positive --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleFalsePositive-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/actors      --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleListActors-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/actors/:ip  --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetActor-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/actors/:ip/block --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleBlockActor-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/ip/blocked  --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleListBlockedIPs-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/ip/block    --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleBlockIP-fm (21 handlers)
+[api] [GIN-debug] DELETE /sentinel/api/ip/block/:ip --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUnblockIP-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/ip/block-offenders --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleBlockOffenders-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/performance/overview --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handlePerformanceOverview-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/performance/routes --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleRouteMetrics-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/score       --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetScore-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/analytics/summary --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAnalyticsSummary-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/analytics/attack-trends --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAttackTrends-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/analytics/geographic --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGeoStats-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/analytics/top-targets --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleTopTargets-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/users       --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleListUsers-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/users/:user_id/activity --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUserActivity-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/users/:user_id/threats --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUserThreats-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/actors/:ip/requests --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleActorRequests-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/ip/:ip/reputation --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleIPReputation-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/ip/feeds    --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleIPIntelStatus-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/audit-logs  --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleListAuditLogs-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/audit-logs/verify --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleVerifyAuditLogs-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/auth/unblock-user/:username --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUnblockUser-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/auth-shield/status --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAuthShieldStatus-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/csp-violations/stats --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleCSPStats-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/reports/gdpr --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGDPRReport-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/reports/pci-dss --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handlePCIDSSReport-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/reports/soc2 --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleSOC2Report-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/waf/rules   --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetWAFRules-fm (21 handlers)
+[api] [GIN-debug] PUT    /sentinel/api/waf/rules   --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUpdateWAFRules-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/waf/custom-rules --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleListCustomRules-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/waf/custom-rules --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAddCustomRule-fm (21 handlers)
+[api] [GIN-debug] DELETE /sentinel/api/waf/custom-rules/:id --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleDeleteCustomRule-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/waf/test    --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleTestWAFPayload-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/alerts/config --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetAlertConfig-fm (21 handlers)
+[api] [GIN-debug] PUT    /sentinel/api/alerts/config --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUpdateAlertConfig-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/alerts/test --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleTestAlert-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/alerts/history --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAlertHistory-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/ai/analyze-threat/:id --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAIAnalyzeThreat-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/ai/analyze-actor/:ip --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAIAnalyzeActor-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/ai/daily-summary --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAIDailySummary-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/ai/query    --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAIQuery-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/ai/waf-recommendations --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleAIWAFRecommendations-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/settings/live --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetLiveSettings-fm (21 handlers)
+[api] [GIN-debug] DELETE /sentinel/api/settings/live --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleResetLiveSettings-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/rate-limits --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetRateLimits-fm (21 handlers)
+[api] [GIN-debug] PUT    /sentinel/api/rate-limits --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleUpdateRateLimits-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/api/rate-limits/current --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleGetRateLimitStates-fm (21 handlers)
+[api] [GIN-debug] POST   /sentinel/api/rate-limits/reset/:key --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleResetRateLimit-fm (21 handlers)
+[api] [GIN-debug] GET    /sentinel/ws/threats      --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleWSThreats-fm (20 handlers)
+[api] [GIN-debug] GET    /sentinel/ws/metrics      --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleWSMetrics-fm (20 handlers)
+[api] [GIN-debug] GET    /sentinel/ws/alerts       --> github.com/MUKE-coder/sentinel/v2/api.(*Server).handleWSAlerts-fm (20 handlers)
+[api] [GIN-debug] GET    /sentinel/ui/*filepath    --> github.com/MUKE-coder/sentinel/v2.MountE.func3 (20 handlers)
+[api] 2026/11/10 19:40:40 [sentinel] Mounted at /sentinel (WAF: true, RateLimit: false, Storage: postgres)
+[api] 2026/11/10 19:40:40 Sentinel mounted at /sentinel
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "subscriptions" does not exist (SQLSTATE 42P01)
+[api] [8.502ms] [rows:0] SELECT count(*) FROM "subscriptions"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "customers" does not exist (SQLSTATE 42P01)
+[api] [8.173ms] [rows:0] SELECT count(*) FROM "customers"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "order_lines" does not exist (SQLSTATE 42P01)
+[api] [4.115ms] [rows:0] SELECT count(*) FROM "order_lines"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "repayments" does not exist (SQLSTATE 42P01)
+[api] [9.952ms] [rows:0] SELECT count(*) FROM "repayments"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "medications" does not exist (SQLSTATE 42P01)
+[api] [5.331ms] [rows:0] SELECT count(*) FROM "medications"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "prescriptions" does not exist (SQLSTATE 42P01)
+[api] [11.393ms] [rows:0] SELECT count(*) FROM "prescriptions"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "line_charges" does not exist (SQLSTATE 42P01)
+[api] [21.960ms] [rows:0] SELECT count(*) FROM "line_charges"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "invoice_items" does not exist (SQLSTATE 42P01)
+[api] [61.848ms] [rows:0] SELECT count(*) FROM "invoice_items"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "invoices" does not exist (SQLSTATE 42P01)
+[api] [21.372ms] [rows:0] SELECT count(*) FROM "invoices"
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "orders" does not exist (SQLSTATE 42P01)
+[api] [17.278ms] [rows:0] SELECT count(*) FROM "orders"
+[api] 2026/11/10 19:40:44 GORM Studio mounted at /studio
+[api] 2026/11/10 19:40:44 API docs available at /docs
+[api] 
+[api] 2026/11/10 19:40:44 /home/johanr/go/pkg/mod/github.com/!m!u!k!e-coder/gorm-studio@v1.1.1/studio/schema.go:100 ERROR: relation "loans" does not exist (SQLSTATE 42P01)
+[api] [7.369ms] [rows:0] SELECT count(*) FROM "loans"
+[api] [GIN-debug] GET    /studio                   --> github.com/MUKE-coder/gorm-studio/studio.Mount.func1 (21 handlers)
+[api] [GIN-debug] GET    /studio/api/schema        --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).GetSchema-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/schema/refresh --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).RefreshSchema-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/tables/:table/rows --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).GetRows-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/tables/:table/rows/:id --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).GetRow-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/tables/:table/rows --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).CreateRow-fm (22 handlers)
+[api] [GIN-debug] PUT    /studio/api/tables/:table/rows/:id --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).UpdateRow-fm (22 handlers)
+[api] [GIN-debug] DELETE /studio/api/tables/:table/rows/:id --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).DeleteRow-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/tables/:table/rows/bulk-delete --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).BulkDelete-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/tables/:table/rows/:id/relations/:relation --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).GetRelatedRows-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/tables/:table/export --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ExportTable-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/export/schema --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ExportSchema-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/export/data   --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ExportAllData-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/export/models --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ExportGoModels-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/import/schema --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ImportSchema-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/import/data   --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ImportData-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/import/models --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ImportGoModels-fm (22 handlers)
+[api] [GIN-debug] POST   /studio/api/sql           --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).ExecuteSQL-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/stats         --> github.com/MUKE-coder/gorm-studio/studio.(*Handlers).GetDBStats-fm (22 handlers)
+[api] [GIN-debug] GET    /studio/api/config        --> github.com/MUKE-coder/gorm-studio/studio.Mount.func3 (22 handlers)
+[api] [GIN-debug] GET    /docs                     --> github.com/MUKE-coder/gin-docs/gindocs.(*GinDocs).handleUI-fm (20 handlers)
+[api] [GIN-debug] GET    /docs/                    --> github.com/MUKE-coder/gin-docs/gindocs.(*GinDocs).handleUI-fm (20 handlers)
+[api] [GIN-debug] GET    /docs/openapi.json        --> github.com/MUKE-coder/gin-docs/gindocs.(*GinDocs).handleSpecJSON-fm (20 handlers)
+[api] [GIN-debug] GET    /docs/openapi.yaml        --> github.com/MUKE-coder/gin-docs/gindocs.(*GinDocs).handleSpecYAML-fm (20 handlers)
+[api] [GIN-debug] GET    /docs/export/postman      --> github.com/MUKE-coder/gin-docs/gindocs.(*GinDocs).handleExportPostman-fm (20 handlers)
+[api] [GIN-debug] GET    /docs/export/insomnia     --> github.com/MUKE-coder/gin-docs/gindocs.(*GinDocs).handleExportInsomnia-fm (20 handlers)
+[api] [GIN-debug] GET    /llms.txt                 --> store2/apps/api/internal/routes.registerLLMSFiles.func2 (20 handlers)
+[api] [GIN-debug] GET    /llms-full.txt            --> store2/apps/api/internal/routes.registerLLMSFiles.func3 (20 handlers)
+[api] 2026/11/10 19:40:44 [pulse] starting background: lifecycle
+[api] 2026/11/10 19:40:44 [pulse] starting background: rollup-flusher
+[api] 2026/11/10 19:40:44 [pulse] starting background: websocket-hub
+[api] 2026/11/10 19:40:44 [pulse] starting background: retention-sweeper
+[api] 2026/11/10 19:40:44 [pulse] starting background: log-tail
+[api] 2026/11/10 19:40:44 [pulse] starting background: pool-monitor
+[api] 2026/11/10 19:40:44 [pulse] registered health check: database (database)
+[api] 2026/11/10 19:40:44 [pulse] starting background: runtime-sampler
+[api] [GIN-debug] GET    /pulse/health             --> github.com/MUKE-coder/pulse/pulse.registerHealthRoutes.func1 (22 handlers)
+[api] [GIN-debug] GET    /pulse/health/live        --> github.com/MUKE-coder/pulse/pulse.registerHealthRoutes.func2 (22 handlers)
+[api] [GIN-debug] GET    /pulse/health/ready       --> github.com/MUKE-coder/pulse/pulse.registerHealthRoutes.func3 (22 handlers)
+[api] [GIN-debug] GET    /pulse/ws/live            --> github.com/MUKE-coder/pulse/pulse.registerWebSocketRoute.func1 (22 handlers)
+[api] [GIN-debug] GET    /pulse/metrics            --> github.com/MUKE-coder/pulse/pulse.registerPrometheusRoute.func1 (22 handlers)
+[api] [GIN-debug] POST   /pulse/api/auth/login     --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.loginHandler.func1 (22 handlers)
+[api] [GIN-debug] GET    /pulse/api/auth/verify    --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.verifyHandler.func3 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/overview       --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.overviewHandler.func6 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/routes         --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.routesListHandler.func7 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/routes/baselines --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.routeBaselinesHandler.func8 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/routes/:method/*path --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.routeDetailHandler.func9 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/overview --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dbOverviewHandler.func10 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/slow-queries --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dbSlowQueriesHandler.func11 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/patterns --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dbPatternsHandler.func12 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/n1    --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dbN1Handler.func13 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/n1/ranked --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dbN1RankedHandler.func14 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/pool  --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dbPoolHandler.func15 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/database/plans --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.plansHandler.func16 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/database/explain --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.explainNowHandler.func17 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/dependencies   --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dependenciesHandler.func18 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/errors         --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.errorsListHandler.func19 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/errors/:id     --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.errorDetailHandler.func20 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/errors/:id/mute --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.errorMuteHandler.func21 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/errors/:id/resolve --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.errorResolveHandler.func22 (23 handlers)
+[api] [GIN-debug] DELETE /pulse/api/errors/:id     --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.errorDeleteHandler.func23 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/errors/:id/logs --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.errorLogsHandler.func24 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/logs           --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.logsHandler.func25 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/traces/:id     --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.traceHandler.func26 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/runtime/current --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.runtimeCurrentHandler.func27 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/runtime/history --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.runtimeHistoryHandler.func28 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/runtime/info   --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.runtimeInfoHandler.func29 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/health/checks  --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.healthChecksHandler.func30 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/health/checks/:name/history --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.healthCheckHistoryHandler.func31 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/health/checks/:name/run --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.healthCheckRunHandler.func32 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/alerts         --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.alertsListHandler.func33 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/slos           --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.slosListHandler.func34 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/use            --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.useHandler.func35 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/test-runs      --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.testRunsListHandler.func36 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/test-runs      --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.testRunsCreateHandler.func37 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/test-runs/:id/compare --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.testRunCompareHandler.func38 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/test-runs/:id/profile --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.testRunProfileHandler.func39 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/lifecycle      --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.lifecycleHandler.func40 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/instances      --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.instancesHandler.func41 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/storage        --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.storageHandler.func42 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/flamegraph --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.profileFlameGraphHandler.func43 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/folded --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.profileFoldedHandler.func44 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/settings       --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.settingsHandler.func45 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/data/reset     --> github.com/MUKE-coder/pulse/pulse.registerAPIRoutes.dataResetHandler.func46 (23 handlers)
+[api] [GIN-debug] POST   /pulse/api/data/export    --> github.com/MUKE-coder/pulse/pulse.registerExportRoute.func1 (23 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/heap   --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.runtimeProfileHandler.func3 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/allocs --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.runtimeProfileHandler.func3 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/goroutine --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.runtimeProfileHandler.func3 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/mutex  --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.runtimeProfileHandler.func3 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/block  --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.runtimeProfileHandler.func3 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/threadcreate --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.runtimeProfileHandler.func3 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/cpu    --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.cpuProfileHandler.func4 (24 handlers)
+[api] [GIN-debug] GET    /pulse/api/profile/list   --> github.com/MUKE-coder/pulse/pulse.registerProfileRoutes.profileListHandler.func5 (24 handlers)
+[api] [GIN-debug] GET    /pulse                    --> github.com/MUKE-coder/pulse/pulse.registerDashboardRoutes.func2 (22 handlers)
+[api] [GIN-debug] GET    /pulse/                   --> github.com/MUKE-coder/pulse/pulse.registerDashboardRoutes.func3 (22 handlers)
+[api] [GIN-debug] GET    /pulse/ui                 --> github.com/MUKE-coder/pulse/pulse.registerDashboardRoutes.func4 (22 handlers)
+[api] [GIN-debug] GET    /pulse/ui/*filepath       --> github.com/MUKE-coder/pulse/pulse.registerDashboardRoutes.func5 (22 handlers)
+[api] 2026/11/10 19:40:44 [pulse] mounted at /pulse — dashboard at /pulse/ui/ (storage: Memory)
+[api] 2026/11/10 19:40:44 [pulse] dev mode enabled — verbose logging active
+[api] 2026/11/10 19:40:44 [pulse] registered health check: redis (redis)
+[api] 2026/11/10 19:40:44 Pulse observability mounted at /pulse
+[api] 2026/11/10 19:40:44 Passkeys enabled for localhost (origins: http://localhost:3000, http://localhost:3001)
+[api] 2026/11/10 19:40:44 [pulse] starting background: n1-sweeper
+[api] 2026/11/10 19:40:44 [pulse] starting background: aggregator
+[api] 2026/11/10 19:40:44 [pulse] starting background: health-runner
+[api] 2026/11/10 19:40:44 [pulse] starting background: alert-notifier
+[api] 2026/11/10 19:40:44 [pulse] starting background: alert-notifier
+[api] 2026/11/10 19:40:44 [pulse] starting background: alert-engine
+[api] 2026/11/10 19:40:44 [pulse] starting background: regression-watcher
+[api] 2026/11/10 19:40:44 [pulse] starting background: use-sampler
+[api] 2026/11/10 19:40:44 outbox: relay Proline started (batch 50, every 2s)
+[api] 2026/11/10 19:40:44 [realtime] backplane connected on "grit:realtime"
+[api] [GIN-debug] GET    /api/health               --> store2/apps/api/internal/routes.Setup.func1 (22 handlers)
+[api] [GIN-debug] GET    /api/v1/health            --> store2/apps/api/internal/routes.Setup.func1 (22 handlers)
+[api] [GIN-debug] GET    /.well-known/jwks.json    --> store2/apps/api/internal/handlers.(*JWKSHandler).Serve-fm (22 handlers)
+[api] [GIN-debug] GET    /api/ws                   --> store2/apps/api/internal/handlers.(*RealtimeHandler).Connect-fm (22 handlers)
+[api] [GIN-debug] GET    /api/events               --> store2/apps/api/internal/handlers.(*RealtimeHandler).Events-fm (22 handlers)
+[api] [GIN-debug] POST   /webhooks/:provider       --> store2/apps/api/internal/handlers.(*WebhookHandler).Receive-fm (22 handlers)
+[api] [GIN-debug] POST   /webhooks/:provider/:tenant --> store2/apps/api/internal/handlers.(*WebhookHandler).Receive-fm (22 handlers)
+[api] [GIN-debug] GET    /api/v1/blogs             --> store2/apps/api/internal/handlers.(*BlogHandler).ListPublished-fm (23 handlers)
+[api] [GIN-debug] GET    /api/v1/blogs/:slug       --> store2/apps/api/internal/handlers.(*BlogHandler).GetBySlug-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/register     --> store2/apps/api/internal/handlers.(*AuthHandler).Register-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/login        --> store2/apps/api/internal/handlers.(*AuthHandler).Login-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/refresh      --> store2/apps/api/internal/handlers.(*AuthHandler).Refresh-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/forgot-password --> store2/apps/api/internal/handlers.(*AuthHandler).ForgotPassword-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/reset-password --> store2/apps/api/internal/handlers.(*AuthHandler).ResetPassword-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/verify-email --> store2/apps/api/internal/handlers.(*AuthHandler).VerifyEmail-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/magic-link   --> store2/apps/api/internal/handlers.(*AuthHandler).RequestMagicLink-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/magic-link/consume --> store2/apps/api/internal/handlers.(*AuthHandler).ConsumeMagicLink-fm (23 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/oauth/:provider --> store2/apps/api/internal/handlers.(*AuthHandler).OAuthBegin-fm (23 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/oauth/:provider/callback --> store2/apps/api/internal/handlers.(*AuthHandler).OAuthCallback-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/oauth/exchange --> store2/apps/api/internal/handlers.(*AuthHandler).OAuthExchange-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/passkeys/login/begin --> store2/apps/api/internal/handlers.(*PasskeyHandler).BeginLogin-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/passkeys/login/finish --> store2/apps/api/internal/handlers.(*PasskeyHandler).FinishLogin-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/verify  --> store2/apps/api/internal/handlers.(*TOTPHandler).Verify-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/backup-codes/verify --> store2/apps/api/internal/handlers.(*TOTPHandler).VerifyBackupCode-fm (23 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/me           --> store2/apps/api/internal/handlers.(*AuthHandler).Me-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/permissions  --> store2/apps/api/internal/handlers.(*RoleHandler).MyPermissions-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/system/modules    --> store2/apps/api/internal/routes.Setup.func2 (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/logout       --> store2/apps/api/internal/handlers.(*AuthHandler).Logout-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/sessions     --> store2/apps/api/internal/handlers.(*SessionHandler).List-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/auth/sessions/:id --> store2/apps/api/internal/handlers.(*SessionHandler).Revoke-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/sessions/revoke-all --> store2/apps/api/internal/handlers.(*SessionHandler).RevokeAll-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/setup   --> store2/apps/api/internal/handlers.(*TOTPHandler).Setup-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/enable  --> store2/apps/api/internal/handlers.(*TOTPHandler).Enable-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/magic-link/recent --> store2/apps/api/internal/handlers.(*AuthHandler).RecentMagicLinks-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/email/send --> store2/apps/api/internal/handlers.(*TOTPHandler).SendEmailSetupCode-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/email/enable --> store2/apps/api/internal/handlers.(*TOTPHandler).EnableEmail-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/disable --> store2/apps/api/internal/handlers.(*TOTPHandler).Disable-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/totp/status  --> store2/apps/api/internal/handlers.(*TOTPHandler).Status-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/totp/backup-codes --> store2/apps/api/internal/handlers.(*TOTPHandler).RegenerateBackupCodes-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/auth/totp/trusted-devices --> store2/apps/api/internal/handlers.(*TOTPHandler).RevokeTrustedDevices-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/verify-email/send --> store2/apps/api/internal/handlers.(*AuthHandler).SendVerificationEmail-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/passkeys     --> store2/apps/api/internal/handlers.(*PasskeyHandler).List-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/passkeys/register/begin --> store2/apps/api/internal/handlers.(*PasskeyHandler).BeginRegistration-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/passkeys/register/finish --> store2/apps/api/internal/handlers.(*PasskeyHandler).FinishRegistration-fm (25 handlers)
+[api] [GIN-debug] PATCH  /api/v1/auth/passkeys/:id --> store2/apps/api/internal/handlers.(*PasskeyHandler).Rename-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/auth/passkeys/:id --> store2/apps/api/internal/handlers.(*PasskeyHandler).Delete-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/security     --> store2/apps/api/internal/handlers.(*RecoveryHandler).Overview-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/recovery/email --> store2/apps/api/internal/handlers.(*RecoveryHandler).SetEmail-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/recovery/email/verify --> store2/apps/api/internal/handlers.(*RecoveryHandler).VerifyEmail-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/auth/recovery/email --> store2/apps/api/internal/handlers.(*RecoveryHandler).ClearEmail-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/recovery/phone --> store2/apps/api/internal/handlers.(*RecoveryHandler).SetPhone-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/auth/recovery/phone/verify --> store2/apps/api/internal/handlers.(*RecoveryHandler).VerifyPhone-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/auth/recovery/phone --> store2/apps/api/internal/handlers.(*RecoveryHandler).ClearPhone-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/api-keys          --> store2/apps/api/internal/handlers.(*APIKeyHandler).List-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/api-keys          --> store2/apps/api/internal/handlers.(*APIKeyHandler).Create-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/api-keys/:id      --> store2/apps/api/internal/handlers.(*APIKeyHandler).Revoke-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/auth/totp/trusted-devices --> store2/apps/api/internal/handlers.(*TOTPHandler).ListTrustedDevices-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/auth/totp/trusted-devices/:id --> store2/apps/api/internal/handlers.(*TOTPHandler).RevokeTrustedDevice-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/users/:id/gdpr-export --> store2/apps/api/internal/handlers.(*GDPRHandler).Export-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/uploads           --> store2/apps/api/internal/handlers.(*UploadHandler).Create-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/media/profiles    --> store2/apps/api/internal/handlers.(*UploadHandler).Profiles-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/uploads/presign   --> store2/apps/api/internal/handlers.(*UploadHandler).Presign-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/uploads/complete  --> store2/apps/api/internal/handlers.(*UploadHandler).CompleteUpload-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/uploads           --> store2/apps/api/internal/handlers.(*UploadHandler).List-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/uploads/stats     --> store2/apps/api/internal/handlers.(*UploadHandler).Stats-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/uploads/:id       --> store2/apps/api/internal/handlers.(*UploadHandler).GetByID-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/uploads/:id/download --> store2/apps/api/internal/handlers.(*UploadHandler).Download-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/uploads/:id       --> store2/apps/api/internal/handlers.(*UploadHandler).Delete-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/sync/push         --> store2/apps/api/internal/handlers.(*SyncHandler).Push-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/sync/pull         --> store2/apps/api/internal/handlers.(*SyncHandler).Pull-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/sync/policy       --> store2/apps/api/internal/handlers.(*SyncHandler).Policy-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/settings          --> store2/apps/api/internal/handlers.(*SettingsHandler).List-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/ai/complete       --> store2/apps/api/internal/handlers.(*AIHandler).Complete-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/ai/chat           --> store2/apps/api/internal/handlers.(*AIHandler).Chat-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/ai/stream         --> store2/apps/api/internal/handlers.(*AIHandler).Stream-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/notifications     --> store2/apps/api/internal/handlers.(*NotificationHandler).List-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/notifications/:id/read --> store2/apps/api/internal/handlers.(*NotificationHandler).MarkRead-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/notifications/read-all --> store2/apps/api/internal/handlers.(*NotificationHandler).MarkAllRead-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/dashboard-layout  --> store2/apps/api/internal/handlers.(*DashboardLayoutHandler).Get-fm (25 handlers)
+[api] [GIN-debug] PUT    /api/v1/dashboard-layout  --> store2/apps/api/internal/handlers.(*DashboardLayoutHandler).Put-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/tickets           --> store2/apps/api/internal/handlers.(*TicketHandler).Create-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/tickets           --> store2/apps/api/internal/handlers.(*TicketHandler).List-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/tickets/:id       --> store2/apps/api/internal/handlers.(*TicketHandler).Get-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/tickets/:id/reply --> store2/apps/api/internal/handlers.(*TicketHandler).Reply-fm (25 handlers)
+[api] [GIN-debug] PATCH  /api/v1/tickets/:id/close --> store2/apps/api/internal/handlers.(*TicketHandler).Close-fm (25 handlers)
+[api] [GIN-debug] PATCH  /api/v1/tickets/:id/reopen --> store2/apps/api/internal/handlers.(*TicketHandler).Reopen-fm (25 handlers)
+[api] [GIN-debug] PATCH  /api/v1/tickets/:id/assign --> store2/apps/api/internal/handlers.(*TicketHandler).Assign-fm (25 handlers)
+[api] 2026/11/10 19:40:45 Public endpoints cached for 1m0s
+[api] [GIN-debug] GET    /api/v1/imports/:id       --> store2/apps/api/internal/handlers.(*ImportJobHandler).GetByID-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/profile           --> store2/apps/api/internal/handlers.(*UserHandler).GetProfile-fm (25 handlers)
+[api] [GIN-debug] PUT    /api/v1/profile           --> store2/apps/api/internal/handlers.(*UserHandler).UpdateProfile-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/profile           --> store2/apps/api/internal/handlers.(*UserHandler).DeleteProfile-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/users             --> store2/apps/api/internal/handlers.(*UserHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/users/:id         --> store2/apps/api/internal/handlers.(*UserHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/users             --> store2/apps/api/internal/handlers.(*UserHandler).Create-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/users/:id         --> store2/apps/api/internal/handlers.(*UserHandler).Update-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/users/:id         --> store2/apps/api/internal/handlers.(*UserHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/users/:id/roles   --> store2/apps/api/internal/handlers.(*RoleHandler).AssignUserRoles-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/users/:id/unlock  --> store2/apps/api/internal/handlers.(*UserHandler).Unlock-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/users/:id/gdpr-erase --> store2/apps/api/internal/handlers.(*GDPRHandler).Erase-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/gdpr/journal      --> store2/apps/api/internal/handlers.(*GDPRHandler).Journal-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/activity    --> store2/apps/api/internal/handlers.(*ActivityHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/activity/integrity --> store2/apps/api/internal/handlers.(*ActivityHandler).VerifyIntegrity-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/user-activity     --> store2/apps/api/internal/handlers.(*UserActivityHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/user-activity/stats --> store2/apps/api/internal/handlers.(*UserActivityHandler).Stats-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/audit/ocsf        --> store2/apps/api/internal/handlers.(*OCSFHandler).Export-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/permissions       --> store2/apps/api/internal/handlers.(*RoleHandler).Catalog-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/scale             --> store2/apps/api/internal/handlers.(*ScaleHandler).Report-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/roles             --> store2/apps/api/internal/handlers.(*RoleHandler).List-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/roles             --> store2/apps/api/internal/handlers.(*RoleHandler).Create-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/roles/:id         --> store2/apps/api/internal/handlers.(*RoleHandler).Get-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/roles/:id         --> store2/apps/api/internal/handlers.(*RoleHandler).Update-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/roles/:id         --> store2/apps/api/internal/handlers.(*RoleHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/access-reviews    --> store2/apps/api/internal/handlers.(*AccessReviewHandler).List-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/access-reviews    --> store2/apps/api/internal/handlers.(*AccessReviewHandler).Open-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/access-reviews/:id --> store2/apps/api/internal/handlers.(*AccessReviewHandler).Get-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/access-reviews/:id/items/:itemId/decision --> store2/apps/api/internal/handlers.(*AccessReviewHandler).Decide-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/access-reviews/:id/complete --> store2/apps/api/internal/handlers.(*AccessReviewHandler).Complete-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/jobs/stats  --> store2/apps/api/internal/handlers.(*JobsHandler).Stats-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/jobs/:status --> store2/apps/api/internal/handlers.(*JobsHandler).ListByStatus-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/jobs/:id/retry --> store2/apps/api/internal/handlers.(*JobsHandler).Retry-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/jobs/queue/:queue --> store2/apps/api/internal/handlers.(*JobsHandler).ClearQueue-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/sagas       --> store2/apps/api/internal/handlers.(*SagaHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/sagas/definitions --> store2/apps/api/internal/handlers.(*SagaHandler).Definitions-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/sagas/:id   --> store2/apps/api/internal/handlers.(*SagaHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/sagas/:id/retry --> store2/apps/api/internal/handlers.(*SagaHandler).Retry-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/routes      --> store2/apps/api/internal/handlers.(*RouteExplorerHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/cron/tasks  --> store2/apps/api/internal/handlers.(*CronHandler).ListTasks-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/mail/templates --> store2/apps/api/internal/handlers.(*MailPreviewHandler).Templates-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/mail/preview/:template --> store2/apps/api/internal/handlers.(*MailPreviewHandler).Preview-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/security/summary --> store2/apps/api/internal/handlers.(*SecurityHandler).Summary-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/security/trends --> store2/apps/api/internal/handlers.(*SecurityHandler).Trends-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/security/top --> store2/apps/api/internal/handlers.(*SecurityHandler).Top-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/security/threats --> store2/apps/api/internal/handlers.(*SecurityHandler).Threats-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/security/ban --> store2/apps/api/internal/handlers.(*SecurityHandler).Ban-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/security/ban/:ip --> store2/apps/api/internal/handlers.(*SecurityHandler).Unban-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/security/ban-offenders --> store2/apps/api/internal/handlers.(*SecurityHandler).BanOffenders-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/observability/summary --> store2/apps/api/internal/handlers.(*ObservabilityHandler).Summary-fm (26 handlers)
+[api] 2026/11/10 19:40:45 Background worker started
+[api] [GIN-debug] GET    /api/v1/admin/trash       --> store2/apps/api/internal/handlers.(*TrashHandler).Buckets-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/trash/:table --> store2/apps/api/internal/handlers.(*TrashHandler).List-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/trash/:table/:id/restore --> store2/apps/api/internal/handlers.(*TrashHandler).Restore-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/trash/:table/:id --> store2/apps/api/internal/handlers.(*TrashHandler).Purge-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/trash/:table --> store2/apps/api/internal/handlers.(*TrashHandler).Empty-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/deleted-accounts --> store2/apps/api/internal/handlers.(*UserHandler).DeletedAccounts-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/deleted-accounts/:id/restore --> store2/apps/api/internal/handlers.(*UserHandler).RestoreAccount-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/deleted-accounts/:id --> store2/apps/api/internal/handlers.(*UserHandler).PurgeAccount-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/webhooks    --> store2/apps/api/internal/handlers.(*WebhookHandler).List-fm (26 handlers)
+[api] asynq: pid=32551 2026/11/10 17:40:45.548880 INFO: Starting processing
+[api] asynq: pid=32551 2026/11/10 17:40:45.548986 INFO: Send signal TSTP to stop processing new tasks
+[api] asynq: pid=32551 2026/11/10 17:40:45.548997 INFO: Send signal TERM or INT to terminate the process
+[api] 2026/11/10 19:40:45 Cron scheduler ready: it runs on the replica holding the cron lock
+[api] 2026/11/10 19:40:45 Server starting on port 8080
+[api] 2026/11/10 19:40:45 GORM Studio available at http://localhost:8080/studio
+[api] 2026/11/10 19:40:45 API Documentation at http://localhost:8080/docs
+[api] 2026/11/10 19:40:45 Pulse dashboard at http://localhost:8080/pulse/ui/
+[api] 2026/11/10 19:40:45 Sentinel dashboard at http://localhost:8080/sentinel/ui
+[api] [GIN-debug] GET    /api/v1/admin/flags       --> store2/apps/api/internal/handlers.(*FeatureFlagHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/flags/:id/exposures --> store2/apps/api/internal/handlers.(*FeatureFlagHandler).Exposures-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/blogs       --> store2/apps/api/internal/handlers.(*BlogHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/blogs/:id   --> store2/apps/api/internal/handlers.(*BlogHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/blogs       --> store2/apps/api/internal/handlers.(*BlogHandler).Create-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/admin/blogs/:id   --> store2/apps/api/internal/handlers.(*BlogHandler).Update-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/blogs/:id   --> store2/apps/api/internal/handlers.(*BlogHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/dashboard/resource-stats/:resource --> store2/apps/api/internal/handlers.(*ResourceStatsHandler).Get-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/dashboard/chart/:resource --> store2/apps/api/internal/handlers.(*ChartHandler).Get-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/backups           --> store2/apps/api/internal/handlers.(*BackupHandler).List-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/backups/generate  --> store2/apps/api/internal/handlers.(*BackupHandler).Generate-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/backups/:id/download --> store2/apps/api/internal/handlers.(*BackupHandler).Download-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/backup-settings   --> store2/apps/api/internal/handlers.(*BackupHandler).GetSettings-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/backup-settings   --> store2/apps/api/internal/handlers.(*BackupHandler).UpdateSettings-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/activity/reseal --> store2/apps/api/internal/handlers.(*ActivityHandler).Reseal-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/webhooks/:id/replay --> store2/apps/api/internal/handlers.(*WebhookHandler).Replay-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/flags       --> store2/apps/api/internal/handlers.(*FeatureFlagHandler).Create-fm (25 handlers)
+[api] [GIN-debug] PUT    /api/v1/admin/flags/:id   --> store2/apps/api/internal/handlers.(*FeatureFlagHandler).Update-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/flags/:id   --> store2/apps/api/internal/handlers.(*FeatureFlagHandler).Delete-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/form-shares --> store2/apps/api/internal/handlers.(*FormShareHandler).List-fm (25 handlers)
+[api] [GIN-debug] POST   /api/v1/admin/form-shares --> store2/apps/api/internal/handlers.(*FormShareHandler).Create-fm (25 handlers)
+[api] [GIN-debug] PATCH  /api/v1/admin/form-shares/:id --> store2/apps/api/internal/handlers.(*FormShareHandler).Update-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/admin/form-shares/:id --> store2/apps/api/internal/handlers.(*FormShareHandler).Delete-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/form-shares/resources --> store2/apps/api/internal/handlers.(*FormShareHandler).Resources-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/form-shares/resources/:resource/fields --> store2/apps/api/internal/handlers.(*FormShareHandler).FieldsPreview-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/admin/form-submissions --> store2/apps/api/internal/handlers.(*FormShareHandler).ListSubmissions-fm (25 handlers)
+[api] [GIN-debug] PUT    /api/v1/settings          --> store2/apps/api/internal/handlers.(*SettingsHandler).Update-fm (25 handlers)
+[api] [GIN-debug] DELETE /api/v1/settings/:key     --> store2/apps/api/internal/handlers.(*SettingsHandler).Reset-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/forms/:token --> store2/apps/api/internal/handlers.(*FormShareHandler).PublicGet-fm (23 handlers)
+[api] [GIN-debug] POST   /api/v1/public/forms/:token/submit --> store2/apps/api/internal/handlers.(*FormShareHandler).PublicSubmit-fm (23 handlers)
+[api] [GIN-debug] GET    /api/v1/categories/tree   --> store2/apps/api/internal/handlers.(*CategoryTreeHandler).GetTree-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/categories/:id/breadcrumbs --> store2/apps/api/internal/handlers.(*CategoryTreeHandler).GetBreadcrumbs-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/categories/:id/move --> store2/apps/api/internal/handlers.(*CategoryTreeHandler).Move-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories/reorder --> store2/apps/api/internal/handlers.(*CategoryTreeHandler).Reorder-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories/rebuild-tree --> store2/apps/api/internal/handlers.(*CategoryTreeHandler).RebuildPaths-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/products/tree     --> store2/apps/api/internal/handlers.(*ProductTreeHandler).GetTree-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/products/:id/breadcrumbs --> store2/apps/api/internal/handlers.(*ProductTreeHandler).GetBreadcrumbs-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/products/:id/move --> store2/apps/api/internal/handlers.(*ProductTreeHandler).Move-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products/reorder  --> store2/apps/api/internal/handlers.(*ProductTreeHandler).Reorder-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products/rebuild-tree --> store2/apps/api/internal/handlers.(*ProductTreeHandler).RebuildPaths-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/public/categories/tree --> store2/apps/api/internal/handlers.(*CategoryHandler).TreePublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/categories --> store2/apps/api/internal/handlers.(*CategoryHandler).ListPublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/categories/:key --> store2/apps/api/internal/handlers.(*CategoryHandler).GetPublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/categories/:key/related --> store2/apps/api/internal/handlers.(*CategoryHandler).RelatedPublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/categories        --> store2/apps/api/internal/handlers.(*CategoryHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/categories/export --> store2/apps/api/internal/handlers.(*CategoryHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories/import --> store2/apps/api/internal/handlers.(*CategoryHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/categories/import/template --> store2/apps/api/internal/handlers.(*CategoryHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/categories/:id    --> store2/apps/api/internal/handlers.(*CategoryHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/categories/:id/pdf --> store2/apps/api/internal/handlers.(*CategoryHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories        --> store2/apps/api/internal/handlers.(*CategoryHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories/bulk-create --> store2/apps/api/internal/handlers.(*CategoryHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/categories/:id    --> store2/apps/api/internal/handlers.(*CategoryHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/categories/:id    --> store2/apps/api/internal/handlers.(*CategoryHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories/bulk-edit --> store2/apps/api/internal/handlers.(*CategoryHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/categories/:id    --> store2/apps/api/internal/handlers.(*CategoryHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/categories/bulk   --> store2/apps/api/internal/handlers.(*CategoryHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/customers         --> store2/apps/api/internal/handlers.(*CustomerHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/customers/export  --> store2/apps/api/internal/handlers.(*CustomerHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/customers/import  --> store2/apps/api/internal/handlers.(*CustomerHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/customers/import/template --> store2/apps/api/internal/handlers.(*CustomerHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/customers/:id     --> store2/apps/api/internal/handlers.(*CustomerHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/customers/:id/pdf --> store2/apps/api/internal/handlers.(*CustomerHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/customers         --> store2/apps/api/internal/handlers.(*CustomerHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/customers/bulk-create --> store2/apps/api/internal/handlers.(*CustomerHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/customers/:id     --> store2/apps/api/internal/handlers.(*CustomerHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/customers/:id     --> store2/apps/api/internal/handlers.(*CustomerHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/customers/bulk-edit --> store2/apps/api/internal/handlers.(*CustomerHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/customers/:id     --> store2/apps/api/internal/handlers.(*CustomerHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/customers/bulk    --> store2/apps/api/internal/handlers.(*CustomerHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoice_items     --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoice_items/export --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoice_items/import --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoice_items/import/template --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoice_items/:id --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoice_items/:id/pdf --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoice_items     --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoice_items/bulk-create --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/invoice_items/:id --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/invoice_items/:id --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoice_items/bulk-edit --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/invoice_items/:id --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoice_items/bulk --> store2/apps/api/internal/handlers.(*InvoiceItemHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoices          --> store2/apps/api/internal/handlers.(*InvoiceHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoices/export   --> store2/apps/api/internal/handlers.(*InvoiceHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoices/import   --> store2/apps/api/internal/handlers.(*InvoiceHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoices/import/template --> store2/apps/api/internal/handlers.(*InvoiceHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoices/:id      --> store2/apps/api/internal/handlers.(*InvoiceHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/invoices/:id/pdf  --> store2/apps/api/internal/handlers.(*InvoiceHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoices          --> store2/apps/api/internal/handlers.(*InvoiceHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoices/bulk-create --> store2/apps/api/internal/handlers.(*InvoiceHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/invoices/:id      --> store2/apps/api/internal/handlers.(*InvoiceHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/invoices/:id      --> store2/apps/api/internal/handlers.(*InvoiceHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoices/bulk-edit --> store2/apps/api/internal/handlers.(*InvoiceHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/invoices/:id      --> store2/apps/api/internal/handlers.(*InvoiceHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/invoices/bulk     --> store2/apps/api/internal/handlers.(*InvoiceHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/line_charges      --> store2/apps/api/internal/handlers.(*LineChargeHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/line_charges/export --> store2/apps/api/internal/handlers.(*LineChargeHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/line_charges/import --> store2/apps/api/internal/handlers.(*LineChargeHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/line_charges/import/template --> store2/apps/api/internal/handlers.(*LineChargeHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/line_charges/:id  --> store2/apps/api/internal/handlers.(*LineChargeHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/line_charges/:id/pdf --> store2/apps/api/internal/handlers.(*LineChargeHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/line_charges      --> store2/apps/api/internal/handlers.(*LineChargeHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/line_charges/bulk-create --> store2/apps/api/internal/handlers.(*LineChargeHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/line_charges/:id  --> store2/apps/api/internal/handlers.(*LineChargeHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/line_charges/:id  --> store2/apps/api/internal/handlers.(*LineChargeHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/line_charges/bulk-edit --> store2/apps/api/internal/handlers.(*LineChargeHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/line_charges/:id  --> store2/apps/api/internal/handlers.(*LineChargeHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/line_charges/bulk --> store2/apps/api/internal/handlers.(*LineChargeHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/loans             --> store2/apps/api/internal/handlers.(*LoanHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/loans/export      --> store2/apps/api/internal/handlers.(*LoanHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/loans/import      --> store2/apps/api/internal/handlers.(*LoanHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/loans/import/template --> store2/apps/api/internal/handlers.(*LoanHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/loans/:id         --> store2/apps/api/internal/handlers.(*LoanHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/loans/:id/pdf     --> store2/apps/api/internal/handlers.(*LoanHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/loans             --> store2/apps/api/internal/handlers.(*LoanHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/loans/bulk-create --> store2/apps/api/internal/handlers.(*LoanHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/loans/:id         --> store2/apps/api/internal/handlers.(*LoanHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/loans/:id         --> store2/apps/api/internal/handlers.(*LoanHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/loans/bulk-edit   --> store2/apps/api/internal/handlers.(*LoanHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/loans/:id         --> store2/apps/api/internal/handlers.(*LoanHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/loans/bulk        --> store2/apps/api/internal/handlers.(*LoanHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/medications       --> store2/apps/api/internal/handlers.(*MedicationHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/medications/export --> store2/apps/api/internal/handlers.(*MedicationHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/medications/import --> store2/apps/api/internal/handlers.(*MedicationHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/medications/import/template --> store2/apps/api/internal/handlers.(*MedicationHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/medications/:id   --> store2/apps/api/internal/handlers.(*MedicationHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/medications/:id/pdf --> store2/apps/api/internal/handlers.(*MedicationHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/medications       --> store2/apps/api/internal/handlers.(*MedicationHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/medications/bulk-create --> store2/apps/api/internal/handlers.(*MedicationHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/medications/:id   --> store2/apps/api/internal/handlers.(*MedicationHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/medications/:id   --> store2/apps/api/internal/handlers.(*MedicationHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/medications/bulk-edit --> store2/apps/api/internal/handlers.(*MedicationHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/medications/:id   --> store2/apps/api/internal/handlers.(*MedicationHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/medications/bulk  --> store2/apps/api/internal/handlers.(*MedicationHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/order_lines       --> store2/apps/api/internal/handlers.(*OrderLineHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/order_lines/export --> store2/apps/api/internal/handlers.(*OrderLineHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/order_lines/import --> store2/apps/api/internal/handlers.(*OrderLineHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/order_lines/import/template --> store2/apps/api/internal/handlers.(*OrderLineHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/order_lines/:id   --> store2/apps/api/internal/handlers.(*OrderLineHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/order_lines/:id/pdf --> store2/apps/api/internal/handlers.(*OrderLineHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/order_lines       --> store2/apps/api/internal/handlers.(*OrderLineHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/order_lines/bulk-create --> store2/apps/api/internal/handlers.(*OrderLineHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/order_lines/:id   --> store2/apps/api/internal/handlers.(*OrderLineHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/order_lines/:id   --> store2/apps/api/internal/handlers.(*OrderLineHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/order_lines/bulk-edit --> store2/apps/api/internal/handlers.(*OrderLineHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/order_lines/:id   --> store2/apps/api/internal/handlers.(*OrderLineHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/order_lines/bulk  --> store2/apps/api/internal/handlers.(*OrderLineHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/orders            --> store2/apps/api/internal/handlers.(*OrderHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/orders/export     --> store2/apps/api/internal/handlers.(*OrderHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/orders/import     --> store2/apps/api/internal/handlers.(*OrderHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/orders/import/template --> store2/apps/api/internal/handlers.(*OrderHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/orders/:id        --> store2/apps/api/internal/handlers.(*OrderHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/orders/:id/pdf    --> store2/apps/api/internal/handlers.(*OrderHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/orders            --> store2/apps/api/internal/handlers.(*OrderHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/orders/bulk-create --> store2/apps/api/internal/handlers.(*OrderHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/orders/:id        --> store2/apps/api/internal/handlers.(*OrderHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/orders/:id        --> store2/apps/api/internal/handlers.(*OrderHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/orders/bulk-edit  --> store2/apps/api/internal/handlers.(*OrderHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/orders/:id        --> store2/apps/api/internal/handlers.(*OrderHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/orders/bulk       --> store2/apps/api/internal/handlers.(*OrderHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/prescriptions     --> store2/apps/api/internal/handlers.(*PrescriptionHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/prescriptions/export --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/prescriptions/import --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/prescriptions/import/template --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/prescriptions/:id --> store2/apps/api/internal/handlers.(*PrescriptionHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/prescriptions/:id/pdf --> store2/apps/api/internal/handlers.(*PrescriptionHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/prescriptions     --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/prescriptions/bulk-create --> store2/apps/api/internal/handlers.(*PrescriptionHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/prescriptions/:id --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/prescriptions/:id --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/prescriptions/bulk-edit --> store2/apps/api/internal/handlers.(*PrescriptionHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/prescriptions/:id --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/prescriptions/bulk --> store2/apps/api/internal/handlers.(*PrescriptionHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/public/products/tree --> store2/apps/api/internal/handlers.(*ProductHandler).TreePublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/products   --> store2/apps/api/internal/handlers.(*ProductHandler).ListPublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/products/:key --> store2/apps/api/internal/handlers.(*ProductHandler).GetPublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/public/products/:key/related --> store2/apps/api/internal/handlers.(*ProductHandler).RelatedPublic-fm (25 handlers)
+[api] [GIN-debug] GET    /api/v1/products          --> store2/apps/api/internal/handlers.(*ProductHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/products/export   --> store2/apps/api/internal/handlers.(*ProductHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products/import   --> store2/apps/api/internal/handlers.(*ProductHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/products/import/template --> store2/apps/api/internal/handlers.(*ProductHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/products/:id      --> store2/apps/api/internal/handlers.(*ProductHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/products/:id/pdf  --> store2/apps/api/internal/handlers.(*ProductHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products          --> store2/apps/api/internal/handlers.(*ProductHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products/bulk-create --> store2/apps/api/internal/handlers.(*ProductHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/products/:id      --> store2/apps/api/internal/handlers.(*ProductHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/products/:id      --> store2/apps/api/internal/handlers.(*ProductHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products/bulk-edit --> store2/apps/api/internal/handlers.(*ProductHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/products/:id      --> store2/apps/api/internal/handlers.(*ProductHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/products/bulk     --> store2/apps/api/internal/handlers.(*ProductHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/repayments        --> store2/apps/api/internal/handlers.(*RepaymentHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/repayments/export --> store2/apps/api/internal/handlers.(*RepaymentHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/repayments/import --> store2/apps/api/internal/handlers.(*RepaymentHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/repayments/import/template --> store2/apps/api/internal/handlers.(*RepaymentHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/repayments/:id    --> store2/apps/api/internal/handlers.(*RepaymentHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/repayments/:id/pdf --> store2/apps/api/internal/handlers.(*RepaymentHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/repayments        --> store2/apps/api/internal/handlers.(*RepaymentHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/repayments/bulk-create --> store2/apps/api/internal/handlers.(*RepaymentHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/repayments/:id    --> store2/apps/api/internal/handlers.(*RepaymentHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/repayments/:id    --> store2/apps/api/internal/handlers.(*RepaymentHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/repayments/bulk-edit --> store2/apps/api/internal/handlers.(*RepaymentHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/repayments/:id    --> store2/apps/api/internal/handlers.(*RepaymentHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/repayments/bulk   --> store2/apps/api/internal/handlers.(*RepaymentHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/subscriptions     --> store2/apps/api/internal/handlers.(*SubscriptionHandler).List-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/subscriptions/export --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Export-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/subscriptions/import --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Import-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/subscriptions/import/template --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Template-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/subscriptions/:id --> store2/apps/api/internal/handlers.(*SubscriptionHandler).GetByID-fm (26 handlers)
+[api] [GIN-debug] GET    /api/v1/subscriptions/:id/pdf --> store2/apps/api/internal/handlers.(*SubscriptionHandler).PDF-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/subscriptions     --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Create-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/subscriptions/bulk-create --> store2/apps/api/internal/handlers.(*SubscriptionHandler).BulkCreate-fm (26 handlers)
+[api] [GIN-debug] PUT    /api/v1/subscriptions/:id --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Update-fm (26 handlers)
+[api] [GIN-debug] PATCH  /api/v1/subscriptions/:id --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Patch-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/subscriptions/bulk-edit --> store2/apps/api/internal/handlers.(*SubscriptionHandler).BulkEdit-fm (26 handlers)
+[api] [GIN-debug] DELETE /api/v1/subscriptions/:id --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Delete-fm (26 handlers)
+[api] [GIN-debug] POST   /api/v1/subscriptions/bulk --> store2/apps/api/internal/handlers.(*SubscriptionHandler).Bulk-fm (26 handlers)
+[api] [GIN-debug] POST   /api/dev/step-aside       --> store2/apps/api/internal/devserver.MountStepAside.func1 (22 handlers)
+[api] asynq: pid=32551 2026/11/10 17:40:45.689218 INFO: Scheduler starting
+[api] asynq: pid=32551 2026/11/10 17:40:45.689922 INFO: Scheduler timezone is set to UTC
+[api] 2026/11/10 19:40:45 [cron] this replica holds the cron lock and runs the scheduled jobs
+[api] 
+[api] 2026/11/10 19:41:44 /home/johanr/GritProjects/store2/apps/api/internal/outbox/relay.go:204 SLOW SQL >= 200ms
+[api] [220.856ms] [rows:0] SELECT * FROM "outbox_messages" WHERE ((status = 'pending' AND available_at <= '2026-11-10 19:41:44.102') OR (status = 'claimed' AND claimed_at < '2026-11-10 19:36:44.102')) AND topic LIKE 'event:%' ORDER BY created_at LIMIT 50 FOR UPDATE SKIP LOCKED
+[api] 
+[api] 2026/11/10 19:44:49 /home/johanr/GritProjects/store2/apps/api/internal/outbox/relay.go:204 SLOW SQL >= 200ms
+[api] [207.880ms] [rows:0] SELECT * FROM "outbox_messages" WHERE ((status = 'pending' AND available_at <= '2026-11-10 19:44:49.359') OR (status = 'claimed' AND claimed_at < '2026-11-10 19:39:49.359')) AND topic LIKE 'event:%' ORDER BY created_at LIMIT 50 FOR UPDATE SKIP LOCKED
+[api] 
+[api] 2026/11/10 19:44:49 /home/johanr/GritProjects/store2/apps/api/internal/cluster/cluster.go:60 SLOW SQL >= 200ms
+[api] [284.623ms] [rows:0] SELECT * FROM "cluster_generations" WHERE name = 'sso' LIMIT 1
+[api] 
+[api] 2026/11/10 19:44:56 /home/johanr/GritProjects/store2/apps/api/internal/outbox/relay.go:204 SLOW SQL >= 200ms
+[api] [243.893ms] [rows:0] SELECT * FROM "outbox_messages" WHERE ((status = 'pending' AND available_at <= '2026-11-10 19:44:56.298') OR (status = 'claimed' AND claimed_at < '2026-11-10 19:39:56.298')) AND topic LIKE 'event:%' ORDER BY created_at LIMIT 50 FOR UPDATE SKIP LOCKED
+[api] 
+[api] 2026/11/10 19:46:10 /home/johanr/GritProjects/store2/apps/api/internal/outbox/relay.go:204 SLOW SQL >= 200ms
+[api] [248.062ms] [rows:0] SELECT * FROM "outbox_messages" WHERE ((status = 'pending' AND available_at <= '2026-11-10 19:46:09.817') OR (status = 'claimed' AND claimed_at < '2026-11-10 19:41:09.817')) AND topic LIKE 'event:%' ORDER BY created_at LIMIT 50 FOR UPDATE SKIP LOCKED
+[api] 
+[api] 2026/11/10 19:46:11 /home/johanr/GritProjects/store2/apps/api/internal/cluster/cluster.go:60 SLOW SQL >= 200ms
+[api] [228.441ms] [rows:0] SELECT * FROM "cluster_generations" WHERE name = 'sso' LIMIT 1

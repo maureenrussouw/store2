@@ -118,6 +118,188 @@ func coreModules() []Module {
 func generatedModules() []Module {
 	return []Module{
 		// grit:perms:auto-start
+		{
+			Key:  "categories",
+			Name: "Categories",
+			Groups: []Group{
+				{
+					Key:  "categories",
+					Name: "Categories",
+					Features: []Feature{
+						{Key: "categories", Name: "Categories", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "products",
+			Name: "Products",
+			Groups: []Group{
+				{
+					Key:  "products",
+					Name: "Products",
+					Features: []Feature{
+						{Key: "products", Name: "Products", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "customers",
+			Name: "Customers",
+			Groups: []Group{
+				{
+					Key:  "customers",
+					Name: "Customers",
+					Features: []Feature{
+						{Key: "customers", Name: "Customers", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "invoice_items",
+			Name: "InvoiceItems",
+			Groups: []Group{
+				{
+					Key:  "invoice_items",
+					Name: "InvoiceItems",
+					Features: []Feature{
+						{Key: "invoice_items", Name: "InvoiceItems", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "invoices",
+			Name: "Invoices",
+			Groups: []Group{
+				{
+					Key:  "invoices",
+					Name: "Invoices",
+					Features: []Feature{
+						{Key: "invoices", Name: "Invoices", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "order_lines",
+			Name: "OrderLines",
+			Groups: []Group{
+				{
+					Key:  "order_lines",
+					Name: "OrderLines",
+					Features: []Feature{
+						{Key: "order_lines", Name: "OrderLines", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "orders",
+			Name: "Orders",
+			Groups: []Group{
+				{
+					Key:  "orders",
+					Name: "Orders",
+					Features: []Feature{
+						{Key: "orders", Name: "Orders", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "repayments",
+			Name: "Repayments",
+			Groups: []Group{
+				{
+					Key:  "repayments",
+					Name: "Repayments",
+					Features: []Feature{
+						{Key: "repayments", Name: "Repayments", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "loans",
+			Name: "Loans",
+			Groups: []Group{
+				{
+					Key:  "loans",
+					Name: "Loans",
+					Features: []Feature{
+						{Key: "loans", Name: "Loans", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "line_charges",
+			Name: "LineCharges",
+			Groups: []Group{
+				{
+					Key:  "line_charges",
+					Name: "LineCharges",
+					Features: []Feature{
+						{Key: "line_charges", Name: "LineCharges", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "subscriptions",
+			Name: "Subscriptions",
+			Groups: []Group{
+				{
+					Key:  "subscriptions",
+					Name: "Subscriptions",
+					Features: []Feature{
+						{Key: "subscriptions", Name: "Subscriptions", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "medications",
+			Name: "Medications",
+			Groups: []Group{
+				{
+					Key:  "medications",
+					Name: "Medications",
+					Features: []Feature{
+						{Key: "medications", Name: "Medications", Actions: AllActions},
+					},
+				},
+			},
+		},
+
+		{
+			Key:  "prescriptions",
+			Name: "Prescriptions",
+			Groups: []Group{
+				{
+					Key:  "prescriptions",
+					Name: "Prescriptions",
+					Features: []Feature{
+						{Key: "prescriptions", Name: "Prescriptions", Actions: AllActions},
+					},
+				},
+			},
+		},
+
 		// grit:perms:auto-end
 	}
 }

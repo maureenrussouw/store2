@@ -8,6 +8,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"store2/apps/api/internal/sequence"
 	"gorm.io/gorm/logger"
 	"store2/apps/api/internal/ids"
 
@@ -163,6 +165,20 @@ func Models() []interface{} {
 		// AutoMigrate creates them and a backup includes them.
 		&SagaRun{},
 		&SagaStep{},
+		&Category{},
+		&Product{},
+		&Customer{},
+		&InvoiceItem{},
+		&sequence.Counter{},
+		&Invoice{},
+		&OrderLine{},
+		&Order{},
+		&Repayment{},
+		&Loan{},
+		&LineCharge{},
+		&Subscription{},
+		&Medication{},
+		&Prescription{},
 		// grit:models
 	}
 }

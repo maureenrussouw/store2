@@ -44,6 +44,19 @@ export const NAV_SECTIONS: NavSection[] = [
       { to: "/app/system/users", label: "Users", icon: Users },
       // grit generate resource injects generated resources here. Box is a
       // shared icon so no per-resource import is needed.
+      { to: "/app/categories", label: "Categories", icon: Box },
+      { to: "/app/products", label: "Products", icon: Box },
+      { to: "/app/customers", label: "Customers", icon: Box },
+      { to: "/app/invoice_items", label: "Invoice Items", icon: Box },
+      { to: "/app/invoices", label: "Invoices", icon: Box },
+      { to: "/app/order_lines", label: "Order Lines", icon: Box },
+      { to: "/app/orders", label: "Orders", icon: Box },
+      { to: "/app/repayments", label: "Repayments", icon: Box },
+      { to: "/app/loans", label: "Loans", icon: Box },
+      { to: "/app/line_charges", label: "Line Charges", icon: Box },
+      { to: "/app/subscriptions", label: "Subscriptions", icon: Box },
+      { to: "/app/medications", label: "Medications", icon: Box },
+      { to: "/app/prescriptions", label: "Prescriptions", icon: Box },
       // grit:nav
     ],
   },

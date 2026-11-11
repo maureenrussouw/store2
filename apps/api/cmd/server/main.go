@@ -34,6 +34,8 @@ import (
 	"store2/apps/api/internal/services"
 	"store2/apps/api/internal/storage"
 	"store2/apps/api/internal/tracing"
+
+	"store2/apps/api/internal/policies"
 )
 
 func main() {
@@ -275,6 +277,8 @@ func main() {
 		Jobs:    jobClient,
 		SecObs:  secObsBridge,
 	}
+
+	policies.Register()
 
 	// grit:main:boot
 	// Setup router

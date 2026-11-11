@@ -20,6 +20,19 @@ import (
 var syncTables = []string{
 	// Never users or uploads: the API refuses to sync them, since a push is a
 	// generic write and a user row carries its own role.
+	"categories",
+	"products",
+	"customers",
+	"invoice_items",
+	"invoices",
+	"order_lines",
+	"orders",
+	"repayments",
+	"loans",
+	"line_charges",
+	"subscriptions",
+	"medications",
+	"prescriptions",
 	// grit:sync-tables
 }
 

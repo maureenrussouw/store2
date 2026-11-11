@@ -6,6 +6,10 @@ import (
 	"strings"
 
 	"gorm.io/gorm"
+
+	"encoding/json"
+
+	"store2/apps/api/internal/models"
 )
 
 // SharedResourceSubmission is the result of a public form submission —
@@ -28,6 +32,149 @@ type SharedResourceSubmission struct {
 // the parameter is named "fields" rather than "body".
 func SubmitSharedForm(db *gorm.DB, resourceName string, fields map[string]interface{}) (*SharedResourceSubmission, error) {
 	switch resourceName {
+	case "Category":
+		item := &models.Category{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Category body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Category: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.Name}, nil
+
+	case "Product":
+		item := &models.Product{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Product body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Product: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.Name}, nil
+
+	case "Customer":
+		item := &models.Customer{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Customer body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Customer: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.Name}, nil
+
+	case "InvoiceItem":
+		item := &models.InvoiceItem{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding InvoiceItem body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating InvoiceItem: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "Invoice":
+		item := &models.Invoice{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Invoice body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Invoice: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "OrderLine":
+		item := &models.OrderLine{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding OrderLine body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating OrderLine: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "Order":
+		item := &models.Order{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Order body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Order: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "Repayment":
+		item := &models.Repayment{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Repayment body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Repayment: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "Loan":
+		item := &models.Loan{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Loan body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Loan: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "LineCharge":
+		item := &models.LineCharge{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding LineCharge body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating LineCharge: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "Subscription":
+		item := &models.Subscription{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Subscription body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Subscription: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
+	case "Medication":
+		item := &models.Medication{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Medication body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Medication: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.Name}, nil
+
+	case "Prescription":
+		item := &models.Prescription{}
+		body, _ := json.Marshal(fields)
+		if err := json.Unmarshal(body, item); err != nil {
+			return nil, fmt.Errorf("decoding Prescription body: %w", err)
+		}
+		if err := db.Create(item).Error; err != nil {
+			return nil, fmt.Errorf("creating Prescription: %w", err)
+		}
+		return &SharedResourceSubmission{ID: item.ID, Label: item.ID}, nil
+
 	// grit:form-share:dispatch
 	default:
 		return nil, fmt.Errorf("public submission disabled for %q (no dispatch case registered)", resourceName)
@@ -60,6 +207,32 @@ type PublicFieldInfo struct {
 // `grit generate resource` at the marker below.
 func RegisteredResources() []string {
 	return []string{
+		"Category",
+
+		"Product",
+
+		"Customer",
+
+		"InvoiceItem",
+
+		"Invoice",
+
+		"OrderLine",
+
+		"Order",
+
+		"Repayment",
+
+		"Loan",
+
+		"LineCharge",
+
+		"Subscription",
+
+		"Medication",
+
+		"Prescription",
+
 		// grit:form-share:registered
 	}
 }
@@ -71,6 +244,45 @@ func RegisteredResources() []string {
 // marker comment inside the switch.
 func PublicFields(resourceName string) []PublicFieldInfo {
 	switch resourceName {
+	case "Category":
+		return reflectPublicFields(&models.Category{})
+
+	case "Product":
+		return reflectPublicFields(&models.Product{})
+
+	case "Customer":
+		return reflectPublicFields(&models.Customer{})
+
+	case "InvoiceItem":
+		return reflectPublicFields(&models.InvoiceItem{})
+
+	case "Invoice":
+		return reflectPublicFields(&models.Invoice{})
+
+	case "OrderLine":
+		return reflectPublicFields(&models.OrderLine{})
+
+	case "Order":
+		return reflectPublicFields(&models.Order{})
+
+	case "Repayment":
+		return reflectPublicFields(&models.Repayment{})
+
+	case "Loan":
+		return reflectPublicFields(&models.Loan{})
+
+	case "LineCharge":
+		return reflectPublicFields(&models.LineCharge{})
+
+	case "Subscription":
+		return reflectPublicFields(&models.Subscription{})
+
+	case "Medication":
+		return reflectPublicFields(&models.Medication{})
+
+	case "Prescription":
+		return reflectPublicFields(&models.Prescription{})
+
 	// grit:form-share:fields
 	default:
 		return nil

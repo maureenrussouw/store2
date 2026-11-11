@@ -636,7 +636,7 @@ func mountStudio(r *gin.Engine, db *gorm.DB, cfg *config.Config) {
 				cfg.GORMStudioUsername: cfg.GORMStudioPassword,
 			})
 		}
-		studio.Mount(r, db, []interface{}{&models.User{}, &models.Upload{}, &models.Blog{} /* grit:studio */}, studioCfg)
+		studio.Mount(r, db, []interface{}{&models.User{}, &models.Upload{}, &models.Blog{}, &models.Category{}, &models.Product{}, &models.Customer{}, &models.InvoiceItem{}, &models.Invoice{}, &models.OrderLine{}, &models.Order{}, &models.Repayment{}, &models.Loan{}, &models.LineCharge{}, &models.Subscription{}, &models.Medication{}, &models.Prescription{} /* grit:studio */}, studioCfg)
 		log.Println("GORM Studio mounted at /studio")
 	}
 }
@@ -1014,6 +1014,19 @@ func Setup(db *gorm.DB, cfg *config.Config, svc *Services) *gin.Engine {
 	// Both have their own APIs with their own checks, and syncing them let any
 	// account make itself ADMIN.
 	syncRegistry.Register("blogs", &models.Blog{})
+	syncRegistry.Register("categories", &models.Category{})
+	syncRegistry.Register("products", &models.Product{})
+	syncRegistry.Register("customers", &models.Customer{})
+	syncRegistry.Register("invoice_items", &models.InvoiceItem{})
+	syncRegistry.Register("invoices", &models.Invoice{})
+	syncRegistry.Register("order_lines", &models.OrderLine{})
+	syncRegistry.Register("orders", &models.Order{})
+	syncRegistry.Register("repayments", &models.Repayment{})
+	syncRegistry.Register("loans", &models.Loan{})
+	syncRegistry.Register("line_charges", &models.LineCharge{})
+	syncRegistry.Register("subscriptions", &models.Subscription{})
+	syncRegistry.Register("medications", &models.Medication{})
+	syncRegistry.Register("prescriptions", &models.Prescription{})
 	// grit:sync
 	syncHandler := handlers.NewSyncHandler(db, syncRegistry)
 	// The bin reads the same registry: every resource that can be synced is a
@@ -1665,6 +1678,18 @@ func Setup(db *gorm.DB, cfg *config.Config, svc *Services) *gin.Engine {
 	}
 
 	// Custom role-restricted routes
+	categoryTreeHandler := handlers.NewCategoryTreeHandler(db)
+	staff.GET("/categories/tree", middleware.RequireRole("ADMIN", "perm:categories.view"), categoryTreeHandler.GetTree)
+	staff.GET("/categories/:id/breadcrumbs", middleware.RequireRole("ADMIN", "perm:categories.view"), categoryTreeHandler.GetBreadcrumbs)
+	staff.PATCH("/categories/:id/move", middleware.RequireRole("ADMIN", "perm:categories.edit"), categoryTreeHandler.Move)
+	staff.POST("/categories/reorder", middleware.RequireRole("ADMIN", "perm:categories.edit"), categoryTreeHandler.Reorder)
+	staff.POST("/categories/rebuild-tree", middleware.RequireRole("ADMIN", "perm:categories.edit"), categoryTreeHandler.RebuildPaths)
+	productTreeHandler := handlers.NewProductTreeHandler(db)
+	staff.GET("/products/tree", middleware.RequireRole("ADMIN", "perm:products.view"), productTreeHandler.GetTree)
+	staff.GET("/products/:id/breadcrumbs", middleware.RequireRole("ADMIN", "perm:products.view"), productTreeHandler.GetBreadcrumbs)
+	staff.PATCH("/products/:id/move", middleware.RequireRole("ADMIN", "perm:products.edit"), productTreeHandler.Move)
+	staff.POST("/products/reorder", middleware.RequireRole("ADMIN", "perm:products.edit"), productTreeHandler.Reorder)
+	staff.POST("/products/rebuild-tree", middleware.RequireRole("ADMIN", "perm:products.edit"), productTreeHandler.RebuildPaths)
 	// grit:routes:custom
 
 	// Every generated resource, each from its own <resource>_routes.go.
